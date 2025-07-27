@@ -1,17 +1,10 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { Download } from "lucide-react"
+import { Download, DollarSign, Calendar, CreditCard } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import EarningsChart from "@/components/my-earnings/earnings-chart"
+import { Separator } from "@/components/ui/separator"
 
 const payouts = [
   {
@@ -64,29 +57,27 @@ export default function MyEarningsPage() {
             </Button>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Payout Date</TableHead>
-                  <TableHead>Payment Method</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Amount</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {payouts.map((payout) => (
-                  <TableRow key={payout.date}>
-                    <TableCell className="whitespace-nowrap">{new Date(payout.date).toLocaleDateString()}</TableCell>
-                    <TableCell className="whitespace-nowrap">{payout.method}</TableCell>
-                    <TableCell>
-                      <Badge variant="secondary" className="bg-green-100 text-green-800">{payout.status}</Badge>
-                    </TableCell>
-                    <TableCell className="text-right font-medium whitespace-nowrap">${payout.amount.toFixed(2)}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+          <div className="space-y-4">
+            {payouts.map((payout, index) => (
+              <div key={index}>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 py-4">
+                    <div className="flex-1 space-y-2">
+                        <p className="text-lg font-bold text-primary flex items-center gap-2">
+                            <DollarSign className="h-5 w-5" />
+                            <span>${payout.amount.toFixed(2)}</span>
+                        </p>
+                         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+                            <span className="flex items-center gap-1.5"><Calendar className="h-4 w-4" /> {new Date(payout.date).toLocaleDateString()}</span>
+                            <span className="flex items-center gap-1.5"><CreditCard className="h-4 w-4" /> {payout.method}</span>
+                        </div>
+                    </div>
+                    <Badge variant="secondary" className="bg-green-100 text-green-800 text-sm py-1 px-3 self-start sm:self-center whitespace-nowrap">
+                      {payout.status}
+                    </Badge>
+                </div>
+                {index < payouts.length - 1 && <Separator />}
+              </div>
+            ))}
           </div>
         </CardContent>
       </Card>
