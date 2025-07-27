@@ -29,33 +29,43 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const fetchUserProfile = async (supabaseUser: SupabaseUser) => {
         try {
-            // The trigger might have a small delay
+            // There can be a delay for the trigger to run
             await new Promise(resolve => setTimeout(resolve, 500));
 
             const { data: profile, error } = await supabase
-            .from('profiles')
+            .from('promo_profile')
             .select('*')
             .eq('id', supabaseUser.id)
             .single();
 
             if (error) {
                 console.error('Error fetching user profile:', error.message);
-                // Don't sign out, just leave user as null for now
-                setUser(null);
+                // Don't sign out, maybe profile is not ready yet.
             } else if (profile) {
-                setUser(profile as User);
+                setUser({
+                    ...profile,
+                    email: supabaseUser.email || '',
+                    // Mock data for fields not in promo_profile
+                    current_earnings: profile.current_earnings || 0,
+                    lifetime_earnings: profile.lifetime_earnings || 0,
+                    events_added: profile.referral_count || 0,
+                    upcoming_payout: 0, 
+                    full_name: profile.full_name || 'New User',
+                    promo_id: profile.promo_id,
+                } as User);
             }
         } catch (error) {
              console.error('Exception fetching user profile:', (error as Error).message);
-             setUser(null);
         } finally {
             setLoading(false);
         }
     };
     
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-        if (session?.user) {
-            await fetchUserProfile(session.user);
+        setLoading(true);
+        const supabaseUser = session?.user;
+        if (supabaseUser) {
+            await fetchUserProfile(supabaseUser);
         } else {
             setUser(null);
             setLoading(false);
@@ -80,11 +90,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signOut = async () => {
-    setLoading(true);
     await supabase.auth.signOut();
     setUser(null);
     router.push('/login');
-    setLoading(false);
   };
 
   return (

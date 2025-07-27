@@ -28,11 +28,11 @@ export default function DashboardPage() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div className="flex items-center gap-4">
             <Avatar className="h-16 w-16">
-                <AvatarImage src={user.avatar_url} alt={user.name} data-ai-hint="profile picture"/>
-                <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                <AvatarImage src={user.avatar_url} alt={user.full_name} data-ai-hint="profile picture"/>
+                <AvatarFallback>{user.full_name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div>
-                <h1 className="text-2xl font-headline font-bold text-foreground">Welcome back, {user.name}!</h1>
+                <h1 className="text-2xl font-headline font-bold text-foreground">Welcome back, {user.full_name}!</h1>
                 <p className="text-sm text-muted-foreground">Here&apos;s your affiliate performance overview.</p>
             </div>
             </div>
