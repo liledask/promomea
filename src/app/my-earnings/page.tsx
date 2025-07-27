@@ -68,8 +68,8 @@ export default function MyEarningsPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Payout Date</TableHead>
-                  <TableHead>Payment Method</TableHead>
+                  <TableHead className="whitespace-nowrap">Payout Date</TableHead>
+                  <TableHead className="whitespace-nowrap">Payment Method</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="text-right">Amount</TableHead>
                 </TableRow>
