@@ -13,16 +13,12 @@ import { TIER_DETAILS } from '@/lib/constants';
 import { Loader2 } from 'lucide-react';
 
 export default function DashboardPage() {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
 
-  if (loading || !user) {
-    // This loader is for the initial load of the user object on this specific page
-    // The main layout will already be visible.
-    return (
-        <div className="flex h-full w-full items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        </div>
-    );
+  // The main layout now handles the loading state, so we can remove the loader here.
+  // The page will only render when the user object is available.
+  if (!user) {
+    return null;
   }
   
   const currentTierDetails = TIER_DETAILS[user.current_tier];
