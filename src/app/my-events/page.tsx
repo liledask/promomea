@@ -21,50 +21,85 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { getCurrentUser } from "@/lib/data";
 
-const initialEvents: ProMoEvent[] = [
-  {
-    id: "mea-annual-conference-2025",
-    name: "MEA Annual Conference 2025",
-    date: "2025-10-15",
-    commission: 45.75,
-    status: "Completed",
-  },
-  {
-    id: "tech-innovators-summit",
-    name: "Tech Innovators Summit",
-    date: "2025-11-05",
-    commission: 22.50,
-    status: "Completed",
-  },
-  {
-    id: "marketing-mastery-workshop",
-    name: "Marketing Mastery Workshop",
-    date: "2025-11-20",
-    commission: 0,
-    status: "Upcoming",
-  },
+const allMeaEvents: ProMoEvent[] = [
     {
-    id: "future-of-work-expo",
-    name: "Future of Work Expo",
-    date: "2025-12-01",
-    commission: 0,
-    status: "Upcoming",
-  },
-  {
-    id: "design-thinking-bootcamp",
-    name: "Design Thinking Bootcamp",
-    date: "2024-09-30",
-    commission: 15.00,
-    status: "Completed",
-  },
+        id: 'mea-annual-conference-2025',
+        name: 'MEA Annual Conference 2025',
+        date: '2025-10-15',
+        commission: 45.75,
+        status: 'Completed',
+    },
+    {
+        id: 'tech-innovators-summit',
+        name: 'Tech Innovators Summit',
+        date: '2025-11-05',
+        commission: 22.5,
+        status: 'Completed',
+    },
+    {
+        id: 'marketing-mastery-workshop',
+        name: 'Marketing Mastery Workshop',
+        date: '2025-11-20',
+        commission: 0,
+        status: 'Upcoming',
+    },
+    {
+        id: 'future-of-work-expo',
+        name: 'Future of Work Expo',
+        date: '2025-12-01',
+        commission: 0,
+        status: 'Upcoming',
+    },
+    {
+        id: 'design-thinking-bootcamp',
+        name: 'Design Thinking Bootcamp',
+        date: '2024-09-30',
+        commission: 15,
+        status: 'Completed',
+    },
+    {
+        id: 'global-finance-symposium',
+        name: 'Global Finance Symposium',
+        date: '2026-01-22',
+        commission: 0,
+        status: 'Upcoming',
+    },
+    {
+        id: 'health-wellness-expo',
+        name: 'Health & Wellness Expo',
+        date: '2026-02-18',
+        commission: 0,
+        status: 'Upcoming',
+    },
+    {
+        id: 'sustainable-living-fair',
+        name: 'Sustainable Living Fair',
+        date: '2026-03-10',
+        commission: 0,
+        status: 'Upcoming',
+    },
+    {
+        id: 'ai-in-business-conference',
+        name: 'AI in Business Conference',
+        date: '2026-04-05',
+        commission: 0,
+        status: 'Upcoming',
+    },
+    {
+        id: 'culinary-arts-festival',
+        name: 'Culinary Arts Festival',
+        date: '2026-05-20',
+        commission: 0,
+        status: 'Upcoming',
+    },
 ];
 
 export default function MyEventsPage() {
-  const [events, setEvents] = useState<ProMoEvent[]>(initialEvents);
+  const [events, setEvents] = useState<ProMoEvent[]>(allMeaEvents);
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<ProMoEvent | null>(null);
   const { toast } = useToast();
-  const user = getCurrentUser(); // In a real app, this might come from context or a hook
+  const user = getCurrentUser();
 
   const generateReferralLink = (event: ProMoEvent | null) => {
     if (!event || !user) return "";
@@ -109,16 +144,16 @@ export default function MyEventsPage() {
       <div className="space-y-8">
         <div className="flex items-center justify-between">
           <div>
-              <h1 className="text-3xl font-headline font-bold">My Events</h1>
-              <p className="text-muted-foreground">Track all the events you've successfully referred to MEA.</p>
+              <h1 className="text-3xl font-headline font-bold">Browse MEA Events</h1>
+              <p className="text-muted-foreground">Generate and share referral links for any event on the MEA platform.</p>
           </div>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Referred Event History</CardTitle>
+            <CardTitle>Event Catalog</CardTitle>
             <CardDescription>
-              A list of all events that have been added to MEA using your referral code.
+              A list of all events on MEA. Use the share button to generate your unique referral link.
             </CardDescription>
           </CardHeader>
           <CardContent>
