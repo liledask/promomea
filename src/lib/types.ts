@@ -5,7 +5,7 @@ export interface User {
   id: string;
   full_name: string;
   avatar_url: string;
-  email: string; // This will come from the auth.users table
+  email: string;
   current_tier: TierLevel;
   current_earnings: number;
   lifetime_earnings: number;

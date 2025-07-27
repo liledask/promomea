@@ -43,16 +43,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 // Don't sign out, maybe profile is not ready yet.
             } else if (profile) {
                 setUser({
-                    ...profile,
+                    id: profile.id,
+                    full_name: profile.full_name || '',
+                    avatar_url: profile.avatar_url || '',
                     email: supabaseUser.email || '',
-                    // Mock data for fields not in promo_profile
+                    current_tier: profile.current_tier || 'PT',
+                    promo_id: profile.promo_id,
+                    // The following fields might not be in promo_profile directly
+                    // and are mocked/defaulted for now.
                     current_earnings: profile.current_earnings || 0,
                     lifetime_earnings: profile.lifetime_earnings || 0,
                     events_added: profile.referral_count || 0,
-                    upcoming_payout: 0, 
-                    full_name: profile.full_name || 'New User',
-                    promo_id: profile.promo_id,
-                } as User);
+                    upcoming_payout: profile.upcoming_payout || 0,
+                });
             }
         } catch (error) {
              console.error('Exception fetching user profile:', (error as Error).message);
