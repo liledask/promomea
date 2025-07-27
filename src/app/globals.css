@@ -83,3 +83,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+}

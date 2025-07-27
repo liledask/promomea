@@ -27,31 +27,31 @@ export default function DashboardPage() {
   const currentTierDetails = TIER_DETAILS[user.currentTier];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div className="flex items-center gap-4">
-            <Avatar className="h-16 w-16">
+            <Avatar className="h-12 w-12">
                 <AvatarImage src={user.avatarUrl} alt={user.name} data-ai-hint="profile picture"/>
                 <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div>
-                <h1 className="text-3xl font-headline font-bold text-foreground">Welcome back, {user.name}!</h1>
-                <p className="text-muted-foreground">Here&apos;s your affiliate performance overview.</p>
+                <h1 className="text-2xl font-headline font-bold text-foreground">Welcome back, {user.name}!</h1>
+                <p className="text-sm text-muted-foreground">Here&apos;s your affiliate performance overview.</p>
             </div>
             </div>
-            <Badge variant="outline" className="text-lg py-2 px-4 border-accent text-accent font-bold self-start sm:self-center">
+            <Badge variant="outline" className="text-base py-1.5 px-3 border-accent text-accent font-bold self-start sm:self-center">
             {currentTierDetails.name} Tier
             </Badge>
         </div>
 
         <StatsCards user={user} />
 
-        <div className="grid gap-8 lg:grid-cols-3">
-            <div className="lg:col-span-2 space-y-8">
+        <div className="grid gap-6 lg:grid-cols-3">
+            <div className="lg:col-span-2 space-y-6">
             <TierProgress user={user} />
             <GoalRecommendation user={user} />
             </div>
-            <div className="space-y-8">
+            <div className="space-y-6">
             <ActivityFeed />
             <ImpactTracker />
             </div>

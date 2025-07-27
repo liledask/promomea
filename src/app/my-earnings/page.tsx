@@ -42,10 +42,10 @@ const payouts = [
 
 export default function MyEarningsPage() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-headline font-bold">My Earnings</h1>
-        <p className="text-muted-foreground">Review your earnings, payouts, and financial performance.</p>
+        <h1 className="text-2xl font-headline font-bold">My Earnings</h1>
+        <p className="text-sm text-muted-foreground">Review your earnings, payouts, and financial performance.</p>
       </div>
       
       <EarningsChart />
@@ -53,18 +53,18 @@ export default function MyEarningsPage() {
       <Card>
         <CardHeader className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div>
-                <CardTitle>Payout History</CardTitle>
+                <CardTitle className="text-xl">Payout History</CardTitle>
                 <CardDescription>
                     A record of all your processed payments.
                 </CardDescription>
             </div>
-            <Button variant="outline" className="w-full md:w-auto">
-                <Download className="mr-2" />
+            <Button variant="outline" size="sm" className="w-full md:w-auto">
+                <Download className="mr-2 h-4 w-4" />
                 Export CSV
             </Button>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto">
+          <div className="w-full overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>

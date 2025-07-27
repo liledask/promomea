@@ -112,23 +112,23 @@ export default function MyEventsPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-            <h1 className="text-3xl font-headline font-bold">Browse MEA Events</h1>
-            <p className="text-muted-foreground">Generate and share referral links for any event on the MEA platform.</p>
+            <h1 className="text-2xl font-headline font-bold">Browse MEA Events</h1>
+            <p className="text-sm text-muted-foreground">Generate and share referral links for any event.</p>
         </div>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Event Catalog</CardTitle>
+          <CardTitle className="text-xl">Event Catalog</CardTitle>
           <CardDescription>
             A list of all events on MEA. Copy your unique referral link to share it.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto">
+          <div className="w-full overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -152,7 +152,7 @@ export default function MyEventsPage() {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-2 min-w-[250px]">
+                        <div className="flex items-center gap-2 min-w-[250px] sm:min-w-[300px]">
                             <Input readOnly value={referralLink} className="bg-muted text-xs flex-1"/>
                             <Button size="icon" variant="ghost" onClick={() => handleCopy(referralLink)}>
                                 <Copy className="h-4 w-4" />
