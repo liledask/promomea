@@ -20,7 +20,6 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   signOut: () => Promise<void>;
-  refreshUser: () => Promise<void>;
   setUser: Dispatch<SetStateAction<User | null>>;
 }
 
@@ -47,8 +46,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         .single();
 
       if (error) {
-        console.error('Error fetching user profile:', error);
-        setUser(null);
+        if (error.code === 'PGRST116') {
+            // This happens if the user exists in auth but not in promo_profile
+            // This can happen if the trigger fails or was created after the user signed up
+            // We can attempt a sign-out to clear the session and force a re-login
+            console.warn("Profile not found for user, signing out.", error);
+            await supabase.auth.signOut();
+            setUser(null);
+            router.push('/login');
+        } else {
+            throw error;
+        }
       } else if (data) {
           setUser({
           ...data,
@@ -61,7 +69,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [router]);
   
   useEffect(() => {
     const getInitialSession = async () => {
@@ -88,13 +96,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     router.push('/login');
   };
 
-  const refreshUser = useCallback(async () => {
-    const { data: { user: supabaseUser } } = await supabase.auth.getUser();
-    await fetchUserProfile(supabaseUser);
-  }, [fetchUserProfile]);
-
   return (
-    <AuthContext.Provider value={{ user, loading, signOut, refreshUser, setUser }}>
+    <AuthContext.Provider value={{ user, loading, signOut, setUser }}>
       {children}
     </AuthContext.Provider>
   );

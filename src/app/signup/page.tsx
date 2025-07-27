@@ -46,7 +46,7 @@ export default function SignupPage() {
         password,
         options: {
           data: {
-            name: name,
+            full_name: name,
             avatar_url: `https://placehold.co/100x100.png?text=${avatarChar}`
           }
         }
@@ -62,8 +62,12 @@ export default function SignupPage() {
         title: 'Account Creation Pending',
         description: "Please check your email to verify your account.",
       });
-      // Don't redirect here, let user verify email first.
-      // router.push('/dashboard');
+      // After signup, the user needs to confirm their email.
+      // We don't redirect here, the auth listener will handle it once the session is active.
+      // Clear form for security
+      setName('');
+      setEmail('');
+      setPassword('');
 
     } catch (error: any) {
        console.error('Signup error:', error);
