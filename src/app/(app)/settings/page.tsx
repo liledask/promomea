@@ -17,7 +17,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 
 export default function SettingsPage() {
-  const { user, loading, refreshUser, setUser } = useAuth();
+  const { user, loading, setUser } = useAuth();
   const { toast } = useToast();
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -74,7 +74,7 @@ export default function SettingsPage() {
     setIsUploading(true);
     try {
         const fileExt = file.name.split('.').pop();
-        const fileName = `${Date.now()}.${fileExt}`;
+        const fileName = `${user.id}-${Date.now()}.${fileExt}`;
         const filePath = `${user.id}/${fileName}`;
 
         const { error: uploadError } = await supabase.storage
@@ -96,13 +96,13 @@ export default function SettingsPage() {
         const result = await updateUserAvatarAction({ userId: user.id, avatarUrl: publicUrl });
 
         if (result.success && result.data) {
-            setUser({ ...user, ...result.data, email: user.email });
+            setUser({ ...user, ...result.data });
             toast({
                 title: 'Avatar Updated!',
                 description: 'Your new photo has been saved.',
             });
         } else {
-            throw new Error(result.error);
+            throw new Error(result.error || 'Failed to update avatar in database.');
         }
 
     } catch (error: any) {
@@ -120,7 +120,7 @@ export default function SettingsPage() {
     }
   };
   
-  const userInitial = user.full_name ? user.full_name.charAt(0).toUpperCase() : '';
+  const userInitial = user.full_name ? user.full_name.charAt(0).toUpperCase() : (user.email ? user.email.charAt(0).toUpperCase() : '');
 
   return (
     <div className="space-y-8 max-w-3xl mx-auto">
