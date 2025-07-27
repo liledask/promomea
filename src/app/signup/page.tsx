@@ -58,9 +58,9 @@ export default function SignupPage() {
           title: 'Signup Failed',
           description: error.message,
         });
-      } else if (data.user) {
-        if (data.user.identities && data.user.identities.length === 0) {
-            // This case can happen with email provider rules (e.g. Mailinator)
+      } else {
+        // This case can happen with email provider rules (e.g. Mailinator)
+        if (data.user && data.user.identities && data.user.identities.length === 0) {
             toast({
                 variant: 'destructive',
                 title: 'Signup Error',
