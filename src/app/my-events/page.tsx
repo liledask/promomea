@@ -7,12 +7,12 @@ import { Eye, Copy } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import type { ProMoEvent } from "@/lib/types";
 import Link from "next/link";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { getCurrentUser } from "@/lib/data";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 
-const allMeaEvents: ProMoEvent[] = [
+// This data now represents events added by ORGANIZERS the affiliate has referred.
+const referredEvents: ProMoEvent[] = [
     {
         id: 'mea-annual-conference-2025',
         name: 'MEA Annual Conference 2025',
@@ -28,6 +28,13 @@ const allMeaEvents: ProMoEvent[] = [
         status: 'Completed',
     },
     {
+        id: 'design-thinking-bootcamp',
+        name: 'Design Thinking Bootcamp',
+        date: '2024-09-30',
+        commission: 15,
+        status: 'Completed',
+    },
+     {
         id: 'marketing-mastery-workshop',
         name: 'Marketing Mastery Workshop',
         date: '2025-11-20',
@@ -41,68 +48,11 @@ const allMeaEvents: ProMoEvent[] = [
         commission: 0,
         status: 'Upcoming',
     },
-    {
-        id: 'design-thinking-bootcamp',
-        name: 'Design Thinking Bootcamp',
-        date: '2024-09-30',
-        commission: 15,
-        status: 'Completed',
-    },
-    {
-        id: 'global-finance-symposium',
-        name: 'Global Finance Symposium',
-        date: '2026-01-22',
-        commission: 0,
-        status: 'Upcoming',
-    },
-    {
-        id: 'health-wellness-expo',
-        name: 'Health & Wellness Expo',
-        date: '2026-02-18',
-        commission: 0,
-        status: 'Upcoming',
-    },
-    {
-        id: 'sustainable-living-fair',
-        name: 'Sustainable Living Fair',
-        date: '2026-03-10',
-        commission: 0,
-        status: 'Upcoming',
-    },
-    {
-        id: 'ai-in-business-conference',
-        name: 'AI in Business Conference',
-        date: '2026-04-05',
-        commission: 0,
-        status: 'Upcoming',
-    },
-    {
-        id: 'culinary-arts-festival',
-        name: 'Culinary Arts Festival',
-        date: '2026-05-20',
-        commission: 0,
-        status: 'Upcoming',
-    },
 ];
 
 export default function MyEventsPage() {
-  const [events, setEvents] = useState<ProMoEvent[]>(allMeaEvents);
-  const { toast } = useToast();
-  const user = getCurrentUser();
-
-  const generateReferralLink = (event: ProMoEvent) => {
-    if (!event || !user) return "";
-    return `https://myeventadvisor.com/events/${event.id}?ref=${user.referralCode}`;
-  };
+  const [events] = useState<ProMoEvent[]>(referredEvents);
   
-  const handleCopy = (textToCopy: string) => {
-    navigator.clipboard.writeText(textToCopy);
-    toast({
-      title: "Copied to Clipboard!",
-      description: `The event referral link has been copied.`,
-    });
-  };
-
   return (
     <div className="space-y-6">
       <div>
@@ -111,9 +61,7 @@ export default function MyEventsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {events.map((event) => {
-          const referralLink = generateReferralLink(event);
-          return (
+        {events.map((event) => (
             <Card key={event.id} className="flex flex-col">
               <CardHeader>
                 <div className="flex justify-between items-start gap-2">
@@ -140,7 +88,7 @@ export default function MyEventsPage() {
               </CardFooter>
             </Card>
           )
-        })}
+        )}
       </div>
     </div>
   );
