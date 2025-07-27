@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -39,7 +40,7 @@ const experiencedUser: User = {
 
 
 const navigationItems = [
-  { href: '/', icon: Home, label: 'Dashboard' },
+  { href: '/dashboard', icon: Home, label: 'Dashboard' },
   { href: '/my-events', icon: CalendarDays, label: 'My Events' },
   { href: '/my-earnings', icon: DollarSign, label: 'My Earnings' },
   { href: '/tier-progress', icon: Trophy, label: 'Tier Progress' },

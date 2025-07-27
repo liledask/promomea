@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import { PT_Sans, Playfair_Display } from 'next/font/google';
 import { Toaster } from "@/components/ui/toaster";
@@ -28,8 +29,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${ptSans.variable} ${playfairDisplay.variable} font-body antialiased`}>
-        {children}
-        <Toaster />
+          {children}
+          <Toaster />
       </body>
     </html>
   );

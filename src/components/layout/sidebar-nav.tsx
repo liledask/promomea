@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { LucideIcon } from 'lucide-react';
@@ -26,6 +27,13 @@ interface SidebarNavProps {
 export default function SidebarNav({ primaryItems, secondaryItems }: SidebarNavProps) {
   const pathname = usePathname();
 
+  const isActive = (href: string) => {
+    if (href === '/dashboard') {
+        return pathname === href;
+    }
+    return pathname.startsWith(href) && (href !== '/dashboard' || pathname === href);
+  }
+
   return (
     <>
       <SidebarHeader>
@@ -50,7 +58,7 @@ export default function SidebarNav({ primaryItems, secondaryItems }: SidebarNavP
         <SidebarMenu>
           {primaryItems.map((item, index) => (
             <SidebarMenuItem key={index}>
-              <SidebarMenuButton asChild isActive={pathname === item.href} tooltip={{children: item.label}}>
+              <SidebarMenuButton asChild isActive={isActive(item.href)} tooltip={{children: item.label}}>
                 <Link href={item.href}>
                   <item.icon />
                   <span>{item.label}</span>
@@ -65,7 +73,7 @@ export default function SidebarNav({ primaryItems, secondaryItems }: SidebarNavP
         <SidebarMenu>
           {secondaryItems.map((item) => (
             <SidebarMenuItem key={item.label}>
-              <SidebarMenuButton asChild isActive={pathname === item.href} tooltip={{children: item.label}}>
+              <SidebarMenuButton asChild isActive={isActive(item.href)} tooltip={{children: item.label}}>
                 <Link href={item.href}>
                   <item.icon />
                   <span>{item.label}</span>
