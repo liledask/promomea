@@ -1,4 +1,5 @@
 
+
 export type TierLevel = 'PT' | 'PC' | 'DPCA' | 'TPCA' | 'PPCA';
 
 export interface User {
@@ -9,7 +10,11 @@ export interface User {
   avatar_url: string | null;
   payout_method: string | null;
   payout_detail: string | null;
-  current_tier: TierLevel | null;
+  current_tier: TierLevel;
+  events_added: number;
+  current_earnings: number;
+  lifetime_earnings: number;
+  upcoming_payout: number;
   referral_count: number;
   created_at: string;
   updated_at: string;
@@ -32,4 +37,6 @@ export interface ProMoEvent {
   date: string;
   commission: number;
   status: 'Completed' | 'Upcoming';
+  user_id: string;
+  created_at: string;
 }
