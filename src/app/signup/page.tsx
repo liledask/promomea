@@ -58,21 +58,12 @@ export default function SignupPage() {
           title: 'Signup Failed',
           description: error.message,
         });
-      } else {
-        // This case can happen with email provider rules (e.g. Mailinator)
-        if (data.user && data.user.identities && data.user.identities.length === 0) {
-            toast({
-                variant: 'destructive',
-                title: 'Signup Error',
-                description: "This email address is not allowed.",
-            });
-        } else {
-             toast({
-                title: 'Check your email!',
-                description: 'We sent you a verification link. Please check your inbox to continue.',
-            });
-            router.push('/login');
-        }
+      } else if (data.user) {
+        toast({
+            title: 'Check your email!',
+            description: 'We sent you a verification link. Please check your inbox to continue.',
+        });
+        router.push('/login');
       }
     } catch (error: any) {
       toast({

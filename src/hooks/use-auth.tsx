@@ -26,7 +26,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const { toast } = useToast();
 
   const fetchUserProfile = async (supabaseUser: SupabaseUser) => {
     try {
@@ -37,7 +36,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         .single();
 
       if (error) {
-        throw error;
+        // This can happen if the trigger hasn't fired yet.
+        // It's generally safe to ignore this during the initial load.
+        console.warn('Could not fetch user profile:', error.message);
+        return null;
       }
       return profile;
     } catch (error) {
@@ -47,23 +49,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        const appUser = await fetchUserProfile(session.user);
-        setUser(appUser);
+    const getInitialUser = async () => {
+      const { data: { user: supabaseUser } } = await supabase.auth.getUser();
+      if (supabaseUser) {
+        const profile = await fetchUserProfile(supabaseUser);
+        setUser(profile);
       }
       setLoading(false);
     };
 
-    getSession();
+    getInitialUser();
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      if (session?.user) {
-        const appUser = await fetchUserProfile(session.user);
-        setUser(appUser);
+      const supabaseUser = session?.user ?? null;
+      if (supabaseUser) {
+        const profile = await fetchUserProfile(supabaseUser);
+        setUser(profile);
       } else {
         setUser(null);
       }
