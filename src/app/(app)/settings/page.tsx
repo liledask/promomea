@@ -53,7 +53,7 @@ export default function SettingsPage() {
 
     if (result.success && result.data) {
       // Combine existing user email with updated profile data
-      setUser({ ...user, ...result.data, email: user.email });
+      setUser({ ...user, ...result.data });
       toast({
         title: "Profile Updated",
         description: "Your information has been successfully saved.",
@@ -68,56 +68,8 @@ export default function SettingsPage() {
   };
 
   const handleAvatarChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file || !user) return;
-
-    setIsUploading(true);
-    try {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${user.id}-${Date.now()}.${fileExt}`;
-        const filePath = `${user.id}/${fileName}`;
-
-        const { error: uploadError } = await supabase.storage
-            .from('assets')
-            .upload(filePath, file);
-
-        if (uploadError) {
-            throw uploadError;
-        }
-
-        const { data: { publicUrl } } = supabase.storage
-            .from('assets')
-            .getPublicUrl(filePath);
-
-        if (!publicUrl) {
-            throw new Error("Could not get public URL for the uploaded file.");
-        }
-        
-        const result = await updateUserAvatarAction({ userId: user.id, avatarUrl: publicUrl });
-
-        if (result.success && result.data) {
-            // Combine existing user email with updated profile data
-            setUser({ ...user, ...result.data, email: user.email });
-            toast({
-                title: 'Avatar Updated!',
-                description: 'Your new photo has been saved.',
-            });
-        } else {
-            throw new Error(result.error || 'Failed to update avatar in database.');
-        }
-
-    } catch (error: any) {
-        toast({
-            variant: "destructive",
-            title: "Upload Failed",
-            description: error.message || "An unexpected error occurred while uploading your photo.",
-        });
-    } finally {
-        setIsUploading(false);
-        if(fileInputRef.current) {
-            fileInputRef.current.value = "";
-        }
-    }
+    // This functionality is disabled for now.
+    return;
   };
   
   const userInitial = user.full_name ? user.full_name.charAt(0).toUpperCase() : (user.email ? user.email.charAt(0).toUpperCase() : '');
@@ -152,18 +104,18 @@ export default function SettingsPage() {
                     <input 
                         type="file" 
                         ref={fileInputRef}
-                        onChange={handleAvatarChange}
+                        // onChange={handleAvatarChange}
                         className="hidden" 
                         accept="image/png, image/jpeg"
-                        disabled={isUploading}
+                        disabled
                     />
                     <Button 
                         variant="outline" 
                         type="button" 
-                        onClick={() => fileInputRef.current?.click()}
-                        disabled={isUploading || isSaving}
+                        // onClick={() => fileInputRef.current?.click()}
+                        disabled
                     >
-                      {isUploading ? 'Uploading...' : 'Change Photo'}
+                      Change Photo
                     </Button>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
