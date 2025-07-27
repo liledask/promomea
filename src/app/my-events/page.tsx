@@ -1,4 +1,7 @@
 
+'use client';
+
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import {
   Table,
@@ -9,10 +12,12 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { CalendarDays, PlusCircle } from "lucide-react"
+import { PlusCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { AddEventDialog } from "@/components/my-events/add-event-dialog";
+import type { ProMoEvent } from "@/lib/types";
 
-const events = [
+const initialEvents: ProMoEvent[] = [
   {
     name: "MEA Annual Conference 2025",
     date: "2025-10-15",
@@ -46,14 +51,27 @@ const events = [
 ];
 
 export default function MyEventsPage() {
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [events, setEvents] = useState<ProMoEvent[]>(initialEvents);
+
+  const handleAddEvent = (newEvent: Omit<ProMoEvent, 'commission' | 'status'>) => {
+    const eventToAdd: ProMoEvent = {
+        ...newEvent,
+        commission: 0,
+        status: 'Upcoming',
+    };
+    setEvents(prevEvents => [eventToAdd, ...prevEvents]);
+  };
+
   return (
+    <>
     <div className="space-y-8">
        <div className="flex items-center justify-between">
         <div>
             <h1 className="text-3xl font-headline font-bold">My Events</h1>
             <p className="text-muted-foreground">Track and manage all the events you&apos;ve added.</p>
         </div>
-        <Button>
+        <Button onClick={() => setIsAddDialogOpen(true)}>
             <PlusCircle className="mr-2" />
             Add New Event
         </Button>
@@ -96,5 +114,11 @@ export default function MyEventsPage() {
         </CardContent>
       </Card>
     </div>
+    <AddEventDialog 
+        isOpen={isAddDialogOpen} 
+        onClose={() => setIsAddDialogOpen(false)} 
+        onAddEvent={handleAddEvent}
+    />
+    </>
   );
 }

@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import type { User } from '@/lib/types';
 import StatsCards from '@/components/dashboard/stats-cards';
 import TierProgress from '@/components/dashboard/tier-progress';
@@ -10,31 +11,19 @@ import GoalRecommendation from '@/components/dashboard/goal-recommendation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { TIER_DETAILS } from '@/lib/constants';
-
-// Dummy data for a new user
-const newUser: User = {
-  name: 'Alex Doe',
-  avatarUrl: 'https://placehold.co/100x100',
-  currentTier: 'PT',
-  currentEarnings: 75.5,
-  lifetimeEarnings: 75.5,
-  eventsAdded: 3,
-  upcomingPayout: 0,
-};
-
-// Dummy data for an experienced user
-const experiencedUser: User = {
-    name: 'Jessica Wang',
-    avatarUrl: 'https://placehold.co/100x100',
-    currentTier: 'DPCA',
-    currentEarnings: 1850.75,
-    lifetimeEarnings: 7540.25,
-    eventsAdded: 42,
-    upcomingPayout: 1250.00,
-};
+import { getCurrentUser } from '@/lib/data';
 
 export default function DashboardPage() {
-  const user = experiencedUser; // Switch between newUser and experiencedUser to see different states
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    setUser(getCurrentUser());
+  }, []);
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+  
   const currentTierDetails = TIER_DETAILS[user.currentTier];
 
   return (

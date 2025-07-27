@@ -20,6 +20,25 @@ export default function ReferralPage() {
     });
   };
 
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Join ProMo MEA!',
+          text: 'Use my referral link to sign up for the ProMo MEA affiliate program.',
+          url: referralLink,
+        });
+        toast({ title: 'Link Shared!', description: 'Your referral link has been shared.' });
+      } catch (error) {
+        toast({ variant: 'destructive', title: 'Share Failed', description: 'Could not share the link.' });
+      }
+    } else {
+        // Fallback for browsers that do not support the Web Share API
+        handleCopy(referralLink, 'Referral Link');
+        toast({ title: 'Link Copied!', description: 'Web Share not supported. Link copied to clipboard instead.' });
+    }
+  };
+
   return (
     <div className="space-y-8 max-w-2xl mx-auto">
       <div>
@@ -55,7 +74,7 @@ export default function ReferralPage() {
               <Copy className="h-5 w-5" />
               <span className="sr-only">Copy Link</span>
             </Button>
-             <Button size="icon" variant="outline">
+             <Button size="icon" variant="outline" onClick={handleShare}>
               <Share2 className="h-5 w-5" />
                <span className="sr-only">Share Link</span>
             </Button>

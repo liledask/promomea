@@ -1,4 +1,6 @@
 
+'use client'
+
 import {
   Accordion,
   AccordionContent,
@@ -11,6 +13,8 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { LifeBuoy, Mail } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
+import { useState } from "react"
 
 const faqItems = [
     {
@@ -32,6 +36,32 @@ const faqItems = [
 ]
 
 export default function SupportPage() {
+  const { toast } = useToast();
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!subject || !message) {
+      toast({
+        variant: "destructive",
+        title: "Incomplete Form",
+        description: "Please fill out both the subject and message fields.",
+      });
+      return;
+    }
+    
+    // Simulate sending message
+    toast({
+      title: "Message Sent!",
+      description: "Our support team will get back to you shortly.",
+    });
+
+    // Reset form
+    setSubject("");
+    setMessage("");
+  }
+
   return (
     <div className="space-y-12">
       <div className="text-center">
@@ -63,17 +93,30 @@ export default function SupportPage() {
                 <CardTitle className="flex items-center gap-2"><Mail /> Contact Support</CardTitle>
                 <CardDescription>Can&apos;t find an answer? Send us a message.</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-                <div className="space-y-2">
-                    <Label htmlFor="subject">Subject</Label>
-                    <Input id="subject" placeholder="e.g., Question about my payout" />
-                </div>
-                 <div className="space-y-2">
-                    <Label htmlFor="message">Message</Label>
-                    <Textarea id="message" placeholder="Please describe your issue in detail..." rows={6}/>
-                </div>
-                <Button className="w-full">Send Message</Button>
-            </CardContent>
+            <form onSubmit={handleSubmit}>
+                <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="subject">Subject</Label>
+                        <Input 
+                            id="subject" 
+                            placeholder="e.g., Question about my payout" 
+                            value={subject}
+                            onChange={(e) => setSubject(e.target.value)}
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="message">Message</Label>
+                        <Textarea 
+                            id="message" 
+                            placeholder="Please describe your issue in detail..." 
+                            rows={6}
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                        />
+                    </div>
+                    <Button type="submit" className="w-full">Send Message</Button>
+                </CardContent>
+            </form>
         </Card>
       </div>
     </div>

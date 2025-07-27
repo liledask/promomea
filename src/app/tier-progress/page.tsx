@@ -1,22 +1,13 @@
 
 'use client'
 
+import { useState, useEffect } from 'react';
 import TierProgress from "@/components/dashboard/tier-progress";
 import { TIER_DETAILS } from "@/lib/constants";
 import type { User, TierLevel } from "@/lib/types";
 import { Award, CheckCircle, Star } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-
-// Dummy data for an experienced user
-const experiencedUser: User = {
-    name: 'Jessica Wang',
-    avatarUrl: 'https://placehold.co/100x100',
-    currentTier: 'DPCA',
-    currentEarnings: 1850.75,
-    lifetimeEarnings: 7540.25,
-    eventsAdded: 42,
-    upcomingPayout: 1250.00,
-};
+import { getCurrentUser } from '@/lib/data';
 
 const tierHistory = [
     { tier: 'PT', date: '2024-01-15' },
@@ -25,7 +16,16 @@ const tierHistory = [
 ]
 
 export default function TierProgressPage() {
-    const user = experiencedUser;
+    const [user, setUser] = useState<User | null>(null);
+
+    useEffect(() => {
+        setUser(getCurrentUser());
+    }, []);
+
+    if (!user) {
+        return <div>Loading...</div>;
+    }
+    
     const tierLevels = Object.keys(TIER_DETAILS) as TierLevel[];
 
     return (
