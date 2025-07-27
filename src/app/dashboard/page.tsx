@@ -11,7 +11,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { TIER_DETAILS } from '@/lib/constants';
 import { getCurrentUser } from '@/lib/data';
-import PersonalBalance from '@/components/dashboard/personal-balance';
 
 export default function DashboardPage() {
   const [user, setUser] = useState<User | null>(null);
@@ -48,8 +47,6 @@ export default function DashboardPage() {
             {currentTierDetails.name} Tier
             </Badge>
         </div>
-
-        <PersonalBalance user={user} />
 
         <div className="grid gap-6 grid-cols-1 lg:grid-cols-5">
             <div className="lg:col-span-3 space-y-6">

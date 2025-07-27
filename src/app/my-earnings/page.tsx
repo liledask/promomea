@@ -1,4 +1,10 @@
 
+'use client'
+
+import { useState, useEffect } from 'react';
+import type { User } from '@/lib/types';
+import { getCurrentUser } from '@/lib/data';
+import PersonalBalance from '@/components/dashboard/personal-balance';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Download, DollarSign, Calendar, CreditCard } from "lucide-react"
@@ -34,12 +40,24 @@ const payouts = [
 ];
 
 export default function MyEarningsPage() {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    setUser(getCurrentUser());
+  }, []);
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-headline font-bold">My Earnings</h1>
         <p className="text-sm text-muted-foreground">Review your earnings, payouts, and financial performance.</p>
       </div>
+
+      <PersonalBalance user={user} />
       
       <EarningsChart />
 
