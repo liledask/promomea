@@ -64,7 +64,7 @@ export default function MyEarningsPage() {
             </Button>
         </CardHeader>
         <CardContent>
-          <div className="w-full overflow-x-auto">
+          <div className="overflow-x-auto">
             <Table className="min-w-[600px]">
               <TableHeader>
                 <TableRow>

@@ -56,9 +56,9 @@ export default function ReferralPage() {
         <CardContent>
           <div className="flex flex-col sm:flex-row gap-2">
             <Input readOnly value={referralCode} className="text-lg font-mono bg-muted flex-grow"/>
-            <Button size="icon" variant="outline" onClick={() => handleCopy(referralCode, 'Referral Code')} className="shrink-0">
+            <Button size="icon" variant="outline" onClick={() => handleCopy(referralCode, 'Referral Code')} className="shrink-0 w-full sm:w-auto">
               <Copy className="h-5 w-5" />
-              <span className="sr-only">Copy Code</span>
+              <span className="sr-only sm:not-sr-only sm:ml-2">Copy Code</span>
             </Button>
           </div>
         </CardContent>

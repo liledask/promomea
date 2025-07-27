@@ -66,58 +66,62 @@ export default function SupportPage() {
     <div className="space-y-12">
       <div className="text-center">
         <h1 className="text-4xl font-headline font-bold">Support Center</h1>
-        <p className="text-muted-foreground mt-2">
+        <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
           We&apos;re here to help. Find answers to your questions or get in touch with our team.
         </p>
       </div>
       
       <div className="grid lg:grid-cols-2 gap-8">
-        <Card>
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2"><LifeBuoy /> Frequently Asked Questions</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <Accordion type="single" collapsible className="w-full">
-                    {faqItems.map((item, index) => (
-                        <AccordionItem key={index} value={`item-${index}`}>
-                            <AccordionTrigger>{item.question}</AccordionTrigger>
-                            <AccordionContent>{item.answer}</AccordionContent>
-                        </AccordionItem>
-                    ))}
-                </Accordion>
-            </CardContent>
-        </Card>
-
-        <Card>
-             <CardHeader>
-                <CardTitle className="flex items-center gap-2"><Mail /> Contact Support</CardTitle>
-                <CardDescription>Can&apos;t find an answer? Send us a message.</CardDescription>
-            </CardHeader>
-            <form onSubmit={handleSubmit}>
-                <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                        <Label htmlFor="subject">Subject</Label>
-                        <Input 
-                            id="subject" 
-                            placeholder="e.g., Question about my payout" 
-                            value={subject}
-                            onChange={(e) => setSubject(e.target.value)}
-                        />
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="message">Message</Label>
-                        <Textarea 
-                            id="message" 
-                            placeholder="Please describe your issue in detail..." 
-                            rows={6}
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                        />
-                    </div>
-                    <Button type="submit" className="w-full">Send Message</Button>
+        <div className="space-y-4">
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><LifeBuoy /> Frequently Asked Questions</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <Accordion type="single" collapsible className="w-full">
+                        {faqItems.map((item, index) => (
+                            <AccordionItem key={index} value={`item-${index}`}>
+                                <AccordionTrigger>{item.question}</AccordionTrigger>
+                                <AccordionContent>{item.answer}</AccordionContent>
+                            </AccordionItem>
+                        ))}
+                    </Accordion>
                 </CardContent>
-            </form>
-        </Card>
+            </Card>
+        </div>
+
+        <div className="space-y-4">
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><Mail /> Contact Support</CardTitle>
+                    <CardDescription>Can&apos;t find an answer? Send us a message.</CardDescription>
+                </CardHeader>
+                <form onSubmit={handleSubmit}>
+                    <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="subject">Subject</Label>
+                            <Input 
+                                id="subject" 
+                                placeholder="e.g., Question about my payout" 
+                                value={subject}
+                                onChange={(e) => setSubject(e.target.value)}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="message">Message</Label>
+                            <Textarea 
+                                id="message" 
+                                placeholder="Please describe your issue in detail..." 
+                                rows={6}
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
+                            />
+                        </div>
+                        <Button type="submit" className="w-full">Send Message</Button>
+                    </CardContent>
+                </form>
+            </Card>
+        </div>
       </div>
     </div>
   );

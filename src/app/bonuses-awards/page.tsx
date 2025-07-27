@@ -48,8 +48,8 @@ export default function BonusesAwardsPage() {
             <Card key={index} className="flex flex-col">
               <CardHeader>
                   <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
-                    <div className="flex items-center gap-4">
-                        <award.icon className="w-8 h-8 text-accent" />
+                    <div className="flex items-start gap-4">
+                        <award.icon className="w-8 h-8 text-accent flex-shrink-0" />
                         <div>
                             <CardTitle>{award.title}</CardTitle>
                             <CardDescription>{award.description}</CardDescription>
@@ -58,7 +58,7 @@ export default function BonusesAwardsPage() {
                     {award.status === 'Achieved' && <Badge variant="secondary" className="bg-green-100 text-green-800 whitespace-nowrap self-start sm:self-auto">Achieved</Badge>}
                   </div>
               </CardHeader>
-              <CardContent className="flex-grow">
+              <CardContent className="flex-grow mt-auto">
                  {award.status !== 'Achieved' && (
                     <div>
                         <div className="flex justify-between items-center mb-1">

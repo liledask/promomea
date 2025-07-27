@@ -128,14 +128,14 @@ export default function MyEventsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="w-full overflow-x-auto">
+          <div className="overflow-x-auto">
             <Table className="min-w-[800px]">
               <TableHeader>
                 <TableRow>
                   <TableHead className="whitespace-nowrap">Event Name</TableHead>
                   <TableHead className="whitespace-nowrap">Date</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead className="whitespace-nowrap">Affiliate Link</TableHead>
+                  <TableHead className="whitespace-nowrap min-w-[300px]">Affiliate Link</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -153,7 +153,7 @@ export default function MyEventsPage() {
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
-                            <Input readOnly value={referralLink} className="bg-muted text-xs flex-1 min-w-[200px]"/>
+                            <Input readOnly value={referralLink} className="bg-muted text-xs flex-1"/>
                             <Button size="icon" variant="ghost" onClick={() => handleCopy(referralLink)}>
                                 <Copy className="h-4 w-4" />
                                 <span className="sr-only">Copy Link</span>

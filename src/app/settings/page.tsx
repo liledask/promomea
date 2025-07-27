@@ -28,7 +28,7 @@ export default function SettingsPage() {
                 </Avatar>
                 <Button variant="outline">Change Photo</Button>
             </div>
-            <div className="grid sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                     <Label htmlFor="name">Full Name</Label>
                     <Input id="name" defaultValue="Jessica Wang" />
@@ -50,15 +50,15 @@ export default function SettingsPage() {
           <CardDescription>Choose how you want to be notified.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-            <div className="flex items-center justify-between rounded-lg border p-4">
-                <div>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-lg border p-4 gap-4">
+                <div className="flex-grow">
                     <h4 className="font-medium">Email Notifications</h4>
                     <p className="text-sm text-muted-foreground">Receive updates on earnings, payouts, and tier progress.</p>
                 </div>
                 <Switch defaultChecked/>
             </div>
-             <div className="flex items-center justify-between rounded-lg border p-4">
-                <div>
+             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-lg border p-4 gap-4">
+                <div className="flex-grow">
                     <h4 className="font-medium">Promotional Updates</h4>
                     <p className="text-sm text-muted-foreground">Get news about new bonuses and company announcements.</p>
                 </div>
