@@ -52,8 +52,8 @@ export default function ReferralPage() {
           <CardDescription>Share this code with potential new affiliates. They will be prompted to enter it during sign-up.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-2">
-            <Input readOnly value={referralCode} className="text-lg font-mono bg-muted"/>
+          <div className="flex flex-wrap gap-2">
+            <Input readOnly value={referralCode} className="text-lg font-mono bg-muted flex-grow"/>
             <Button size="icon" variant="outline" onClick={() => handleCopy(referralCode, 'Referral Code')}>
               <Copy className="h-5 w-5" />
               <span className="sr-only">Copy Code</span>
@@ -68,8 +68,8 @@ export default function ReferralPage() {
           <CardDescription>Share this link directly. Anyone who signs up through it will be automatically attributed to you.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-2">
-            <Input readOnly value={referralLink} className="bg-muted"/>
+          <div className="flex flex-wrap gap-2">
+            <Input readOnly value={referralLink} className="bg-muted flex-grow"/>
              <Button size="icon" variant="outline" onClick={() => handleCopy(referralLink, 'Referral Link')}>
               <Copy className="h-5 w-5" />
               <span className="sr-only">Copy Link</span>

@@ -55,7 +55,7 @@ export default function BonusesAwardsPage() {
                             <CardDescription>{award.description}</CardDescription>
                         </div>
                     </div>
-                    {award.status === 'Achieved' && <Badge variant="secondary" className="bg-green-100 text-green-800">Achieved</Badge>}
+                    {award.status === 'Achieved' && <Badge variant="secondary" className="bg-green-100 text-green-800 whitespace-nowrap">Achieved</Badge>}
                   </div>
               </CardHeader>
               <CardContent className="flex-grow">
