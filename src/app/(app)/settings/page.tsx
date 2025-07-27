@@ -17,7 +17,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 
 export default function SettingsPage() {
-  const { user, loading } = useAuth();
+  const { user, loading, refreshUser } = useAuth();
   const { toast } = useToast();
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -57,7 +57,7 @@ export default function SettingsPage() {
         title: "Profile Updated",
         description: "Your information has been successfully saved.",
       });
-      router.refresh(); 
+      await refreshUser();
     } else {
       toast({
         variant: "destructive",
@@ -100,7 +100,7 @@ export default function SettingsPage() {
                 title: 'Avatar Updated!',
                 description: 'Your new photo has been saved.',
             });
-            router.refresh();
+            await refreshUser();
         } else {
             throw new Error(result.error);
         }

@@ -7,6 +7,7 @@ import {
   useState,
   useEffect,
   ReactNode,
+  useCallback,
 } from 'react';
 import type { AuthChangeEvent, Session, User as SupabaseUser } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabaseClient';
@@ -17,6 +18,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   signOut: () => Promise<void>;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -26,39 +28,39 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
+  const fetchUserProfile = useCallback(async (supabaseUser: SupabaseUser | null) => {
+    if (!supabaseUser) {
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('promo_profile')
+        .select('*')
+        .eq('id', supabaseUser.id)
+        .single();
+
+      if (error) {
+        console.error('Error fetching user profile:', error);
+        setUser(null);
+      } else if (data) {
+          setUser({
+          ...data,
+          email: supabaseUser.email || '',
+        });
+      }
+    } catch (e) {
+      console.error('An unexpected error occurred while fetching profile:', e);
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+  
   useEffect(() => {
-    const fetchUserProfile = async (supabaseUser: SupabaseUser | null) => {
-      if (!supabaseUser) {
-        setUser(null);
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const { data, error } = await supabase
-          .from('promo_profile')
-          .select('*')
-          .eq('id', supabaseUser.id)
-          .single();
-
-        if (error) {
-          console.error('Error fetching user profile:', error);
-          setUser(null);
-        } else if (data) {
-           setUser({
-            ...data,
-            email: supabaseUser.email || '',
-          });
-        }
-      } catch (e) {
-        console.error('An unexpected error occurred while fetching profile:', e);
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    // Immediately fetch the current session to set the initial state.
     const getInitialSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       await fetchUserProfile(session?.user ?? null);
@@ -75,16 +77,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => {
       subscription?.unsubscribe();
     };
-  }, []);
+  }, [fetchUserProfile]);
 
   const signOut = async () => {
     await supabase.auth.signOut();
-    setUser(null); // Clear user state immediately
+    setUser(null);
     router.push('/login');
   };
 
+  const refreshUser = useCallback(async () => {
+    const { data: { user: supabaseUser } } = await supabase.auth.getUser();
+    await fetchUserProfile(supabaseUser);
+  }, [fetchUserProfile]);
+
   return (
-    <AuthContext.Provider value={{ user, loading, signOut }}>
+    <AuthContext.Provider value={{ user, loading, signOut, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );
