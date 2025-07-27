@@ -12,12 +12,12 @@ import {
   Settings,
   HelpCircle,
 } from 'lucide-react';
-import type { User } from '@/lib/types';
 import { SidebarProvider, Sidebar, SidebarInset } from '@/components/ui/sidebar';
 import Header from '@/components/layout/header';
 import SidebarNav from '@/components/layout/sidebar-nav';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { Loader2 } from 'lucide-react';
 
 const navigationItems = [
   { href: '/dashboard', icon: Home, label: 'Dashboard' },
@@ -43,10 +43,8 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
     }
   }, [user, loading, router]);
 
-  if (loading || !user) {
-    return <div>Loading...</div>;
-  }
-    
+  // Show the main layout shell immediately, even while loading.
+  // The loading spinner will be shown inside the content area.
   return (
     <SidebarProvider>
       <Sidebar>
@@ -57,14 +55,21 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
       </Sidebar>
       <SidebarInset>
         <div className="flex min-h-screen flex-col">
-          <Header user={user} />
-          <main className="flex-1 p-4 sm:p-6">{children}</main>
+          {user && <Header user={user} />}
+          <main className="flex-1 p-4 sm:p-6">
+            {loading || !user ? (
+                 <div className="flex h-[calc(100vh-4rem)] w-full items-center justify-center">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                </div>
+            ) : (
+                children
+            )}
+          </main>
         </div>
       </SidebarInset>
     </SidebarProvider>
   );
 }
-
 
 export default function AppLayout({
     children,

@@ -11,7 +11,6 @@ import {
   SidebarFooter,
   SidebarSeparator,
 } from '@/components/ui/sidebar';
-import { cn } from '@/lib/utils';
 
 interface NavItem {
   href: string;
@@ -28,10 +27,12 @@ export default function SidebarNav({ primaryItems, secondaryItems }: SidebarNavP
   const pathname = usePathname();
 
   const isActive = (href: string) => {
+    // Exact match for dashboard
     if (href === '/dashboard') {
-        return pathname === href;
+        return pathname === href || pathname === '/';
     }
-    return pathname.startsWith(href) && (href !== '/dashboard' || pathname === href);
+    // Starts with for other pages
+    return pathname.startsWith(href);
   }
 
   return (
