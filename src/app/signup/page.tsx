@@ -29,16 +29,25 @@ export default function SignupPage() {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!name) {
+      toast({
+        variant: 'destructive',
+        title: 'Signup Failed',
+        description: 'Please enter your full name.',
+      });
+      return;
+    }
     setLoading(true);
 
     try {
+      const avatarChar = name ? name.charAt(0) : 'A';
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
             name: name,
-            avatar_url: `https://placehold.co/100x100.png?text=${name.charAt(0)}`,
+            avatar_url: `https://placehold.co/100x100.png?text=${avatarChar}`,
           },
         },
       });
