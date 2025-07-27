@@ -12,7 +12,6 @@ import { supabase } from '@/lib/supabaseClient';
 import type { User } from '@/lib/types';
 import { Session, User as SupabaseUser } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
-import { useToast } from '@/hooks/use-toast';
 
 interface AuthContextType {
   user: User | null;
@@ -27,51 +26,48 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  const fetchUserProfile = async (supabaseUser: SupabaseUser) => {
-    try {
-      const { data: profile, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', supabaseUser.id)
-        .single();
-
-      if (error) {
-        // This can happen if the trigger hasn't fired yet.
-        // It's generally safe to ignore this during the initial load.
-        console.warn('Could not fetch user profile:', error.message);
-        return null;
-      }
-      return profile;
-    } catch (error) {
-      console.error('Error fetching user profile:', (error as Error).message);
-      return null;
-    }
-  };
-
   useEffect(() => {
-    const getInitialUser = async () => {
-      const { data: { user: supabaseUser } } = await supabase.auth.getUser();
-      if (supabaseUser) {
-        const profile = await fetchUserProfile(supabaseUser);
-        setUser(profile);
-      }
-      setLoading(false);
-    };
-
-    getInitialUser();
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      const supabaseUser = session?.user ?? null;
-      if (supabaseUser) {
-        const profile = await fetchUserProfile(supabaseUser);
-        setUser(profile);
-      } else {
+    const fetchUserProfile = async (supabaseUser: SupabaseUser | null) => {
+      if (!supabaseUser) {
         setUser(null);
+        setLoading(false);
+        return;
       }
-      setLoading(false);
+
+      try {
+        // Wait a moment for the trigger to potentially complete
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        const { data: profile, error } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', supabaseUser.id)
+          .single();
+
+        if (error) {
+          console.warn('Could not fetch user profile:', error.message);
+          setUser(null); // Set user to null if profile doesn't exist
+        } else {
+          setUser(profile);
+        }
+      } catch (error) {
+        console.error('Error fetching user profile:', (error as Error).message);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+        fetchUserProfile(session?.user ?? null);
     });
+
+    // Fetch initial user
+    const getInitialUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      fetchUserProfile(session?.user ?? null);
+    }
+    getInitialUser();
 
     return () => {
       subscription?.unsubscribe();

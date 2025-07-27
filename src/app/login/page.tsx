@@ -43,7 +43,6 @@ export default function LoginPage() {
         });
       } else {
         router.push('/dashboard');
-        router.refresh(); // Refresh to trigger auth state change
       }
     } catch (error: any) {
       toast({
