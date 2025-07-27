@@ -56,7 +56,7 @@ export default function TierProgress({ user }: TierProgressProps) {
                     <div className={cn('w-8 h-8 rounded-full flex items-center justify-center', tier.color)}>
                       <Award className="w-5 h-5 text-white" />
                     </div>
-                    <h3 className="text-lg font-bold font-headline">{tier.name} Tier</h3>
+                    <h3 className="text-lg font-bold font-headline">{tier.name}</h3>
                   </div>
                   {isUnlocked ? (
                     <span className="text-xs font-bold text-green-600 flex items-center gap-1">
@@ -64,7 +64,7 @@ export default function TierProgress({ user }: TierProgressProps) {
                     </span>
                   ) : (
                     <span className="text-xs font-bold text-muted-foreground">
-                      {tier.goalEvents} Events & ${tier.goalEarnings} Earnings
+                      {tier.goalEvents} Total Events
                     </span>
                   )}
                 </div>

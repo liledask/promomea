@@ -48,11 +48,11 @@ const goalRecommendationPrompt = ai.definePrompt({
   Ensure that the recommended tier is higher than the current tier.
   Provide ambitious but attainable goals.
   Consider that:
-    - PT tier is the starting tier
-    - PC tier requires at least 100 in earnings and adding at least 5 events
-    - DPCA tier requires at least 500 in earnings and adding at least 20 events
-    - TPCA tier requires at least 2000 in earnings and adding at least 50 events
-    - PPCA tier requires at least 10000 in earnings and adding at least 100 events`,
+    - PT (ProMo Trainee) requires 5 total events to advance.
+    - PC (ProMo Certified) requires 15 total events to advance.
+    - DPCA (Double ProMo Certified) requires 40 total events to advance.
+    - TPCA (Triple ProMo Certified) requires 90 total events to advance.
+    - PPCA (Presidential ProMo Certified) is the highest tier.`,
 });
 
 const goalRecommendationFlow = ai.defineFlow(
