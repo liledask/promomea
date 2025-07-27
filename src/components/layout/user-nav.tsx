@@ -1,3 +1,4 @@
+
 "use client"
 
 import {
@@ -25,8 +26,8 @@ export function UserNav({ user }: UserNavProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-          <Avatar className="h-10 w-10">
+        <Button variant="ghost" className="relative h-9 w-9 sm:h-10 sm:w-10 rounded-full">
+          <Avatar className="h-9 w-9 sm:h-10 sm:w-10">
             <AvatarImage src={user.avatarUrl} alt={user.name} data-ai-hint="profile picture" />
             <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
           </Avatar>
