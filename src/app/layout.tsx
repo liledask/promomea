@@ -1,5 +1,5 @@
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { PT_Sans, Playfair_Display } from 'next/font/google';
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
@@ -19,7 +19,11 @@ const playfairDisplay = Playfair_Display({
 export const metadata: Metadata = {
   title: "ProMo MEA",
   description: "Affiliate dashboard for ProMo MEA",
-  viewport: "width=device-width, initial-scale=1.0",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1.0,
 };
 
 export default function RootLayout({
