@@ -17,6 +17,7 @@ import { SidebarProvider, Sidebar, SidebarInset } from '@/components/ui/sidebar'
 import Header from '@/components/layout/header';
 import SidebarNav from '@/components/layout/sidebar-nav';
 import { getCurrentUser } from '@/lib/data';
+import BottomNav from '@/components/layout/bottom-nav';
 
 const navigationItems = [
   { href: '/dashboard', icon: Home, label: 'Dashboard' },
@@ -24,7 +25,7 @@ const navigationItems = [
   { href: '/my-earnings', icon: DollarSign, label: 'My Earnings' },
   { href: '/tier-progress', icon: Trophy, label: 'Tier Progress' },
   { href: '/bonuses-awards', icon: Star, label: 'Bonuses & Awards' },
-  { href: '/referral', icon: Link2, label: 'Referral Code & Link' },
+  { href: '/referral', icon: Link2, label: 'Referral' },
 ];
 
 const secondaryNavigationItems = [
@@ -59,9 +60,10 @@ export default function AppLayout({
     <SidebarInset>
       <div className="flex flex-col min-h-screen">
         <Header user={user} />
-        <main className="flex-1 p-4 md:p-8">
+        <main className="flex-1 p-4 md:p-8 pb-20 md:pb-8">
             {children}
         </main>
+        <BottomNav items={navigationItems} />
       </div>
     </SidebarInset>
   </SidebarProvider>

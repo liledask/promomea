@@ -128,50 +128,52 @@ export default function MyEventsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Event Name</TableHead>
-                <TableHead>Event Date</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Affiliate Link</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {events.map((event) => {
-                const referralLink = generateReferralLink(event);
-                return (
-                  <TableRow key={event.id}>
-                    <TableCell className="font-medium">{event.name}</TableCell>
-                    <TableCell>{new Date(event.date).toLocaleDateString()}</TableCell>
-                    <TableCell>
-                      <Badge variant={event.status === 'Completed' ? 'secondary' : 'outline'}>
-                        {event.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2 max-w-xs">
-                          <Input readOnly value={referralLink} className="bg-muted text-xs"/>
-                          <Button size="icon" variant="ghost" onClick={() => handleCopy(referralLink)}>
-                              <Copy className="h-4 w-4" />
-                              <span className="sr-only">Copy Link</span>
-                          </Button>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button variant="ghost" size="icon" asChild>
-                          <Link href={`https://myeventadvisor.com/events/${event.id}`} target="_blank" title="View on MEA">
-                            <Eye className="h-4 w-4" />
-                            <span className="sr-only">View on MEA</span>
-                          </Link>
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                )
-              })}
-            </TableBody>
-          </Table>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="min-w-[200px]">Event Name</TableHead>
+                  <TableHead>Event Date</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="min-w-[300px]">Affiliate Link</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {events.map((event) => {
+                  const referralLink = generateReferralLink(event);
+                  return (
+                    <TableRow key={event.id}>
+                      <TableCell className="font-medium">{event.name}</TableCell>
+                      <TableCell>{new Date(event.date).toLocaleDateString()}</TableCell>
+                      <TableCell>
+                        <Badge variant={event.status === 'Completed' ? 'secondary' : 'outline'}>
+                          {event.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                            <Input readOnly value={referralLink} className="bg-muted text-xs"/>
+                            <Button size="icon" variant="ghost" onClick={() => handleCopy(referralLink)}>
+                                <Copy className="h-4 w-4" />
+                                <span className="sr-only">Copy Link</span>
+                            </Button>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button variant="ghost" size="icon" asChild>
+                            <Link href={`https://myeventadvisor.com/events/${event.id}`} target="_blank" title="View on MEA">
+                              <Eye className="h-4 w-4" />
+                              <span className="sr-only">View on MEA</span>
+                            </Link>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
     </div>
