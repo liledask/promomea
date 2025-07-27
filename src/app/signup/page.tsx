@@ -32,20 +32,36 @@ export default function SignupPage() {
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signUp({
+      // Step 1: Sign up the user in Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
-        options: {
-          data: {
+      });
+
+      if (authError) {
+        throw authError;
+      }
+      
+      if (!authData.user) {
+        throw new Error("Signup successful, but no user data returned. Please try again.");
+      }
+
+      // Step 2: Manually create a profile in the public.promo_profile table
+      const { error: profileError } = await supabase
+        .from('promo_profile')
+        .insert({
+            id: authData.user.id,
             full_name: fullName,
             // Provide a default placeholder avatar
             avatar_url: `https://placehold.co/100x100.png?text=${fullName.charAt(0) || 'U'}`,
-          }
-        }
-      });
+        });
 
-      if (error) {
-        throw error;
+      if (profileError) {
+        // If profile creation fails, we should ideally handle this,
+        // perhaps by deleting the auth user or flagging for admin attention.
+        // For now, we'll log the error and notify the user.
+        console.error("Error creating user profile:", profileError);
+        throw new Error(`Account created, but profile setup failed. Please contact support. Error: ${profileError.message}`);
       }
       
       // The onAuthStateChange listener in useAuth will handle the redirect.

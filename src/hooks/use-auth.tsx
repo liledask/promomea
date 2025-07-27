@@ -48,27 +48,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           .eq('id', supabaseUser.id)
           .single();
 
-        if (error) {
-          // This can happen if the user exists in auth but the trigger failed.
+        if (error || !profile) {
+          // This can happen if the profile doesn't exist for some reason.
           // Log the error and sign out to prevent the app from being in a broken state.
-          console.error('Error fetching profile for user. Signing out.', error);
+          console.error('Error fetching profile for user, or profile not found. Signing out.', error);
           await supabase.auth.signOut();
           setUser(null);
           return;
         }
 
-        if (profile) {
-          const fullUser: User = {
+        const fullUser: User = {
             ...profile,
             email: supabaseUser.email || '',
-          };
-          setUser(fullUser);
-        } else {
-          // This case should ideally not be reached if the trigger is working correctly.
-          console.warn('Profile not found for a logged-in user. Signing out.');
-          await supabase.auth.signOut();
-          setUser(null);
-        }
+        };
+        setUser(fullUser);
+
       } catch (e) {
         console.error('An unexpected error occurred while fetching profile:', e);
         setUser(null);

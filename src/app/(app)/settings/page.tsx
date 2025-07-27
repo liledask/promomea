@@ -48,11 +48,12 @@ export default function SettingsPage() {
     formData.append('userId', user.id);
 
     const result = await updateUserProfileAction(formData);
-
+    
     setIsSaving(false);
 
     if (result.success && result.data) {
-      setUser({ ...user, ...result.data });
+      // Combine existing user email with updated profile data
+      setUser({ ...user, ...result.data, email: user.email });
       toast({
         title: "Profile Updated",
         description: "Your information has been successfully saved.",
@@ -95,7 +96,8 @@ export default function SettingsPage() {
         const result = await updateUserAvatarAction({ userId: user.id, avatarUrl: publicUrl });
 
         if (result.success && result.data) {
-            setUser({ ...user, ...result.data });
+            // Combine existing user email with updated profile data
+            setUser({ ...user, ...result.data, email: user.email });
             toast({
                 title: 'Avatar Updated!',
                 description: 'Your new photo has been saved.',
