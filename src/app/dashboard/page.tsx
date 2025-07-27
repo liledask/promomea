@@ -3,7 +3,6 @@
 
 import { useState, useEffect } from 'react';
 import type { User } from '@/lib/types';
-import StatsCards from '@/components/dashboard/stats-cards';
 import TierProgress from '@/components/dashboard/tier-progress';
 import ActivityFeed from '@/components/dashboard/activity-feed';
 import ImpactTracker from '@/components/dashboard/impact-tracker';
@@ -12,6 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { TIER_DETAILS } from '@/lib/constants';
 import { getCurrentUser } from '@/lib/data';
+import PersonalBalance from '@/components/dashboard/personal-balance';
 
 export default function DashboardPage() {
   const [user, setUser] = useState<User | null>(null);
@@ -49,7 +49,7 @@ export default function DashboardPage() {
             </Badge>
         </div>
 
-        <StatsCards user={user} />
+        <PersonalBalance user={user} />
 
         <div className="grid gap-6 grid-cols-1 lg:grid-cols-5">
             <div className="lg:col-span-3 space-y-6">
