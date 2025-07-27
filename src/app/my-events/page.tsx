@@ -132,10 +132,10 @@ export default function MyEventsPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="min-w-[200px]">Event Name</TableHead>
-                  <TableHead>Event Date</TableHead>
+                  <TableHead>Event Name</TableHead>
+                  <TableHead>Date</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead className="min-w-[300px]">Affiliate Link</TableHead>
+                  <TableHead>Affiliate Link</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -144,15 +144,15 @@ export default function MyEventsPage() {
                   const referralLink = generateReferralLink(event);
                   return (
                     <TableRow key={event.id}>
-                      <TableCell className="font-medium">{event.name}</TableCell>
-                      <TableCell>{new Date(event.date).toLocaleDateString()}</TableCell>
+                      <TableCell className="font-medium whitespace-nowrap">{event.name}</TableCell>
+                      <TableCell className="whitespace-nowrap">{new Date(event.date).toLocaleDateString()}</TableCell>
                       <TableCell>
                         <Badge variant={event.status === 'Completed' ? 'secondary' : 'outline'}>
                           {event.status}
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 w-full max-w-xs">
                             <Input readOnly value={referralLink} className="bg-muted text-xs"/>
                             <Button size="icon" variant="ghost" onClick={() => handleCopy(referralLink)}>
                                 <Copy className="h-4 w-4" />

@@ -77,12 +77,12 @@ export default function MyEarningsPage() {
               <TableBody>
                 {payouts.map((payout) => (
                   <TableRow key={payout.date}>
-                    <TableCell>{new Date(payout.date).toLocaleDateString()}</TableCell>
-                    <TableCell>{payout.method}</TableCell>
+                    <TableCell className="whitespace-nowrap">{new Date(payout.date).toLocaleDateString()}</TableCell>
+                    <TableCell className="whitespace-nowrap">{payout.method}</TableCell>
                     <TableCell>
                       <Badge variant="secondary" className="bg-green-100 text-green-800">{payout.status}</Badge>
                     </TableCell>
-                    <TableCell className="text-right font-medium">${payout.amount.toFixed(2)}</TableCell>
+                    <TableCell className="text-right font-medium whitespace-nowrap">${payout.amount.toFixed(2)}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
