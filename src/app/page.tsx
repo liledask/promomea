@@ -47,17 +47,17 @@ const experiencedUser: User = {
 
 
 const navigationItems = [
-  { href: '#', icon: Home, label: 'Dashboard' },
-  { href: '#', icon: CalendarDays, label: 'My Events' },
-  { href: '#', icon: DollarSign, label: 'My Earnings' },
-  { href: '#', icon: Trophy, label: 'Tier Progress' },
-  { href: '#', icon: Star, label: 'Bonuses & Awards' },
-  { href: '#', icon: Link2, label: 'Referral Code & Link' },
+  { href: '/', icon: Home, label: 'Dashboard' },
+  { href: '/my-events', icon: CalendarDays, label: 'My Events' },
+  { href: '/my-earnings', icon: DollarSign, label: 'My Earnings' },
+  { href: '/tier-progress', icon: Trophy, label: 'Tier Progress' },
+  { href: '/bonuses-awards', icon: Star, label: 'Bonuses & Awards' },
+  { href: '/referral', icon: Link2, label: 'Referral Code & Link' },
 ];
 
 const secondaryNavigationItems = [
-  { href: '#', icon: Settings, label: 'Settings' },
-  { href: '#', icon: HelpCircle, label: 'Support' },
+  { href: '/settings', icon: Settings, label: 'Settings' },
+  { href: '/support', icon: HelpCircle, label: 'Support' },
 ];
 
 export default function DashboardPage() {

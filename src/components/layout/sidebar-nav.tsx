@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import type { LucideIcon } from 'lucide-react';
 import {
   SidebarHeader,
@@ -9,6 +10,7 @@ import {
   SidebarFooter,
   SidebarSeparator,
 } from '@/components/ui/sidebar';
+import { cn } from '@/lib/utils';
 
 interface NavItem {
   href: string;
@@ -22,6 +24,8 @@ interface SidebarNavProps {
 }
 
 export default function SidebarNav({ primaryItems, secondaryItems }: SidebarNavProps) {
+  const pathname = usePathname();
+
   return (
     <>
       <SidebarHeader>
@@ -46,7 +50,7 @@ export default function SidebarNav({ primaryItems, secondaryItems }: SidebarNavP
         <SidebarMenu>
           {primaryItems.map((item, index) => (
             <SidebarMenuItem key={index}>
-              <SidebarMenuButton asChild isActive={index === 0} tooltip={{children: item.label}}>
+              <SidebarMenuButton asChild isActive={pathname === item.href} tooltip={{children: item.label}}>
                 <Link href={item.href}>
                   <item.icon />
                   <span>{item.label}</span>
@@ -61,7 +65,7 @@ export default function SidebarNav({ primaryItems, secondaryItems }: SidebarNavP
         <SidebarMenu>
           {secondaryItems.map((item) => (
             <SidebarMenuItem key={item.label}>
-              <SidebarMenuButton asChild tooltip={{children: item.label}}>
+              <SidebarMenuButton asChild isActive={pathname === item.href} tooltip={{children: item.label}}>
                 <Link href={item.href}>
                   <item.icon />
                   <span>{item.label}</span>
