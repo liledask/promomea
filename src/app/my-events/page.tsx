@@ -18,6 +18,7 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { getCurrentUser } from "@/lib/data";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const allMeaEvents: ProMoEvent[] = [
     {
@@ -111,70 +112,68 @@ export default function MyEventsPage() {
   };
 
   return (
-    <>
-      <div className="space-y-8">
-        <div className="flex items-center justify-between">
-          <div>
-              <h1 className="text-3xl font-headline font-bold">Browse MEA Events</h1>
-              <p className="text-muted-foreground">Generate and share referral links for any event on the MEA platform.</p>
-          </div>
+    <div className="space-y-8">
+      <div className="flex items-center justify-between">
+        <div>
+            <h1 className="text-3xl font-headline font-bold">Browse MEA Events</h1>
+            <p className="text-muted-foreground">Generate and share referral links for any event on the MEA platform.</p>
         </div>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Event Catalog</CardTitle>
-            <CardDescription>
-              A list of all events on MEA. Copy your unique referral link to share it.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Event Name</TableHead>
-                  <TableHead>Event Date</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Affiliate Link</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {events.map((event) => {
-                  const referralLink = generateReferralLink(event);
-                  return (
-                    <TableRow key={event.id}>
-                      <TableCell className="font-medium">{event.name}</TableCell>
-                      <TableCell>{new Date(event.date).toLocaleDateString()}</TableCell>
-                      <TableCell>
-                        <Badge variant={event.status === 'Completed' ? 'secondary' : 'outline'}>
-                          {event.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2 max-w-xs">
-                            <Input readOnly value={referralLink} className="bg-muted text-xs"/>
-                            <Button size="icon" variant="ghost" onClick={() => handleCopy(referralLink)}>
-                                <Copy className="h-4 w-4" />
-                                <span className="sr-only">Copy Link</span>
-                            </Button>
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Button variant="ghost" size="icon" asChild>
-                            <Link href={`https://myeventadvisor.com/events/${event.id}`} target="_blank" title="View on MEA">
-                              <Eye className="h-4 w-4" />
-                              <span className="sr-only">View on MEA</span>
-                            </Link>
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  )
-                })}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
       </div>
-    </>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Event Catalog</CardTitle>
+          <CardDescription>
+            A list of all events on MEA. Copy your unique referral link to share it.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Event Name</TableHead>
+                <TableHead>Event Date</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Affiliate Link</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {events.map((event) => {
+                const referralLink = generateReferralLink(event);
+                return (
+                  <TableRow key={event.id}>
+                    <TableCell className="font-medium">{event.name}</TableCell>
+                    <TableCell>{new Date(event.date).toLocaleDateString()}</TableCell>
+                    <TableCell>
+                      <Badge variant={event.status === 'Completed' ? 'secondary' : 'outline'}>
+                        {event.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2 max-w-xs">
+                          <Input readOnly value={referralLink} className="bg-muted text-xs"/>
+                          <Button size="icon" variant="ghost" onClick={() => handleCopy(referralLink)}>
+                              <Copy className="h-4 w-4" />
+                              <span className="sr-only">Copy Link</span>
+                          </Button>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button variant="ghost" size="icon" asChild>
+                          <Link href={`https://myeventadvisor.com/events/${event.id}`} target="_blank" title="View on MEA">
+                            <Eye className="h-4 w-4" />
+                            <span className="sr-only">View on MEA</span>
+                          </Link>
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                )
+              })}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
