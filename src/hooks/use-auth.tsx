@@ -29,9 +29,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const fetchUserProfile = async (supabaseUser: SupabaseUser) => {
         try {
-            // There can be a delay for the trigger to run, this small delay helps prevent race conditions.
-            await new Promise(resolve => setTimeout(resolve, 500));
-
             const { data: profile, error } = await supabase
             .from('promo_profile')
             .select('*')
@@ -40,8 +37,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
             if (error) {
                 console.error('Error fetching user profile:', error.message);
-                // Don't sign out, the profile might not be ready yet on first login.
-                // The user will be in a loading state until it's available.
+                // Don't sign out, let the user exist in a loading state until profile is ready.
             } else if (profile) {
                  setUser({
                     id: profile.id,
@@ -50,10 +46,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     email: supabaseUser.email || '',
                     current_tier: profile.current_tier || 'PT',
                     promo_id: profile.promo_id,
-                    current_earnings: profile.current_earnings || 0,
-                    lifetime_earnings: profile.lifetime_earnings || 0,
+                    current_earnings: 0, // Placeholder, as it's not in the provided schema
+                    lifetime_earnings: 0, // Placeholder
                     events_added: profile.referral_count || 0,
-                    upcoming_payout: profile.upcoming_payout || 0,
+                    upcoming_payout: 0, // Placeholder
                 });
             }
         } catch (error) {
@@ -71,7 +67,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         } else {
             setUser(null);
             setLoading(false);
-            router.push('/login');
+            if (window.location.pathname !== '/login' && window.location.pathname !== '/signup' && window.location.pathname !== '/') {
+              router.push('/login');
+            }
         }
     });
 
