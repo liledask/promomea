@@ -12,9 +12,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { PlusCircle, Eye } from "lucide-react"
+import { Eye } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { AddEventDialog } from "@/components/my-events/add-event-dialog";
 import type { ProMoEvent } from "@/lib/types";
 import Link from "next/link";
 
@@ -57,38 +56,22 @@ const initialEvents: ProMoEvent[] = [
 ];
 
 export default function MyEventsPage() {
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [events, setEvents] = useState<ProMoEvent[]>(initialEvents);
 
-  const handleAddEvent = (newEvent: Omit<ProMoEvent, 'commission' | 'status' | 'id'>) => {
-    const eventToAdd: ProMoEvent = {
-        ...newEvent,
-        id: newEvent.name.toLowerCase().replace(/\s+/g, '-'),
-        commission: 0,
-        status: 'Upcoming',
-    };
-    setEvents(prevEvents => [eventToAdd, ...prevEvents]);
-  };
-
   return (
-    <>
     <div className="space-y-8">
        <div className="flex items-center justify-between">
         <div>
             <h1 className="text-3xl font-headline font-bold">My Events</h1>
-            <p className="text-muted-foreground">Track and manage all the events you&apos;ve added.</p>
+            <p className="text-muted-foreground">Track all the events you've successfully referred to MEA.</p>
         </div>
-        <Button onClick={() => setIsAddDialogOpen(true)}>
-            <PlusCircle className="mr-2" />
-            Add New Event
-        </Button>
        </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Event History</CardTitle>
+          <CardTitle>Referred Event History</CardTitle>
           <CardDescription>
-            A list of all events you have successfully referred to the platform.
+            A list of all events that have been added to MEA using your referral code.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -130,11 +113,5 @@ export default function MyEventsPage() {
         </CardContent>
       </Card>
     </div>
-    <AddEventDialog 
-        isOpen={isAddDialogOpen} 
-        onClose={() => setIsAddDialogOpen(false)} 
-        onAddEvent={handleAddEvent}
-    />
-    </>
   );
 }
