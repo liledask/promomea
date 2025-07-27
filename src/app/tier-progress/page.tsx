@@ -41,20 +41,29 @@ export default function TierProgressPage() {
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2"><Award /> Tier Benefits</CardTitle>
-                        <CardDescription>A summary of the benefits for each tier.</CardDescription>
+                        <CardDescription>A detailed summary of the requirements and benefits for each tier.</CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-4">
+                    <CardContent className="space-y-6">
                         {tierLevels.map(level => {
                             const tier = TIER_DETAILS[level];
                             return (
                                 <div key={level}>
-                                    <h3 className="font-bold text-primary">{tier.name} ({tier.commission}%)</h3>
-                                    <ul className="list-disc list-inside text-sm text-muted-foreground pl-2">
+                                    <h3 className="font-bold text-lg text-primary">{tier.name} ({tier.commission}%)</h3>
+                                    <p className="text-sm text-muted-foreground mb-3">{tier.description}</p>
+                                    
+                                    <h4 className="font-semibold text-sm mb-2">Benefits:</h4>
+                                    <ul className="list-disc list-inside text-sm text-muted-foreground pl-2 space-y-1">
                                         {tier.benefits.map(benefit => <li key={benefit}>{benefit}</li>)}
                                     </ul>
                                 </div>
                             )
                         })}
+                         <div className="pt-4 border-t">
+                            <h4 className="font-semibold text-sm">Important Note:</h4>
+                            <p className="text-sm text-muted-foreground mt-1">
+                                ProMo MEA Affiliates aren't allowed to Market or be or become affiliates for other event ticketing or entertainment platforms.
+                            </p>
+                        </div>
                     </CardContent>
                 </Card>
                  <Card>

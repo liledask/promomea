@@ -83,16 +83,26 @@ export default function LandingPage() {
                             The more events you add, the more you earn. Advance through the tiers to unlock higher commission rates.
                         </p>
                     </div>
-                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
                         {tiers.map((tier) => (
-                        <Card key={tier.name}>
+                        <Card key={tier.name} className="flex flex-col">
                             <CardHeader>
-                            <CardTitle className="flex justify-between items-baseline">
+                            <CardTitle className="flex flex-col items-start gap-2">
+                                <span className="text-primary text-3xl font-bold">{tier.commission}%</span>
                                 <span>{tier.name}</span>
-                                <span className="text-2xl font-bold text-primary">{tier.commission}%</span>
                             </CardTitle>
                             <CardDescription>{tier.description}</CardDescription>
                             </CardHeader>
+                            <CardContent className="flex-grow">
+                                <ul className="space-y-2 text-sm text-muted-foreground">
+                                    {tier.benefits.map((benefit, index) => (
+                                        <li key={index} className="flex items-start gap-2">
+                                            <Check className="h-4 w-4 text-primary mt-1 shrink-0" />
+                                            <span>{benefit}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </CardContent>
                         </Card>
                         ))}
                     </div>

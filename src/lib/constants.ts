@@ -6,10 +6,10 @@ export const TIER_DETAILS: Record<TierLevel, TierDetails> = {
     name: 'ProMo Trainee (PT)',
     color: 'bg-orange-200',
     commission: 1,
-    description: 'Register as a ProMo Affiliate. Add 5 events in 30 days to advance.',
+    description: 'Register as a MEA ProMo Affiliate and add 5 events within 30 days to advance.',
     goalEvents: 5,
     benefits: [
-      'Earn 1% of ticket sales from up to 5 events',
+      'Earn 1% of ticket sales from events added (up to 5 events)',
       'Payout of earnings up to 7 days after the event',
       'Events must be added within 30 days or ProMo starts over',
     ],
@@ -51,7 +51,7 @@ export const TIER_DETAILS: Record<TierLevel, TierDetails> = {
     name: 'Presidential ProMo Certified Affiliate (PPCA)',
     color: 'bg-purple-500',
     commission: 25,
-    description: 'The pinnacle of success with the highest rewards.',
+    description: 'The pinnacle of success with the highest rewards. Requires a virtual meeting with the MEA team.',
     goalEvents: Infinity,
     benefits: [
       'Earn 25% commission on all new events for life',
