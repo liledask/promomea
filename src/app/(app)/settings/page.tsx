@@ -17,7 +17,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 
 export default function SettingsPage() {
-  const { user, loading, refreshUser } = useAuth();
+  const { user, loading, refreshUser, setUser } = useAuth();
   const { toast } = useToast();
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -52,12 +52,12 @@ export default function SettingsPage() {
 
     setIsSaving(false);
 
-    if (result.success) {
+    if (result.success && result.data) {
+      setUser({ ...user, ...result.data });
       toast({
         title: "Profile Updated",
         description: "Your information has been successfully saved.",
       });
-      await refreshUser();
     } else {
       toast({
         variant: "destructive",
@@ -95,12 +95,12 @@ export default function SettingsPage() {
         
         const result = await updateUserAvatarAction({ userId: user.id, avatarUrl: publicUrl });
 
-        if (result.success) {
+        if (result.success && result.data) {
+            setUser({ ...user, ...result.data, email: user.email });
             toast({
                 title: 'Avatar Updated!',
                 description: 'Your new photo has been saved.',
             });
-            await refreshUser();
         } else {
             throw new Error(result.error);
         }

@@ -86,8 +86,18 @@ export async function updateUserProfileAction(formData: FormData) {
       .eq('id', parsed.data.userId);
 
     if (error) throw error;
+    
+    // Re-fetch the updated profile data to return to the client
+    const { data: updatedProfile, error: fetchError } = await supabase
+        .from('promo_profile')
+        .select('*')
+        .eq('id', parsed.data.userId)
+        .single();
 
-    return { success: true };
+    if (fetchError) throw fetchError;
+
+
+    return { success: true, data: updatedProfile };
   } catch (error: any) {
     console.error('Error updating user profile:', error);
     return {
@@ -113,14 +123,23 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
   }
 
   try {
-    const { error } = await supabase
+    const { error: updateError } = await supabase
       .from('promo_profile')
       .update({ avatar_url: parsed.data.avatarUrl })
       .eq('id', parsed.data.userId);
 
-    if (error) throw error;
+    if (updateError) throw updateError;
+    
+    // Re-fetch the updated profile data to return to the client
+    const { data: updatedProfile, error: fetchError } = await supabase
+        .from('promo_profile')
+        .select('*')
+        .eq('id', parsed.data.userId)
+        .single();
+    
+    if (fetchError) throw fetchError;
 
-    return { success: true };
+    return { success: true, data: updatedProfile };
   } catch (error: any) {
     console.error('Error updating user avatar:', error);
     return {

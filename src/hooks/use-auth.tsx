@@ -8,6 +8,8 @@ import {
   useEffect,
   ReactNode,
   useCallback,
+  Dispatch,
+  SetStateAction,
 } from 'react';
 import type { AuthChangeEvent, Session, User as SupabaseUser } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabaseClient';
@@ -19,6 +21,7 @@ interface AuthContextType {
   loading: boolean;
   signOut: () => Promise<void>;
   refreshUser: () => Promise<void>;
+  setUser: Dispatch<SetStateAction<User | null>>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -91,7 +94,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [fetchUserProfile]);
 
   return (
-    <AuthContext.Provider value={{ user, loading, signOut, refreshUser }}>
+    <AuthContext.Provider value={{ user, loading, signOut, refreshUser, setUser }}>
       {children}
     </AuthContext.Provider>
   );
