@@ -13,8 +13,11 @@ export default function TierProgress({ user }: TierProgressProps) {
   const tierLevels = Object.keys(TIER_DETAILS) as (keyof typeof TIER_DETAILS)[];
   const currentUserTierIndex = tierLevels.indexOf(user.currentTier);
   const nextTier = currentUserTierIndex < tierLevels.length - 1 ? TIER_DETAILS[tierLevels[currentUserTierIndex + 1]] : null;
-  const nextTierLevel = nextTier ? tierLevels[currentUserTierIndex + 1] : null;
+  const currentTierDetails = TIER_DETAILS[user.currentTier];
 
+  const eventsForNextTier = nextTier ? nextTier.goalEvents - (currentTierDetails.goalEvents === 5 ? 0 : currentTierDetails.goalEvents) : 0;
+  const eventsProgressForNextTier = nextTier ? user.eventsAdded - (currentTierDetails.goalEvents === 5 ? 0 : currentTierDetails.goalEvents) : 0;
+  
   const progress = nextTier ? Math.min((user.eventsAdded / nextTier.goalEvents) * 100, 100) : 100;
 
   return (
@@ -24,7 +27,7 @@ export default function TierProgress({ user }: TierProgressProps) {
         <CardDescription>Complete goals to unlock new benefits and higher commissions.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        {nextTier && nextTierLevel && (
+        {nextTier && (
           <div className="p-4 rounded-lg bg-secondary/50 border border-secondary">
             <div className="flex justify-between items-center mb-2">
               <p className="font-semibold text-foreground">Next Tier: {nextTier.name}</p>

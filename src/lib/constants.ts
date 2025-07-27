@@ -6,7 +6,7 @@ export const TIER_DETAILS: Record<TierLevel, TierDetails> = {
     color: 'bg-orange-200',
     goalEvents: 5,
     goalEarnings: 0,
-    benefits: ['1% commission on up to 5 events', 'Payout 7 days after event'],
+    benefits: ['1% commission on up to 5 events', 'Payout up to 7 days after event', 'Advance after 5 events within 30 days'],
   },
   PC: {
     name: 'ProMo Certified',
