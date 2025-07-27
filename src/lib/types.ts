@@ -3,15 +3,18 @@ export type TierLevel = 'PT' | 'PC' | 'DPCA' | 'TPCA' | 'PPCA';
 
 export interface User {
   id: string;
-  full_name: string;
-  avatar_url: string;
-  email: string;
-  current_tier: TierLevel;
-  current_earnings: number;
-  lifetime_earnings: number;
-  events_added: number;
-  upcoming_payout: number;
   promo_id: string;
+  full_name: string | null;
+  phone: string | null;
+  avatar_url: string | null;
+  payout_method: string | null;
+  payout_detail: string | null;
+  current_tier: TierLevel | null;
+  referral_count: number;
+  created_at: string;
+  updated_at: string;
+  referred_by_promo_code: string | null;
+  email: string | null; // From auth.users
 }
 
 export interface TierDetails {

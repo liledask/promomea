@@ -17,6 +17,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
+import { supabase } from '@/lib/supabaseClient';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -28,15 +29,31 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Firebase login logic will go here
-    console.log('Logging in with', email, password);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    toast({
-        title: 'Login Complete',
-        description: 'Redirecting to dashboard...',
-    });
-    router.push('/dashboard');
-    setLoading(false);
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        throw error;
+      }
+      
+      toast({
+        title: 'Login Successful',
+        description: 'Redirecting to your dashboard...',
+      });
+      router.push('/dashboard');
+    } catch (error: any) {
+      console.error('Login error:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Login Failed',
+        description: error.message || 'An unexpected error occurred.',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -68,6 +85,7 @@ export default function LoginPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  disabled={loading}
                 />
               </div>
               <div className="space-y-2">
@@ -86,6 +104,7 @@ export default function LoginPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  disabled={loading}
                 />
               </div>
             </CardContent>

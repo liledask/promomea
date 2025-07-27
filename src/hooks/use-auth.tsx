@@ -8,6 +8,8 @@ import {
   useEffect,
   ReactNode,
 } from 'react';
+import type { AuthChangeEvent, Session, User as SupabaseUser } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabaseClient';
 import type { User } from '@/lib/types';
 import { useRouter } from 'next/navigation';
 
@@ -25,24 +27,65 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
-    // Firebase auth listener will go here
-    const unsubscribe = () => {};
+    const fetchUserProfile = async (supabaseUser: SupabaseUser) => {
+      try {
+        // Use a short delay to allow the DB trigger to complete
+        await new Promise(resolve => setTimeout(resolve, 500));
 
-    // For now, let's simulate a logged-out user
-    setLoading(true);
-    setUser(null);
-    setLoading(false);
+        const { data, error } = await supabase
+          .from('promo_profile')
+          .select('*')
+          .eq('id', supabaseUser.id)
+          .single();
+
+        if (error) {
+          console.error('Error fetching user profile:', error);
+          setUser(null);
+          return;
+        }
+
+        if (data) {
+           setUser({
+            ...data,
+            email: supabaseUser.email || null,
+          });
+        }
+      } catch (e) {
+        console.error('An unexpected error occurred while fetching profile:', e);
+        setUser(null);
+      }
+    };
     
-    // In a real scenario, you'd check auth state and redirect
-    // if (!user && window.location.pathname !== '/login' && window.location.pathname !== '/signup' && window.location.pathname !== '/') {
-    //    router.push('/login');
-    // }
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event: AuthChangeEvent, session: Session | null) => {
+        setLoading(true);
+        if (session?.user) {
+          await fetchUserProfile(session.user);
+        } else {
+          setUser(null);
+        }
+        setLoading(false);
+      }
+    );
 
-    return () => unsubscribe();
-  }, [router]);
+    // Check for initial session
+    const checkInitialSession = async () => {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+            await fetchUserProfile(session.user);
+        }
+        setLoading(false);
+    };
+
+    checkInitialSession();
+
+    return () => {
+      subscription?.unsubscribe();
+    };
+  }, []);
 
   const signOut = async () => {
-    // Firebase signout logic will go here
+    await supabase.auth.signOut();
     setUser(null);
     router.push('/login');
   };

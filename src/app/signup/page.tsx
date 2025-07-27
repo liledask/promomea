@@ -17,6 +17,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
+import { supabase } from '@/lib/supabaseClient';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -38,17 +39,42 @@ export default function SignupPage() {
     }
     setLoading(true);
 
-    // Firebase signup logic will go here
-    console.log('Signing up with', name, email, password);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    toast({
-      title: 'Check your email!',
-      description: 'We sent you a verification link. Please check your inbox to continue.',
-    });
-    router.push('/login');
-    
-    setLoading(false);
+    try {
+      const avatarChar = name.charAt(0).toUpperCase();
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            name: name,
+            avatar_url: `https://placehold.co/100x100.png?text=${avatarChar}`
+          }
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
+      
+      // The onAuthStateChange listener in useAuth will handle the redirect
+      // and profile fetching. We just need to let the user know to check email.
+      toast({
+        title: 'Account Creation Pending',
+        description: "Please check your email to verify your account.",
+      });
+      // Don't redirect here, let user verify email first.
+      // router.push('/dashboard');
+
+    } catch (error: any) {
+       console.error('Signup error:', error);
+       toast({
+        variant: 'destructive',
+        title: 'Signup Failed',
+        description: error.message || 'An unexpected error occurred.',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -80,6 +106,7 @@ export default function SignupPage() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  disabled={loading}
                 />
               </div>
               <div className="space-y-2">
@@ -91,6 +118,7 @@ export default function SignupPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  disabled={loading}
                 />
               </div>
               <div className="space-y-2">
@@ -102,6 +130,7 @@ export default function SignupPage() {
                   minLength={6}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  disabled={loading}
                 />
               </div>
             </CardContent>
