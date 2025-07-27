@@ -12,6 +12,7 @@ import { supabase } from '@/lib/supabaseClient';
 import type { User } from '@/lib/types';
 import { Session, User as SupabaseUser } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
+import { useToast } from '@/hooks/use-toast';
 
 interface AuthContextType {
   user: User | null;
@@ -25,6 +26,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const { toast } = useToast();
 
   const fetchUserProfile = async (supabaseUser: SupabaseUser) => {
     try {
