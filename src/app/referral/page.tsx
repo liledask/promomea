@@ -26,8 +26,8 @@ export default function ReferralPage() {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Join ProMo MEA!',
-          text: 'Use my referral link to sign up for the ProMo MEA affiliate program.',
+          title: 'Join the My Event Advisor Platform!',
+          text: 'Use my referral link to sign up as an event organizer on My Event Advisor.',
           url: referralLink,
         });
         toast({ title: 'Link Shared!', description: 'Your referral link has been shared.' });
@@ -44,14 +44,14 @@ export default function ReferralPage() {
   return (
     <div className="space-y-8 max-w-2xl mx-auto">
       <div>
-        <h1 className="text-3xl font-headline font-bold">Referral Code & Link</h1>
-        <p className="text-muted-foreground">Share your code and link to earn commissions when new users sign up.</p>
+        <h1 className="text-3xl font-headline font-bold">Refer Event Organizers</h1>
+        <p className="text-muted-foreground">Share your code and link with event organizers to earn commissions from their ticket sales.</p>
       </div>
 
       <Card>
         <CardHeader>
           <CardTitle>Your Referral Code</CardTitle>
-          <CardDescription>Share this code with potential new affiliates. They will be prompted to enter it during sign-up.</CardDescription>
+          <CardDescription>Share this code with event organizers. They will be prompted to enter it when they sign up on My Event Advisor.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col sm:flex-row gap-2">
@@ -67,7 +67,7 @@ export default function ReferralPage() {
        <Card>
         <CardHeader>
           <CardTitle>Your Referral Link</CardTitle>
-          <CardDescription>Share this link directly. Anyone who signs up through it will be automatically attributed to you.</CardDescription>
+          <CardDescription>Share this link directly with organizers. Anyone who signs up through it will be automatically attributed to you.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col sm:flex-row gap-2">

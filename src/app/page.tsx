@@ -31,10 +31,10 @@ export default function LandingPage() {
             <main className="flex-1">
                 <section className="container py-12 text-center lg:py-24">
                     <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl">
-                        Earn More with Every Event
+                        Refer Event Organizers. Earn Big.
                     </h1>
                     <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mt-4">
-                        Join the ProMo MEA Affiliate Program and turn your connections into cash. Add events, share your code, and watch your earnings grow.
+                        Join the ProMo MEA Affiliate Program and turn your network into revenue. Refer event organizers to My Event Advisor and earn commissions from their success.
                     </p>
                     <div className="mt-6">
                         <Button size="lg" asChild>
@@ -61,15 +61,15 @@ export default function LandingPage() {
                             <ul className="space-y-2">
                                 <li className="flex items-start gap-2">
                                     <Check className="h-5 w-5 text-primary mt-1" />
-                                    <span><strong>Register:</strong> Sign up to become a ProMo MEA affiliate and get your unique referral code.</span>
+                                    <span><strong>Register:</strong> Sign up as a ProMo MEA affiliate to get your unique referral code.</span>
                                 </li>
                                 <li className="flex items-start gap-2">
                                     <Check className="h-5 w-5 text-primary mt-1" />
-                                    <span><strong>Refer:</strong> Share your code with event organizers. When they add an event to MEA, you get credit.</span>
+                                    <span><strong>Refer Organizers:</strong> Share your code with event organizers. When they sign up and add events to MEA, you get credit.</span>
                                 </li>
                                 <li className="flex items-start gap-2">
                                     <Check className="h-5 w-5 text-primary mt-1" />
-                                    <span><strong>Earn:</strong> Receive a commission on ticket sales from every event you successfully refer.</span>
+                                    <span><strong>Earn Commission:</strong> Receive a commission from the ticket sales of every event hosted by your referred organizers.</span>
                                 </li>
                             </ul>
                         </div>
@@ -80,7 +80,7 @@ export default function LandingPage() {
                      <div className="text-center mb-12">
                         <h2 className="text-3xl font-headline font-bold">Tiers & Commissions</h2>
                         <p className="mx-auto max-w-[700px] text-muted-foreground mt-2">
-                            The more events you add, the more you earn. Advance through the tiers to unlock higher commission rates.
+                            The more successful events your referred organizers create, the more you earn. Advance through tiers to unlock higher commission rates.
                         </p>
                     </div>
                     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">

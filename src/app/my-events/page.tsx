@@ -106,8 +106,8 @@ export default function MyEventsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-headline font-bold">Browse MEA Events</h1>
-        <p className="text-sm text-muted-foreground">Generate and share referral links for any event.</p>
+        <h1 className="text-2xl font-headline font-bold">Your Referred Events</h1>
+        <p className="text-sm text-muted-foreground">Track events from organizers you've referred to MEA.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -125,22 +125,16 @@ export default function MyEventsPage() {
                 <CardDescription>{new Date(event.date).toLocaleDateString()}</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow space-y-4">
-                 <div>
-                    <label className="text-xs font-medium text-muted-foreground">Affiliate Link</label>
-                    <div className="flex items-center gap-2 mt-1">
-                        <Input readOnly value={referralLink} className="bg-muted text-xs flex-1"/>
-                        <Button size="icon" variant="ghost" onClick={() => handleCopy(referralLink)}>
-                            <Copy className="h-4 w-4" />
-                            <span className="sr-only">Copy Link</span>
-                        </Button>
-                    </div>
+                 <div className="text-sm">
+                    <p className="text-muted-foreground">Your Commission</p>
+                    <p className="font-bold text-lg text-primary">${event.commission.toFixed(2)}</p>
                  </div>
               </CardContent>
               <CardFooter>
                  <Button variant="outline" size="sm" className="w-full" asChild>
                     <Link href={`https://myeventadvisor.com/events/${event.id}`} target="_blank" title="View on MEA">
                       <Eye className="mr-2 h-4 w-4" />
-                      View on MEA
+                      View Event on MEA
                     </Link>
                 </Button>
               </CardFooter>
