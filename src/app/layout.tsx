@@ -19,6 +19,7 @@ const playfairDisplay = Playfair_Display({
 export const metadata: Metadata = {
   title: "ProMo MEA",
   description: "Affiliate dashboard for ProMo MEA",
+  viewport: "width=device-width, initial-scale=1.0",
 };
 
 export default function RootLayout({
