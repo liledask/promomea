@@ -8,9 +8,7 @@ import {
   useEffect,
   ReactNode,
 } from 'react';
-import { supabase } from '@/lib/supabaseClient';
 import type { User } from '@/lib/types';
-import { Session, User as SupabaseUser } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
 
 interface AuthContextType {
@@ -27,71 +25,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchUserProfile = async (supabaseUser: SupabaseUser) => {
-        try {
-            const { data: profile, error } = await supabase
-            .from('promo_profile')
-            .select('*')
-            .eq('id', supabaseUser.id)
-            .single();
+    // Firebase auth listener will go here
+    const unsubscribe = () => {};
 
-            if (error) {
-                console.error('Error fetching user profile:', error.message);
-                // Don't sign out, let the user exist in a loading state until profile is ready.
-            } else if (profile) {
-                 setUser({
-                    id: profile.id,
-                    full_name: profile.full_name || '',
-                    avatar_url: profile.avatar_url || '',
-                    email: supabaseUser.email || '',
-                    current_tier: profile.current_tier || 'PT',
-                    promo_id: profile.promo_id,
-                    current_earnings: 0, // Placeholder, as it's not in the provided schema
-                    lifetime_earnings: 0, // Placeholder
-                    events_added: profile.referral_count || 0,
-                    upcoming_payout: 0, // Placeholder
-                });
-            }
-        } catch (error) {
-             console.error('Exception fetching user profile:', (error as Error).message);
-        } finally {
-            setLoading(false);
-        }
-    };
+    // For now, let's simulate a logged-out user
+    setLoading(true);
+    setUser(null);
+    setLoading(false);
     
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-        setLoading(true);
-        const supabaseUser = session?.user;
-        if (supabaseUser) {
-            await fetchUserProfile(supabaseUser);
-        } else {
-            setUser(null);
-            setLoading(false);
-            if (window.location.pathname !== '/login' && window.location.pathname !== '/signup' && window.location.pathname !== '/') {
-              router.push('/login');
-            }
-        }
-    });
+    // In a real scenario, you'd check auth state and redirect
+    // if (!user && window.location.pathname !== '/login' && window.location.pathname !== '/signup' && window.location.pathname !== '/') {
+    //    router.push('/login');
+    // }
 
-    // Fetch initial user state on app load
-    const getInitialSession = async () => {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session?.user) {
-            await fetchUserProfile(session.user);
-        } else {
-            setLoading(false);
-        }
-    };
-    getInitialSession();
-
-
-    return () => {
-      subscription?.unsubscribe();
-    };
+    return () => unsubscribe();
   }, [router]);
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    // Firebase signout logic will go here
     setUser(null);
     router.push('/login');
   };

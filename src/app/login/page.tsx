@@ -15,7 +15,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabaseClient';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 
@@ -29,30 +28,15 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        toast({
-          variant: 'destructive',
-          title: 'Login Failed',
-          description: error.message,
-        });
-      } else {
-        router.push('/dashboard');
-      }
-    } catch (error: any) {
-      toast({
-        variant: 'destructive',
-        title: 'An unexpected error occurred.',
-        description: error.message,
-      });
-    } finally {
-      setLoading(false);
-    }
+    // Firebase login logic will go here
+    console.log('Logging in with', email, password);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    toast({
+        title: 'Login Complete',
+        description: 'Redirecting to dashboard...',
+    });
+    router.push('/dashboard');
+    setLoading(false);
   };
 
   return (

@@ -15,7 +15,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabaseClient';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 
@@ -39,41 +38,17 @@ export default function SignupPage() {
     }
     setLoading(true);
 
-    try {
-      const avatarChar = name ? name.charAt(0).toUpperCase() : 'A';
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            name: name,
-            avatar_url: `https://placehold.co/100x100.png?text=${avatarChar}`,
-          },
-        },
-      });
-
-      if (error) {
-        toast({
-          variant: 'destructive',
-          title: 'Signup Failed',
-          description: error.message,
-        });
-      } else if (data.user) {
-        toast({
-            title: 'Check your email!',
-            description: 'We sent you a verification link. Please check your inbox to continue.',
-        });
-        router.push('/login');
-      }
-    } catch (error: any) {
-      toast({
-        variant: 'destructive',
-        title: 'An unexpected error occurred.',
-        description: error.message,
-      });
-    } finally {
-      setLoading(false);
-    }
+    // Firebase signup logic will go here
+    console.log('Signing up with', name, email, password);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    toast({
+      title: 'Check your email!',
+      description: 'We sent you a verification link. Please check your inbox to continue.',
+    });
+    router.push('/login');
+    
+    setLoading(false);
   };
 
   return (
