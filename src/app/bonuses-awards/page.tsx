@@ -43,7 +43,7 @@ export default function BonusesAwardsPage() {
             <p className="text-muted-foreground">Recognizing your exceptional performance and dedication.</p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2">
           {awards.map((award, index) => (
             <Card key={index} className="flex flex-col">
               <CardHeader>

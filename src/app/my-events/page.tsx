@@ -152,7 +152,7 @@ export default function MyEventsPage() {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-2 w-full max-w-xs">
+                        <div className="flex items-center gap-2 w-full max-w-md">
                             <Input readOnly value={referralLink} className="bg-muted text-xs"/>
                             <Button size="icon" variant="ghost" onClick={() => handleCopy(referralLink)}>
                                 <Copy className="h-4 w-4" />
