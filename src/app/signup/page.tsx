@@ -40,7 +40,7 @@ export default function SignupPage() {
     setLoading(true);
 
     try {
-      const avatarChar = name ? name.charAt(0) : 'A';
+      const avatarChar = name ? name.charAt(0).toUpperCase() : 'A';
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
