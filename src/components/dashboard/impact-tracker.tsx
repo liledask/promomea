@@ -17,7 +17,7 @@ export default function ImpactTracker() {
           data-ai-hint="happy children"
         />
         <p className="font-bold text-4xl">47</p>
-        <p className="text-sm opacity-90">Children supported through the MEA Foundation thanks to your efforts!</p>
+        <p className="text-sm opacity-90">Children supported through the MEA Launch Box Program thanks to your efforts!</p>
       </CardContent>
     </Card>
   );
