@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { CheckCircle2, Award } from 'lucide-react';
@@ -12,13 +13,27 @@ interface TierProgressProps {
 export default function TierProgress({ user }: TierProgressProps) {
   const tierLevels = Object.keys(TIER_DETAILS) as (keyof typeof TIER_DETAILS)[];
   const currentUserTierIndex = tierLevels.indexOf(user.currentTier);
-  const nextTier = currentUserTierIndex < tierLevels.length - 1 ? TIER_DETAILS[tierLevels[currentUserTierIndex + 1]] : null;
-  const currentTierDetails = TIER_DETAILS[user.currentTier];
-
-  const eventsForNextTier = nextTier ? nextTier.goalEvents - (currentTierDetails.goalEvents === 5 ? 0 : currentTierDetails.goalEvents) : 0;
-  const eventsProgressForNextTier = nextTier ? user.eventsAdded - (currentTierDetails.goalEvents === 5 ? 0 : currentTierDetails.goalEvents) : 0;
   
-  const progress = nextTier ? Math.min((user.eventsAdded / nextTier.goalEvents) * 100, 100) : 100;
+  const currentTierDetails = TIER_DETAILS[user.currentTier];
+  const previousTierGoal = currentUserTierIndex > 0 ? TIER_DETAILS[tierLevels[currentUserTierIndex - 1]].goalEvents : 0;
+  
+  const nextTier = currentUserTierIndex < tierLevels.length - 1 ? TIER_DETAILS[tierLevels[currentUserTierIndex + 1]] : null;
+
+  const eventsForNextTier = nextTier ? nextTier.goalEvents - currentTierDetails.goalEvents : 0;
+  const eventsProgressForNextTier = nextTier ? user.eventsAdded - currentTierDetails.goalEvents : 0;
+
+  const totalEventsForCurrentTier = TIER_DETAILS[user.currentTier].goalEvents;
+  const eventsInCurrentTier = user.eventsAdded - previousTierGoal;
+  
+  let progress = 0;
+  if(nextTier) {
+    const totalEventsForNextTier = nextTier.goalEvents - totalEventsForCurrentTier;
+    const eventsCompletedForNextTier = user.eventsAdded - totalEventsForCurrentTier;
+    progress = Math.min((eventsInCurrentTier / (nextTier.goalEvents - totalEventsForCurrentTier)) * 100, 100);
+  } else {
+    progress = 100;
+  }
+
 
   return (
     <Card>
@@ -27,7 +42,7 @@ export default function TierProgress({ user }: TierProgressProps) {
         <CardDescription>Complete goals to unlock new benefits and higher commissions.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        {nextTier && (
+        {nextTier ? (
           <div className="p-4 rounded-lg bg-secondary/50 border border-secondary">
             <div className="flex justify-between items-center mb-2">
               <p className="font-semibold text-foreground">Next Tier: {nextTier.name}</p>
@@ -38,12 +53,17 @@ export default function TierProgress({ user }: TierProgressProps) {
               You are {100 - Math.round(progress)}% away from unlocking the {nextTier.name} tier!
             </p>
           </div>
+        ) : (
+            <div className="p-4 rounded-lg bg-secondary/50 border border-secondary text-center">
+                <p className="font-semibold text-foreground">You've reached the highest tier!</p>
+                <p className="text-xs text-muted-foreground mt-1">Congratulations on becoming a Presidential ProMo Certified Affiliate!</p>
+            </div>
         )}
         <div className="space-y-4">
           {tierLevels.map((level, index) => {
-            const tier = TIER_DETAILS[level];
-            const isUnlocked = index <= currentUserTierIndex;
-            const isCurrent = index === currentUserTierIndex;
+            const tier = TIER_DETAILS[level as TierLevel];
+            const isUnlocked = currentUserTierIndex >= index;
+            const isCurrent = currentUserTierIndex === index;
 
             return (
               <div
@@ -59,7 +79,10 @@ export default function TierProgress({ user }: TierProgressProps) {
                     <div className={cn('w-8 h-8 rounded-full flex items-center justify-center', tier.color)}>
                       <Award className="w-5 h-5 text-white" />
                     </div>
-                    <h3 className="text-lg font-bold font-headline">{tier.name}</h3>
+                    <div>
+                        <h3 className="text-lg font-bold font-headline">{tier.name}</h3>
+                        <p className="text-sm font-bold text-primary">{tier.commission}% Commission</p>
+                    </div>
                   </div>
                   {isUnlocked ? (
                     <span className="text-xs font-bold text-green-600 flex items-center gap-1">

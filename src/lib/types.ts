@@ -1,3 +1,4 @@
+
 export type TierLevel = 'PT' | 'PC' | 'DPCA' | 'TPCA' | 'PPCA';
 
 export interface User {
@@ -13,7 +14,8 @@ export interface User {
 export interface TierDetails {
   name: string;
   color: string;
+  commission: number;
+  description: string;
   goalEvents: number;
-  goalEarnings: number;
   benefits: string[];
 }

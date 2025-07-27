@@ -1,3 +1,4 @@
+
 import { Bell } from 'lucide-react';
 import type { User } from '@/lib/types';
 import { SidebarTrigger } from '@/components/ui/sidebar';
@@ -27,7 +28,7 @@ export default function Header({ user }: HeaderProps) {
           <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
         </svg>
         <h1 className="text-xl font-headline font-bold text-foreground">
-          Affiliate Ascent
+          ProMo MEA
         </h1>
       </div>
       <div className="ml-auto flex items-center gap-4">

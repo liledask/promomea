@@ -17,7 +17,7 @@ const playfairDisplay = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Affiliate Ascent",
+  title: "ProMo MEA",
   description: "Affiliate dashboard for ProMo MEA",
 };
 

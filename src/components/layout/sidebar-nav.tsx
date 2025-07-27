@@ -51,7 +51,7 @@ export default function SidebarNav({ primaryItems, secondaryItems }: SidebarNavP
             <path d="m3 11 18-5v12L3 14v-3z" />
             <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
           </svg>
-          <span className="text-lg font-headline font-bold">Affiliate Ascent</span>
+          <span className="text-lg font-headline font-bold">ProMo MEA</span>
         </div>
       </SidebarHeader>
       <SidebarContent className="p-2">

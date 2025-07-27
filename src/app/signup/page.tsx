@@ -38,7 +38,7 @@ export default function SignupPage() {
                                 <path d="m3 11 18-5v12L3 14v-3z" />
                                 <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
                             </svg>
-                            <span className="font-headline text-xl font-bold">Affiliate Ascent</span>
+                            <span className="font-headline text-xl font-bold">ProMo MEA</span>
                     </Link>
                     <CardTitle>Create an Account</CardTitle>
                     <CardDescription>Join the ProMo MEA Affiliate Program today.</CardDescription>

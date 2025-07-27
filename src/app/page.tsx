@@ -4,34 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Check } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { TIER_DETAILS } from "@/lib/constants";
 
-const tiers = [
-    {
-        name: "ProMo Trainee (PT)",
-        commission: "1%",
-        description: "Start your journey and earn from your first 5 events.",
-    },
-    {
-        name: "ProMo Certified (PC)",
-        commission: "3%",
-        description: "Grow your earnings as you add more events.",
-    },
-    {
-        name: "Double ProMo Certified (DPCA)",
-        commission: "6%",
-        description: "Unlock higher commission rates and greater rewards.",
-    },
-    {
-        name: "Triple ProMo Certified (TPCA)",
-        commission: "15%",
-        description: "Become a top-tier affiliate with substantial earnings.",
-    },
-    {
-        name: "Presidential ProMo Certified (PPCA)",
-        commission: "25%",
-        description: "Reach the pinnacle of success with the highest commissions and exclusive benefits.",
-    },
-];
+const tiers = Object.values(TIER_DETAILS).slice(0, 5);
+
 
 export default function LandingPage() {
     return (
@@ -52,7 +28,7 @@ export default function LandingPage() {
                             <path d="m3 11 18-5v12L3 14v-3z" />
                             <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
                         </svg>
-                        <span className="font-headline text-xl font-bold">Affiliate Ascent</span>
+                        <span className="font-headline text-xl font-bold">ProMo MEA</span>
                     </Link>
                     <div className="flex items-center gap-2">
                         <Button variant="ghost" asChild>
@@ -126,7 +102,7 @@ export default function LandingPage() {
                             <CardHeader>
                             <CardTitle className="flex justify-between items-baseline">
                                 <span>{tier.name}</span>
-                                <span className="text-2xl font-bold text-primary">{tier.commission}</span>
+                                <span className="text-2xl font-bold text-primary">{tier.commission}%</span>
                             </CardTitle>
                             <CardDescription>{tier.description}</CardDescription>
                             </CardHeader>
@@ -150,7 +126,7 @@ export default function LandingPage() {
 
             <footer className="border-t">
                 <div className="container flex items-center justify-between py-6 text-sm text-muted-foreground">
-                    <p>&copy; {new Date().getFullYear()} Affiliate Ascent. All rights reserved.</p>
+                    <p>&copy; {new Date().getFullYear()} ProMo MEA. All rights reserved.</p>
                      <p>ProMo MEA - An Event Affiliate Program for My Event Advisor</p>
                 </div>
             </footer>

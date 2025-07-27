@@ -3,7 +3,7 @@
 
 import TierProgress from "@/components/dashboard/tier-progress";
 import { TIER_DETAILS } from "@/lib/constants";
-import type { User } from "@/lib/types";
+import type { User, TierLevel } from "@/lib/types";
 import { Award, CheckCircle, Star } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 
@@ -26,7 +26,7 @@ const tierHistory = [
 
 export default function TierProgressPage() {
     const user = experiencedUser;
-    const tierLevels = Object.keys(TIER_DETAILS) as (keyof typeof TIER_DETAILS)[];
+    const tierLevels = Object.keys(TIER_DETAILS) as TierLevel[];
 
     return (
         <div className="space-y-8">
@@ -48,7 +48,7 @@ export default function TierProgressPage() {
                             const tier = TIER_DETAILS[level];
                             return (
                                 <div key={level}>
-                                    <h3 className="font-bold text-primary">{tier.name}</h3>
+                                    <h3 className="font-bold text-primary">{tier.name} ({tier.commission}%)</h3>
                                     <ul className="list-disc list-inside text-sm text-muted-foreground pl-2">
                                         {tier.benefits.map(benefit => <li key={benefit}>{benefit}</li>)}
                                     </ul>
