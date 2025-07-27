@@ -56,9 +56,9 @@ export default function ReferralPage() {
         <CardContent>
           <div className="flex flex-col sm:flex-row gap-2">
             <Input readOnly value={referralCode} className="text-lg font-mono bg-muted flex-grow"/>
-            <Button size="icon" variant="outline" onClick={() => handleCopy(referralCode, 'Referral Code')} className="shrink-0 w-full sm:w-auto">
+            <Button onClick={() => handleCopy(referralCode, 'Referral Code')} className="shrink-0 w-full sm:w-auto">
               <Copy className="h-5 w-5" />
-              <span className="sr-only sm:not-sr-only sm:ml-2">Copy Code</span>
+              <span className="ml-2">Copy Code</span>
             </Button>
           </div>
         </CardContent>
@@ -73,13 +73,13 @@ export default function ReferralPage() {
           <div className="flex flex-col sm:flex-row gap-2">
             <Input readOnly value={referralLink} className="bg-muted flex-grow"/>
              <div className="flex gap-2 justify-end">
-                <Button size="icon" variant="outline" onClick={() => handleCopy(referralLink, 'Referral Link')} className="shrink-0">
+                <Button variant="outline" onClick={() => handleCopy(referralLink, 'Referral Link')} className="shrink-0 flex-1 sm:flex-initial">
                     <Copy className="h-5 w-5" />
-                    <span className="sr-only">Copy Link</span>
-                    </Button>
-                <Button size="icon" variant="outline" onClick={handleShare} className="shrink-0">
+                    <span className="sr-only sm:not-sr-only sm:ml-2">Copy</span>
+                </Button>
+                <Button variant="outline" onClick={handleShare} className="shrink-0 flex-1 sm:flex-initial">
                     <Share2 className="h-5 w-5" />
-                    <span className="sr-only">Share Link</span>
+                    <span className="sr-only sm:not-sr-only sm:ml-2">Share</span>
                 </Button>
              </div>
           </div>

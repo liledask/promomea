@@ -65,11 +65,11 @@ export default function MyEarningsPage() {
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
-            <Table className="min-w-[600px]">
+            <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="whitespace-nowrap">Payout Date</TableHead>
-                  <TableHead className="whitespace-nowrap">Payment Method</TableHead>
+                  <TableHead>Payout Date</TableHead>
+                  <TableHead>Payment Method</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="text-right">Amount</TableHead>
                 </TableRow>
