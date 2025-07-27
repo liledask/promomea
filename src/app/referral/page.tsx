@@ -6,10 +6,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Copy, Share2 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { getCurrentUser } from "@/lib/data"
 
 export default function ReferralPage() {
   const { toast } = useToast();
-  const referralCode = "JESSWANG25";
+  const user = getCurrentUser();
+  const referralCode = user.referralCode;
   const referralLink = `https://myeventadvisor.com/promo?ref=${referralCode}`;
 
   const handleCopy = (textToCopy: string, fieldName: string) => {
