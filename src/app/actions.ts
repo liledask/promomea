@@ -1,3 +1,4 @@
+
 'use server';
 
 import { getGoalRecommendation, GoalRecommendationInput, GoalRecommendationOutput } from '@/ai/flows/goal-recommendation';
@@ -92,6 +93,39 @@ export async function updateUserProfileAction(formData: FormData) {
     return {
       success: false,
       error: error.message || 'Failed to update profile.',
+    };
+  }
+}
+
+const avatarUpdateSchema = z.object({
+  userId: z.string().uuid(),
+  avatarUrl: z.string().url(),
+});
+
+export async function updateUserAvatarAction(input: {userId: string, avatarUrl: string}) {
+  const parsed = avatarUpdateSchema.safeParse(input);
+
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: 'Invalid data provided for avatar update.',
+    };
+  }
+
+  try {
+    const { error } = await supabase
+      .from('promo_profile')
+      .update({ avatar_url: parsed.data.avatarUrl })
+      .eq('id', parsed.data.userId);
+
+    if (error) throw error;
+
+    return { success: true };
+  } catch (error: any) {
+    console.error('Error updating user avatar:', error);
+    return {
+      success: false,
+      error: error.message || 'Failed to update avatar.',
     };
   }
 }
