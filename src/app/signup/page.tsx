@@ -58,7 +58,7 @@ export default function SignupPage() {
           title: 'Signup Failed',
           description: error.message,
         });
-      } else {
+      } else if (data.user) {
         toast({
             title: 'Check your email!',
             description: 'We sent you a verification link. Please check your inbox to continue.',

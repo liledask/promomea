@@ -16,7 +16,7 @@ export default function ReferralPage() {
     return <div>Loading...</div>;
   }
 
-  const referralCode = user.referralCode;
+  const referralCode = user.referral_code;
   const referralLink = `https://myeventadvisor.com/promo?ref=${referralCode}`;
 
   const handleCopy = (textToCopy: string, fieldName: string) => {

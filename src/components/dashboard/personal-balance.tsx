@@ -20,7 +20,7 @@ export default function PersonalBalance({ user }: PersonalBalanceProps) {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6 p-6 rounded-lg bg-background">
             <div className="text-center sm:text-left">
                 <p className="text-sm text-muted-foreground">Available for Payout</p>
-                <p className="text-5xl font-bold text-primary">${user.upcomingPayout.toFixed(2)}</p>
+                <p className="text-5xl font-bold text-primary">${user.upcoming_payout.toFixed(2)}</p>
                 <p className="text-sm text-muted-foreground">Next payout scheduled for Jul 15, 2025</p>
             </div>
             <Button size="lg" className="w-full sm:w-auto">Withdraw Funds</Button>
@@ -31,21 +31,21 @@ export default function PersonalBalance({ user }: PersonalBalanceProps) {
             <TrendingUp className="w-8 h-8 text-accent" />
             <div>
               <p className="text-sm text-muted-foreground">Pending Earnings</p>
-              <p className="text-xl font-bold">${user.currentEarnings.toFixed(2)}</p>
+              <p className="text-xl font-bold">${user.current_earnings.toFixed(2)}</p>
             </div>
           </div>
           <div className="flex items-center gap-4 p-4 rounded-lg bg-background/50">
             <PiggyBank className="w-8 h-8 text-accent" />
             <div>
               <p className="text-sm text-muted-foreground">Lifetime Earnings</p>
-              <p className="text-xl font-bold">${user.lifetimeEarnings.toFixed(2)}</p>
+              <p className="text-xl font-bold">${user.lifetime_earnings.toFixed(2)}</p>
             </div>
           </div>
            <div className="flex items-center gap-4 p-4 rounded-lg bg-background/50">
             <CalendarPlus className="w-8 h-8 text-accent" />
             <div>
               <p className="text-sm text-muted-foreground">Total Events</p>
-              <p className="text-xl font-bold">{user.eventsAdded}</p>
+              <p className="text-xl font-bold">{user.events_added}</p>
             </div>
           </div>
         </div>

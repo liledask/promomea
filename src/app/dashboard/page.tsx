@@ -21,14 +21,14 @@ export default function DashboardPage() {
     );
   }
   
-  const currentTierDetails = TIER_DETAILS[user.currentTier];
+  const currentTierDetails = TIER_DETAILS[user.current_tier];
 
   return (
     <div className="space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div className="flex items-center gap-4">
             <Avatar className="h-16 w-16">
-                <AvatarImage src={user.avatarUrl} alt={user.name} data-ai-hint="profile picture"/>
+                <AvatarImage src={user.avatar_url} alt={user.name} data-ai-hint="profile picture"/>
                 <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div>

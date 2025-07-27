@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -30,9 +31,9 @@ export default function GoalRecommendation({ user }: GoalRecommendationProps) {
   const handleGetRecommendation = async () => {
     setLoading(true);
     const result = await getGoalRecommendationAction({
-      currentTier: user.currentTier,
-      currentEarnings: user.currentEarnings,
-      eventsAdded: user.eventsAdded,
+      currentTier: user.current_tier,
+      currentEarnings: user.current_earnings,
+      eventsAdded: user.events_added,
     });
 
     setLoading(false);

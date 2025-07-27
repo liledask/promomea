@@ -27,47 +27,52 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchUserProfile = async (supabaseUser: SupabaseUser | null) => {
-      if (!supabaseUser) {
-        setUser(null);
-        setLoading(false);
-        return;
-      }
+    const fetchUserProfile = async (supabaseUser: SupabaseUser) => {
+        try {
+            // The trigger might have a small delay
+            await new Promise(resolve => setTimeout(resolve, 500));
 
-      try {
-        // Wait a moment for the trigger to potentially complete
-        await new Promise(resolve => setTimeout(resolve, 500));
+            const { data: profile, error } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', supabaseUser.id)
+            .single();
 
-        const { data: profile, error } = await supabase
-          .from('users')
-          .select('*')
-          .eq('id', supabaseUser.id)
-          .single();
-
-        if (error) {
-          console.warn('Could not fetch user profile:', error.message);
-          setUser(null); // Set user to null if profile doesn't exist
-        } else {
-          setUser(profile);
+            if (error) {
+                console.error('Error fetching user profile:', error.message);
+                // Don't sign out, just leave user as null for now
+                setUser(null);
+            } else if (profile) {
+                setUser(profile as User);
+            }
+        } catch (error) {
+             console.error('Exception fetching user profile:', (error as Error).message);
+             setUser(null);
+        } finally {
+            setLoading(false);
         }
-      } catch (error) {
-        console.error('Error fetching user profile:', (error as Error).message);
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
     };
     
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-        fetchUserProfile(session?.user ?? null);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+        if (session?.user) {
+            await fetchUserProfile(session.user);
+        } else {
+            setUser(null);
+            setLoading(false);
+        }
     });
 
-    // Fetch initial user
-    const getInitialUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      fetchUserProfile(session?.user ?? null);
-    }
-    getInitialUser();
+    // Fetch initial user state
+    const getInitialSession = async () => {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+            await fetchUserProfile(session.user);
+        } else {
+            setLoading(false);
+        }
+    };
+    getInitialSession();
+
 
     return () => {
       subscription?.unsubscribe();
@@ -75,9 +80,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signOut = async () => {
+    setLoading(true);
     await supabase.auth.signOut();
     setUser(null);
     router.push('/login');
+    setLoading(false);
   };
 
   return (
