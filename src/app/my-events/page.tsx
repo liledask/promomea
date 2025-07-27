@@ -132,10 +132,10 @@ export default function MyEventsPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="min-w-[200px]">Event Name</TableHead>
-                  <TableHead>Date</TableHead>
+                  <TableHead className="whitespace-nowrap">Event Name</TableHead>
+                  <TableHead className="whitespace-nowrap">Date</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead className="min-w-[300px]">Affiliate Link</TableHead>
+                  <TableHead className="whitespace-nowrap">Affiliate Link</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -152,7 +152,7 @@ export default function MyEventsPage() {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 min-w-[250px]">
                             <Input readOnly value={referralLink} className="bg-muted text-xs flex-1"/>
                             <Button size="icon" variant="ghost" onClick={() => handleCopy(referralLink)}>
                                 <Copy className="h-4 w-4" />

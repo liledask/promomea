@@ -58,7 +58,7 @@ export default function MyEarningsPage() {
                     A record of all your processed payments.
                 </CardDescription>
             </div>
-            <Button variant="outline" size="sm" className="w-full md:w-auto">
+            <Button variant="outline" size="sm" className="w-full sm:w-auto">
                 <Download className="mr-2 h-4 w-4" />
                 Export CSV
             </Button>

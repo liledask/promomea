@@ -11,15 +11,15 @@ interface HeaderProps {
 
 export default function Header({ user }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-10 flex h-14 sm:h-16 items-center gap-2 sm:gap-4 border-b bg-background/80 backdrop-blur-sm px-4 md:px-6">
+    <header className="sticky top-0 z-10 flex h-14 items-center gap-2 border-b bg-background/80 px-4 backdrop-blur-sm sm:h-16 sm:gap-4 md:px-6">
       <SidebarTrigger className="md:hidden" />
       <div className="flex items-center gap-2">
-        <h1 className="text-lg sm:text-xl font-headline font-bold text-foreground">
+        <h1 className="text-lg font-bold text-foreground sm:text-xl">
           ProMo MEA
         </h1>
       </div>
       <div className="ml-auto flex items-center gap-2 sm:gap-4">
-        <Button variant="ghost" size="icon" className="rounded-full h-8 w-8 sm:h-9 sm:w-9">
+        <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full sm:h-9 sm:w-9">
           <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
           <span className="sr-only">Toggle notifications</span>
         </Button>
