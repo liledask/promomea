@@ -39,7 +39,7 @@ export default function DashboardPage() {
                 <p className="text-muted-foreground">Here&apos;s your affiliate performance overview.</p>
             </div>
             </div>
-            <Badge variant="outline" className="text-lg py-2 px-4 border-accent text-accent font-bold">
+            <Badge variant="outline" className="text-lg py-2 px-4 border-accent text-accent font-bold self-start sm:self-center">
             {currentTierDetails.name} Tier
             </Badge>
         </div>

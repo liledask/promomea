@@ -51,14 +51,14 @@ export default function MyEarningsPage() {
       <EarningsChart />
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
+        <CardHeader className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div>
                 <CardTitle>Payout History</CardTitle>
                 <CardDescription>
                     A record of all your processed payments.
                 </CardDescription>
             </div>
-            <Button variant="outline">
+            <Button variant="outline" className="w-full md:w-auto">
                 <Download className="mr-2" />
                 Export CSV
             </Button>
