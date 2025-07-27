@@ -22,7 +22,7 @@ export default function ImpactTracker() {
           width={300}
           height={200}
           className="rounded-lg mb-4"
-          data-ai-hint="happy children"
+          data-ai-hint="happy child"
         />
         {user ? (
           <>
