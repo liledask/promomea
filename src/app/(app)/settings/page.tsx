@@ -78,7 +78,7 @@ export default function SettingsPage() {
         const filePath = `${user.id}/${fileName}`;
 
         const { error: uploadError } = await supabase.storage
-            .from('avatars')
+            .from('assets')
             .upload(filePath, file);
 
         if (uploadError) {
@@ -86,7 +86,7 @@ export default function SettingsPage() {
         }
 
         const { data: { publicUrl } } = supabase.storage
-            .from('avatars')
+            .from('assets')
             .getPublicUrl(filePath);
 
         if (!publicUrl) {
