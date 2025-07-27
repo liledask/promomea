@@ -22,7 +22,7 @@ import type { ProMoEvent } from "@/lib/types";
 interface AddEventDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddEvent: (event: Omit<ProMoEvent, 'commission' | 'status'>) => void;
+  onAddEvent: (event: Omit<ProMoEvent, 'id' | 'commission' | 'status'>) => void;
 }
 
 const eventSchema = z.object({

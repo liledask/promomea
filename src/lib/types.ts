@@ -23,6 +23,7 @@ export interface TierDetails {
 }
 
 export interface ProMoEvent {
+  id: string;
   name: string;
   date: string;
   commission: number;

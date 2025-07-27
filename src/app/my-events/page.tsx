@@ -12,37 +12,43 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { PlusCircle } from "lucide-react"
+import { PlusCircle, Eye } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { AddEventDialog } from "@/components/my-events/add-event-dialog";
 import type { ProMoEvent } from "@/lib/types";
+import Link from "next/link";
 
 const initialEvents: ProMoEvent[] = [
   {
+    id: "mea-annual-conference-2025",
     name: "MEA Annual Conference 2025",
     date: "2025-10-15",
     commission: 45.75,
     status: "Completed",
   },
   {
+    id: "tech-innovators-summit",
     name: "Tech Innovators Summit",
     date: "2025-11-05",
     commission: 22.50,
     status: "Completed",
   },
   {
+    id: "marketing-mastery-workshop",
     name: "Marketing Mastery Workshop",
     date: "2025-11-20",
     commission: 0,
     status: "Upcoming",
   },
     {
+    id: "future-of-work-expo",
     name: "Future of Work Expo",
     date: "2025-12-01",
     commission: 0,
     status: "Upcoming",
   },
   {
+    id: "design-thinking-bootcamp",
     name: "Design Thinking Bootcamp",
     date: "2024-09-30",
     commission: 15.00,
@@ -54,9 +60,10 @@ export default function MyEventsPage() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [events, setEvents] = useState<ProMoEvent[]>(initialEvents);
 
-  const handleAddEvent = (newEvent: Omit<ProMoEvent, 'commission' | 'status'>) => {
+  const handleAddEvent = (newEvent: Omit<ProMoEvent, 'commission' | 'status' | 'id'>) => {
     const eventToAdd: ProMoEvent = {
         ...newEvent,
+        id: newEvent.name.toLowerCase().replace(/\s+/g, '-'),
         commission: 0,
         status: 'Upcoming',
     };
@@ -91,12 +98,13 @@ export default function MyEventsPage() {
                 <TableHead>Event Name</TableHead>
                 <TableHead>Event Date</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead className="text-right">Commission Earned</TableHead>
+                <TableHead>Commission Earned</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {events.map((event) => (
-                <TableRow key={event.name}>
+                <TableRow key={event.id}>
                   <TableCell className="font-medium">{event.name}</TableCell>
                   <TableCell>{new Date(event.date).toLocaleDateString()}</TableCell>
                   <TableCell>
@@ -104,8 +112,16 @@ export default function MyEventsPage() {
                       {event.status}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell>
                     {event.commission > 0 ? `$${event.commission.toFixed(2)}` : '-'}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button variant="ghost" size="icon" asChild>
+                        <Link href={`https://myeventadvisor.com/events/${event.id}`} target="_blank" title="View on MEA">
+                           <Eye className="h-4 w-4" />
+                           <span className="sr-only">View on MEA</span>
+                        </Link>
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
