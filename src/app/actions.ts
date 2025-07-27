@@ -58,3 +58,40 @@ export async function updatePayoutSettingsAction(formData: FormData) {
     };
   }
 }
+
+const userProfileSchema = z.object({
+  fullName: z.string().min(1, 'Full name is required.'),
+  userId: z.string().uuid(),
+});
+
+export async function updateUserProfileAction(formData: FormData) {
+  const rawData = Object.fromEntries(formData.entries());
+  const parsed = userProfileSchema.safeParse(rawData);
+
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: 'Invalid data provided.',
+      errors: parsed.error.flatten().fieldErrors,
+    };
+  }
+
+  try {
+    const { error } = await supabase
+      .from('promo_profile')
+      .update({
+        full_name: parsed.data.fullName,
+      })
+      .eq('id', parsed.data.userId);
+
+    if (error) throw error;
+
+    return { success: true };
+  } catch (error: any) {
+    console.error('Error updating user profile:', error);
+    return {
+      success: false,
+      error: error.message || 'Failed to update profile.',
+    };
+  }
+}
