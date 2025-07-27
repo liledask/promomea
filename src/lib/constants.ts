@@ -1,3 +1,4 @@
+
 import type { TierLevel, TierDetails } from './types';
 
 export const TIER_DETAILS: Record<TierLevel, TierDetails> = {
@@ -13,7 +14,7 @@ export const TIER_DETAILS: Record<TierLevel, TierDetails> = {
     color: 'bg-slate-300',
     goalEvents: 15,
     goalEarnings: 0,
-    benefits: ['3% commission on up to 10 events in this tier', 'Continue earning from previous tiers'],
+    benefits: ['3% commission on up to 10 events in this tier', 'Continue earning 1% from Tier 1 events'],
   },
   DPCA: {
     name: 'Double ProMo Certified',
@@ -34,6 +35,6 @@ export const TIER_DETAILS: Record<TierLevel, TierDetails> = {
     color: 'bg-purple-500',
     goalEvents: Infinity,
     goalEarnings: Infinity,
-    benefits: ['25% commission on all events', 'Continue earning from previous tiers', 'Receive Certificate', '100 shares of stock', 'Bonus Prize'],
+    benefits: ['25% commission on all events', 'Continue earning from previous tiers', 'Receive Certificate', '100 shares of MEA stock', 'Bonus Prize'],
   },
 };
