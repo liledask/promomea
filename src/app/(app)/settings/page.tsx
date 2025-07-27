@@ -13,13 +13,11 @@ import { useAuth } from '@/hooks/use-auth';
 import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { updateUserProfileAction, updateUserAvatarAction } from '@/app/actions';
-import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 
 export default function SettingsPage() {
   const { user, loading, setUser } = useAuth();
   const { toast } = useToast();
-  const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [fullName, setFullName] = useState('');
@@ -42,6 +40,7 @@ export default function SettingsPage() {
 
   const handleProfileSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) return;
     setIsSaving(true);
     
     const formData = new FormData();
@@ -113,7 +112,6 @@ export default function SettingsPage() {
         });
     } finally {
         setIsUploading(false);
-        // Reset file input
         if(fileInputRef.current) {
             fileInputRef.current.value = "";
         }
@@ -161,7 +159,7 @@ export default function SettingsPage() {
                         variant="outline" 
                         type="button" 
                         onClick={() => fileInputRef.current?.click()}
-                        disabled={isUploading}
+                        disabled={isUploading || isSaving}
                     >
                       {isUploading ? 'Uploading...' : 'Change Photo'}
                     </Button>

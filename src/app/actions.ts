@@ -4,6 +4,7 @@
 import { getGoalRecommendation, GoalRecommendationInput, GoalRecommendationOutput } from '@/ai/flows/goal-recommendation';
 import { supabase } from '@/lib/supabaseClient';
 import { z } from 'zod';
+import { revalidatePath } from 'next/cache';
 
 export async function getGoalRecommendationAction(input: GoalRecommendationInput): Promise<{
   success: boolean;
@@ -50,6 +51,7 @@ export async function updatePayoutSettingsAction(formData: FormData) {
       throw error;
     }
 
+    revalidatePath('/my-earnings');
     return { success: true };
   } catch (error: any) {
     console.error('Error updating payout settings:', error);
@@ -78,25 +80,19 @@ export async function updateUserProfileAction(formData: FormData) {
   }
 
   try {
-    const { error } = await supabase
+    const { data: updatedProfile, error } = await supabase
       .from('promo_profile')
       .update({
         full_name: parsed.data.fullName,
       })
-      .eq('id', parsed.data.userId);
+      .eq('id', parsed.data.userId)
+      .select()
+      .single();
 
     if (error) throw error;
     
-    // Re-fetch the updated profile data to return to the client
-    const { data: updatedProfile, error: fetchError } = await supabase
-        .from('promo_profile')
-        .select('*')
-        .eq('id', parsed.data.userId)
-        .single();
-
-    if (fetchError) throw fetchError;
-
-
+    revalidatePath('/settings');
+    revalidatePath('/dashboard');
     return { success: true, data: updatedProfile };
   } catch (error: any) {
     console.error('Error updating user profile:', error);
@@ -123,22 +119,17 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
   }
 
   try {
-    const { error: updateError } = await supabase
+    const { data: updatedProfile, error } = await supabase
       .from('promo_profile')
       .update({ avatar_url: parsed.data.avatarUrl })
-      .eq('id', parsed.data.userId);
+      .eq('id', parsed.data.userId)
+      .select()
+      .single();
 
-    if (updateError) throw updateError;
+    if (error) throw error;
     
-    // Re-fetch the updated profile data to return to the client
-    const { data: updatedProfile, error: fetchError } = await supabase
-        .from('promo_profile')
-        .select('*')
-        .eq('id', parsed.data.userId)
-        .single();
-    
-    if (fetchError) throw fetchError;
-
+    revalidatePath('/settings');
+    revalidatePath('/dashboard');
     return { success: true, data: updatedProfile };
   } catch (error: any) {
     console.error('Error updating user avatar:', error);

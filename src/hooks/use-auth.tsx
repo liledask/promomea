@@ -30,72 +30,73 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  const fetchUserProfile = useCallback(async (supabaseUser: SupabaseUser | null) => {
-    if (!supabaseUser) {
-      setUser(null);
-      setLoading(false);
-      return;
-    }
+  const handleAuthChange = useCallback(
+    async (event: AuthChangeEvent, session: Session | null) => {
+      setLoading(true);
+      const supabaseUser = session?.user;
 
-    setLoading(true);
-    try {
-      const { data, error } = await supabase
-        .from('promo_profile')
-        .select('*')
-        .eq('id', supabaseUser.id)
-        .single();
-
-      if (error) {
-        if (error.code === 'PGRST116') {
-            // This happens if the user exists in auth but not in promo_profile
-            // This can happen if the trigger fails or was created after the user signed up
-            // We can attempt a sign-out to clear the session and force a re-login
-            console.warn("Profile not found for user, signing out.", error);
-            await supabase.auth.signOut();
-            setUser(null);
-            router.push('/login');
-        } else {
-            throw error;
-        }
-      } else if (data) {
-          setUser({
-          ...data,
-          email: supabaseUser.email || '',
-        });
+      if (!supabaseUser) {
+        setUser(null);
+        setLoading(false);
+        return;
       }
-    } catch (e) {
-      console.error('An unexpected error occurred while fetching profile:', e);
-      setUser(null);
-    } finally {
-      setLoading(false);
-    }
-  }, [router]);
-  
+
+      try {
+        const { data: profile, error } = await supabase
+          .from('promo_profile')
+          .select('*')
+          .eq('id', supabaseUser.id)
+          .single();
+
+        if (error) {
+          // This can happen if the user exists in auth but the trigger failed.
+          // Log the error and sign out to prevent the app from being in a broken state.
+          console.error('Error fetching profile for user. Signing out.', error);
+          await supabase.auth.signOut();
+          setUser(null);
+          return;
+        }
+
+        if (profile) {
+          const fullUser: User = {
+            ...profile,
+            email: supabaseUser.email || '',
+          };
+          setUser(fullUser);
+        } else {
+          // This case should ideally not be reached if the trigger is working correctly.
+          console.warn('Profile not found for a logged-in user. Signing out.');
+          await supabase.auth.signOut();
+          setUser(null);
+        }
+      } catch (e) {
+        console.error('An unexpected error occurred while fetching profile:', e);
+        setUser(null);
+        await supabase.auth.signOut();
+      } finally {
+        setLoading(false);
+      }
+    },
+    []
+  );
+
   useEffect(() => {
+    // Immediately fetch the current session to initialize the user state.
     const getInitialSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      await fetchUserProfile(session?.user ?? null);
+      // Use the same handler to avoid duplicating logic
+      await handleAuthChange('INITIAL_SESSION', session);
     };
 
     getInitialSession();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event: AuthChangeEvent, session: Session | null) => {
-        const supabaseUser = session?.user ?? null;
-        if (event === 'SIGNED_IN') {
-          // Await profile fetch on sign in to make sure data is available
-          await fetchUserProfile(supabaseUser);
-        } else {
-          // For other events, we can do it without awaiting
-          fetchUserProfile(supabaseUser);
-        }
-      }
-    );
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(handleAuthChange);
 
     return () => {
       subscription?.unsubscribe();
     };
-  }, [fetchUserProfile]);
+  }, [handleAuthChange]);
 
   const signOut = async () => {
     await supabase.auth.signOut();

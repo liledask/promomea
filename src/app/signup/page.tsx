@@ -22,32 +22,24 @@ import { supabase } from '@/lib/supabaseClient';
 export default function SignupPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const [name, setName] = useState('');
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name) {
-      toast({
-        variant: 'destructive',
-        title: 'Signup Failed',
-        description: 'Please enter your full name.',
-      });
-      return;
-    }
     setLoading(true);
 
     try {
-      const avatarChar = name ? name.charAt(0).toUpperCase() : '?';
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
-            full_name: name,
-            avatar_url: `https://placehold.co/100x100.png?text=${avatarChar}`
+            full_name: fullName,
+            // Provide a default placeholder avatar
+            avatar_url: `https://placehold.co/100x100.png?text=${fullName.charAt(0) || 'U'}`,
           }
         }
       });
@@ -56,15 +48,16 @@ export default function SignupPage() {
         throw error;
       }
       
-      // The onAuthStateChange listener in useAuth will handle the redirect
-      // and profile fetching. We just need to let the user know to check email.
+      // The onAuthStateChange listener in useAuth will handle the redirect.
+      // We just need to let the user know to check their email for verification.
       toast({
         title: 'Account Creation Pending',
         description: "Please check your email to verify your account.",
       });
       
-      // Clear form for security
-      setName('');
+      // We don't need to push the router, onAuthStateChange will do it.
+      // Clearing form is good practice.
+      setFullName('');
       setEmail('');
       setPassword('');
 
@@ -107,8 +100,8 @@ export default function SignupPage() {
                   type="text"
                   placeholder="Jessica Wang"
                   required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
                   disabled={loading}
                 />
               </div>
