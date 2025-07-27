@@ -43,10 +43,6 @@ export default function SignupPage() {
                         <Label htmlFor="password">Password</Label>
                         <Input id="password" type="password" required />
                     </div>
-                     <div className="space-y-2">
-                        <Label htmlFor="promo-code">Referral Code (Optional)</Label>
-                        <Input id="promo-code" type="text" placeholder="Enter referral code"/>
-                    </div>
                 </CardContent>
                 <CardFooter className="flex flex-col gap-4">
                     <Button className="w-full" type="submit">Create Account</Button>
