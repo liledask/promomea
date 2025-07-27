@@ -64,28 +64,30 @@ export default function MyEarningsPage() {
             </Button>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Payout Date</TableHead>
-                <TableHead>Payment Method</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {payouts.map((payout) => (
-                <TableRow key={payout.date}>
-                  <TableCell>{new Date(payout.date).toLocaleDateString()}</TableCell>
-                  <TableCell>{payout.method}</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary" className="bg-green-100 text-green-800">{payout.status}</Badge>
-                  </TableCell>
-                  <TableCell className="text-right font-medium">${payout.amount.toFixed(2)}</TableCell>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Payout Date</TableHead>
+                  <TableHead>Payment Method</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Amount</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {payouts.map((payout) => (
+                  <TableRow key={payout.date}>
+                    <TableCell>{new Date(payout.date).toLocaleDateString()}</TableCell>
+                    <TableCell>{payout.method}</TableCell>
+                    <TableCell>
+                      <Badge variant="secondary" className="bg-green-100 text-green-800">{payout.status}</Badge>
+                    </TableCell>
+                    <TableCell className="text-right font-medium">${payout.amount.toFixed(2)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
     </div>

@@ -13,7 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Eye, Copy } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import type { ProMoEvent, User } from "@/lib/types";
+import type { ProMoEvent } from "@/lib/types";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
