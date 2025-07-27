@@ -40,7 +40,7 @@ export default function SignupPage() {
     setLoading(true);
 
     try {
-      const avatarChar = name.charAt(0).toUpperCase();
+      const avatarChar = name ? name.charAt(0).toUpperCase() : '?';
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -62,8 +62,7 @@ export default function SignupPage() {
         title: 'Account Creation Pending',
         description: "Please check your email to verify your account.",
       });
-      // After signup, the user needs to confirm their email.
-      // We don't redirect here, the auth listener will handle it once the session is active.
+      
       // Clear form for security
       setName('');
       setEmail('');

@@ -81,7 +81,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event: AuthChangeEvent, session: Session | null) => {
-        await fetchUserProfile(session?.user ?? null);
+        const supabaseUser = session?.user ?? null;
+        if (event === 'SIGNED_IN') {
+          // Await profile fetch on sign in to make sure data is available
+          await fetchUserProfile(supabaseUser);
+        } else {
+          // For other events, we can do it without awaiting
+          fetchUserProfile(supabaseUser);
+        }
       }
     );
 

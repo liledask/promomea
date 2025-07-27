@@ -19,7 +19,7 @@ export interface User {
   created_at: string;
   updated_at: string;
   referred_by_promo_code: string | null;
-  email: string | null; // From auth.users
+  email: string; // From auth.users
 }
 
 export interface TierDetails {
