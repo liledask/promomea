@@ -21,7 +21,12 @@ export default function DashboardPage() {
   }, []);
 
   if (!user) {
-    return <div>Loading...</div>;
+    return (
+      <div className="space-y-6">
+        {/* Skeleton loaders can go here */}
+        <div>Loading...</div>
+      </div>
+    );
   }
   
   const currentTierDetails = TIER_DETAILS[user.currentTier];
@@ -30,7 +35,7 @@ export default function DashboardPage() {
     <div className="space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div className="flex items-center gap-4">
-            <Avatar className="h-12 w-12">
+            <Avatar className="h-16 w-16">
                 <AvatarImage src={user.avatarUrl} alt={user.name} data-ai-hint="profile picture"/>
                 <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
             </Avatar>
@@ -46,14 +51,14 @@ export default function DashboardPage() {
 
         <StatsCards user={user} />
 
-        <div className="grid gap-6 lg:grid-cols-3">
-            <div className="lg:col-span-2 space-y-6">
-            <TierProgress user={user} />
-            <GoalRecommendation user={user} />
+        <div className="grid gap-6 grid-cols-1 lg:grid-cols-5">
+            <div className="lg:col-span-3 space-y-6">
+              <TierProgress user={user} />
+              <GoalRecommendation user={user} />
             </div>
-            <div className="space-y-6">
-            <ActivityFeed />
-            <ImpactTracker />
+            <div className="lg:col-span-2 space-y-6">
+              <ActivityFeed />
+              <ImpactTracker />
             </div>
         </div>
     </div>

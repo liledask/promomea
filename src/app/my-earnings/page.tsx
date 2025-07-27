@@ -51,7 +51,7 @@ export default function MyEarningsPage() {
       <EarningsChart />
 
       <Card>
-        <CardHeader className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
                 <CardTitle className="text-xl">Payout History</CardTitle>
                 <CardDescription>
