@@ -1,8 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
-import type { User } from '@/lib/types';
+import { useAuth } from '@/hooks/use-auth';
 import TierProgress from '@/components/dashboard/tier-progress';
 import ActivityFeed from '@/components/dashboard/activity-feed';
 import ImpactTracker from '@/components/dashboard/impact-tracker';
@@ -10,19 +9,13 @@ import GoalRecommendation from '@/components/dashboard/goal-recommendation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { TIER_DETAILS } from '@/lib/constants';
-import { getCurrentUser } from '@/lib/data';
 
 export default function DashboardPage() {
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    setUser(getCurrentUser());
-  }, []);
+  const { user } = useAuth();
 
   if (!user) {
     return (
       <div className="space-y-6">
-        {/* Skeleton loaders can go here */}
         <div>Loading...</div>
       </div>
     );

@@ -6,11 +6,16 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Copy, Share2 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-import { getCurrentUser } from "@/lib/data"
+import { useAuth } from "@/hooks/use-auth"
 
 export default function ReferralPage() {
   const { toast } = useToast();
-  const user = getCurrentUser();
+  const { user } = useAuth();
+  
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+
   const referralCode = user.referralCode;
   const referralLink = `https://myeventadvisor.com/promo?ref=${referralCode}`;
 

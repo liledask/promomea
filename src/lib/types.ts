@@ -2,9 +2,10 @@
 export type TierLevel = 'PT' | 'PC' | 'DPCA' | 'TPCA' | 'PPCA';
 
 export interface User {
-  id: 'new' | 'experienced';
+  id: string;
   name: string;
   avatarUrl: string;
+  email: string;
   currentTier: TierLevel;
   currentEarnings: number;
   lifetimeEarnings: number;

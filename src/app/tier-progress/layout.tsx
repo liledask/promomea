@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { AuthProvider, useAuth } from '@/hooks/use-auth';
 import {
   Home,
   CalendarDays,
@@ -16,7 +16,8 @@ import type { User } from '@/lib/types';
 import { SidebarProvider, Sidebar, SidebarInset } from '@/components/ui/sidebar';
 import Header from '@/components/layout/header';
 import SidebarNav from '@/components/layout/sidebar-nav';
-import { getCurrentUser } from '@/lib/data';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 const navigationItems = [
   { href: '/dashboard', icon: Home, label: 'Dashboard' },
@@ -32,36 +33,47 @@ const secondaryNavigationItems = [
   { href: '/support', icon: HelpCircle, label: 'Support' },
 ];
 
-export default function AppLayout({
-    children,
-  }: {
-    children: React.ReactNode
-  }) {
-  const [user, setUser] = useState<User | null>(null);
+function AppLayoutContent({ children }: { children: React.ReactNode }) {
+  const { user, loading } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
-    setUser(getCurrentUser());
-  }, []);
+    if (!loading && !user) {
+      router.push('/login');
+    }
+  }, [user, loading, router]);
 
-  if (!user) {
-    // You can return a loader here
+  if (loading || !user) {
     return <div>Loading...</div>;
   }
     
   return (
     <SidebarProvider>
-    <Sidebar>
-      <SidebarNav
-        primaryItems={navigationItems}
-        secondaryItems={secondaryNavigationItems}
-      />
-    </Sidebar>
-    <SidebarInset>
-      <div className="flex min-h-screen flex-col">
-        <Header user={user} />
-        <main className="flex-1 p-4 sm:p-6">{children}</main>
-      </div>
-    </SidebarInset>
-  </SidebarProvider>
+      <Sidebar>
+        <SidebarNav
+          primaryItems={navigationItems}
+          secondaryItems={secondaryNavigationItems}
+        />
+      </Sidebar>
+      <SidebarInset>
+        <div className="flex min-h-screen flex-col">
+          <Header user={user} />
+          <main className="flex-1 p-4 sm:p-6">{children}</main>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
+  );
+}
+
+
+export default function AppLayout({
+    children,
+  }: {
+    children: React.ReactNode
+  }) {
+  return (
+    <AuthProvider>
+      <AppLayoutContent>{children}</AppLayoutContent>
+    </AuthProvider>
   );
 }

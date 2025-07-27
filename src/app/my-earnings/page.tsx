@@ -1,9 +1,7 @@
 
 'use client'
 
-import { useState, useEffect } from 'react';
-import type { User } from '@/lib/types';
-import { getCurrentUser } from '@/lib/data';
+import { useAuth } from '@/hooks/use-auth';
 import PersonalBalance from '@/components/dashboard/personal-balance';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -40,11 +38,7 @@ const payouts = [
 ];
 
 export default function MyEarningsPage() {
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    setUser(getCurrentUser());
-  }, []);
+  const { user } = useAuth();
 
   if (!user) {
     return <div>Loading...</div>;

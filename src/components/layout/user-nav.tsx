@@ -17,12 +17,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import type { User } from '@/lib/types';
+import { useAuth } from "@/hooks/use-auth";
 
 interface UserNavProps {
   user: User;
 }
 
 export function UserNav({ user }: UserNavProps) {
+    const { signOut } = useAuth();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -38,7 +40,7 @@ export function UserNav({ user }: UserNavProps) {
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">{user.name}</p>
             <p className="text-xs leading-none text-muted-foreground">
-              {user.currentTier} Affiliate
+              {user.email}
             </p>
           </div>
         </DropdownMenuLabel>
@@ -55,7 +57,7 @@ export function UserNav({ user }: UserNavProps) {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={signOut}>
           Log out
         </DropdownMenuItem>
       </DropdownMenuContent>

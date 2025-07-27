@@ -1,13 +1,12 @@
 
 'use client'
 
-import { useState, useEffect } from 'react';
 import TierProgress from "@/components/dashboard/tier-progress";
 import { TIER_DETAILS } from "@/lib/constants";
-import type { User, TierLevel } from "@/lib/types";
+import type { TierLevel } from "@/lib/types";
 import { Award, CheckCircle, Star } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { getCurrentUser } from '@/lib/data';
+import { useAuth } from '@/hooks/use-auth';
 
 const tierHistory = [
     { tier: 'PT', date: '2024-01-15' },
@@ -16,11 +15,7 @@ const tierHistory = [
 ]
 
 export default function TierProgressPage() {
-    const [user, setUser] = useState<User | null>(null);
-
-    useEffect(() => {
-        setUser(getCurrentUser());
-    }, []);
+    const { user } = useAuth();
 
     if (!user) {
         return <div>Loading...</div>;
