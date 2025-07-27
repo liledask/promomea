@@ -54,9 +54,9 @@ export default function ReferralPage() {
           <CardDescription>Share this code with potential new affiliates. They will be prompted to enter it during sign-up.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <Input readOnly value={referralCode} className="text-lg font-mono bg-muted flex-grow"/>
-            <Button size="icon" variant="outline" onClick={() => handleCopy(referralCode, 'Referral Code')}>
+            <Button size="icon" variant="outline" onClick={() => handleCopy(referralCode, 'Referral Code')} className="shrink-0">
               <Copy className="h-5 w-5" />
               <span className="sr-only">Copy Code</span>
             </Button>
@@ -70,16 +70,18 @@ export default function ReferralPage() {
           <CardDescription>Share this link directly. Anyone who signs up through it will be automatically attributed to you.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <Input readOnly value={referralLink} className="bg-muted flex-grow"/>
-             <Button size="icon" variant="outline" onClick={() => handleCopy(referralLink, 'Referral Link')}>
-              <Copy className="h-5 w-5" />
-              <span className="sr-only">Copy Link</span>
-            </Button>
-             <Button size="icon" variant="outline" onClick={handleShare}>
-              <Share2 className="h-5 w-5" />
-               <span className="sr-only">Share Link</span>
-            </Button>
+             <div className="flex gap-2 justify-end">
+                <Button size="icon" variant="outline" onClick={() => handleCopy(referralLink, 'Referral Link')} className="shrink-0">
+                    <Copy className="h-5 w-5" />
+                    <span className="sr-only">Copy Link</span>
+                    </Button>
+                <Button size="icon" variant="outline" onClick={handleShare} className="shrink-0">
+                    <Share2 className="h-5 w-5" />
+                    <span className="sr-only">Share Link</span>
+                </Button>
+             </div>
           </div>
         </CardContent>
       </Card>

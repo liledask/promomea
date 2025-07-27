@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { CheckCircle2, Circle, Gift, Trophy } from "lucide-react";
+import { Gift, Trophy } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 
@@ -47,7 +47,7 @@ export default function BonusesAwardsPage() {
           {awards.map((award, index) => (
             <Card key={index} className="flex flex-col">
               <CardHeader>
-                  <div className="flex justify-between items-start">
+                  <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
                     <div className="flex items-center gap-4">
                         <award.icon className="w-8 h-8 text-accent" />
                         <div>
@@ -55,7 +55,7 @@ export default function BonusesAwardsPage() {
                             <CardDescription>{award.description}</CardDescription>
                         </div>
                     </div>
-                    {award.status === 'Achieved' && <Badge variant="secondary" className="bg-green-100 text-green-800 whitespace-nowrap">Achieved</Badge>}
+                    {award.status === 'Achieved' && <Badge variant="secondary" className="bg-green-100 text-green-800 whitespace-nowrap self-start sm:self-auto">Achieved</Badge>}
                   </div>
               </CardHeader>
               <CardContent className="flex-grow">
