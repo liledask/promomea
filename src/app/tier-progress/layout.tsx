@@ -17,7 +17,6 @@ import { SidebarProvider, Sidebar, SidebarInset } from '@/components/ui/sidebar'
 import Header from '@/components/layout/header';
 import SidebarNav from '@/components/layout/sidebar-nav';
 import { getCurrentUser } from '@/lib/data';
-import BottomNav from '@/components/layout/bottom-nav';
 
 const navigationItems = [
   { href: '/dashboard', icon: Home, label: 'Dashboard' },
@@ -60,10 +59,9 @@ export default function AppLayout({
     <SidebarInset>
       <div className="flex flex-col min-h-screen">
         <Header user={user} />
-        <main className="flex-1 p-4 md:p-8 pb-20 md:pb-8">
+        <main className="flex-1 p-4 md:p-8">
             {children}
         </main>
-        <BottomNav items={navigationItems} />
       </div>
     </SidebarInset>
   </SidebarProvider>
