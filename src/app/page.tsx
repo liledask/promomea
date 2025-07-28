@@ -91,7 +91,7 @@ export default function LandingPage() {
                                 <Button size="lg" asChild className="bg-white text-primary hover:bg-white/90">
                                     <Link href="/signup">Register Now</Link>
                                 </Button>
-                                <Button size="lg" variant="outline" asChild className="hover:bg-white/10 hover:text-white">
+                                <Button size="lg" variant="outline" asChild className="hover:bg-white/10">
                                     <Link href="#what-is-it">Learn More</Link>
                                 </Button>
                             </div>
@@ -126,7 +126,7 @@ export default function LandingPage() {
                             <div className="p-6 rounded-lg">
                                 <Target className="h-10 w-10 mx-auto text-primary mb-4" />
                                 <h3 className="text-xl font-semibold font-headline mb-2">The Purpose</h3>
-                                <p className="text-muted-foreground">ProMo MEA is dedicated to elevating event visibility on the My Event Advisor platform. Successful events drive economic impact to MEA Foundations/MEA LaunchBox Program, where we focus on feeding children across the globe.</p>
+                                <p className="text-muted-foreground">ProMo MEA is dedicated to elevating event visibility on the My Event Advisor platform.</p>
                             </div>
                             <div className="p-6 rounded-lg">
                                 <Users className="h-10 w-10 mx-auto text-primary mb-4" />
