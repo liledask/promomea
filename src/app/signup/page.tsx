@@ -91,9 +91,9 @@ export default function SignupPage() {
                   ProMo MEA
                 </span>
               </Link>
-              <CardTitle>Create an Account</CardTitle>
+              <CardTitle>Become an Affiliate</CardTitle>
               <CardDescription>
-                Join the ProMo MEA Affiliate Program today.
+                Join the ProMo MEA Affiliate Program to start earning.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -137,10 +137,10 @@ export default function SignupPage() {
             <CardFooter className="flex flex-col gap-4">
               <Button className="w-full" type="submit" disabled={loading}>
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Create Account
+                Create Affiliate Account
               </Button>
               <p className="text-sm text-muted-foreground">
-                Already have an account?{' '}
+                Already have an affiliate account?{' '}
                 <Link
                   href="/login"
                   className="text-primary font-medium hover:underline"
