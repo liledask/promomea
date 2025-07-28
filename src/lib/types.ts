@@ -31,6 +31,7 @@ export interface TierDetails {
   description: string;
   goalEvents: number;
   benefits: string[];
+  advanceRequirement: string;
 }
 
 export interface ProMoEvent {

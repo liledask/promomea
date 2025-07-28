@@ -1,12 +1,60 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Check, ArrowDown } from "lucide-react";
+import { Check, ArrowDown, Briefcase, Target, Users, BookOpen, Star, BarChart, Award, FolderKanban, HandCoins, Network, Presentation } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { TIER_DETAILS } from "@/lib/constants";
 
-const tiers = Object.values(TIER_DETAILS).slice(0, 5);
+const tiers = Object.values(TIER_DETAILS);
+
+const benefits = [
+    {
+        icon: BarChart,
+        title: "Competitive Commissions",
+        description: "Earn attractive commissions for every successful event registration through your unique referral links.",
+    },
+    {
+        icon: Star,
+        title: "Exclusive Access",
+        description: "Get early access to event information, VIP tickets, and behind-the-scenes content to share with your audience.",
+    },
+    {
+        icon: FolderKanban,
+        title: "Marketing Resources",
+        description: "Access our library of promotional materials, templates, and strategies to boost your promotional efforts.",
+    },
+    {
+        icon: Network,
+        title: "Network Growth",
+        description: "Connect with event organizers, venues, and fellow promoters across the MEA region to expand your professional network.",
+    },
+    {
+        icon: Award,
+        title: "Performance Bonuses",
+        description: "Earn additional rewards when you exceed promotion targets or drive exceptional attendance to events.",
+    },
+    {
+        icon: Presentation,
+        title: "Analytics Dashboard",
+        description: "Track your performance with real-time analytics on clicks, conversions, and earnings to optimize your strategy.",
+    },
+    {
+        icon: HandCoins,
+        title: "Recognition & Awards",
+        description: "Get featured as a top ProMo and receive awards for outstanding promotional achievements.",
+    },
+    {
+        icon: BookOpen,
+        title: "Skill Development",
+        description: "Enhance your digital marketing, content creation, and networking skills through our training resources.",
+    },
+    {
+        icon: Users,
+        title: "Legacy",
+        description: "Commissions will pass down to your children or next to kin.",
+    },
+];
 
 
 export default function LandingPage() {
@@ -17,6 +65,11 @@ export default function LandingPage() {
                     <Link href="/" className="flex items-center gap-2">
                         <span className="font-headline text-xl font-bold">ProMo MEA</span>
                     </Link>
+                    <nav className="hidden md:flex gap-6">
+                        <Link href="#what-is-it" className="text-sm font-medium hover:underline underline-offset-4">What is ProMo MEA?</Link>
+                        <Link href="#levels" className="text-sm font-medium hover:underline underline-offset-4">Affiliate Levels</Link>
+                        <Link href="#benefits" className="text-sm font-medium hover:underline underline-offset-4">Benefits</Link>
+                    </nav>
                     <div className="flex items-center gap-2">
                         <Button variant="ghost" asChild>
                             <Link href="/login">Login</Link>
@@ -44,11 +97,11 @@ export default function LandingPage() {
                                     <Link href="/signup">Register Now</Link>
                                 </Button>
                                 <Button size="lg" variant="outline" asChild className="border-white text-white hover:bg-white/10 hover:text-white">
-                                    <Link href="#how-it-works">Learn More</Link>
+                                    <Link href="#what-is-it">Learn More</Link>
                                 </Button>
                             </div>
                         </div>
-                        <div className="relative hidden lg:flex items-center justify-center">
+                         <div className="relative hidden lg:flex items-center justify-center">
                             <div className="w-64 h-64 bg-white/90 rounded-full flex items-center justify-center shadow-2xl backdrop-blur-sm">
                                 <span className="text-8xl font-headline text-red-500">mea</span>
                             </div>
@@ -60,89 +113,157 @@ export default function LandingPage() {
                         <ArrowDown className="w-5 h-5 animate-bounce" />
                     </div>
                 </section>
-
-                <section id="how-it-works" className="bg-muted py-12 lg:py-24">
-                    <div className="container grid items-center gap-6 lg:grid-cols-2 lg:gap-12">
-                        <Image 
-                            src="https://placehold.co/600x400.png"
-                            alt="Events"
-                            width={600}
-                            height={400}
-                            className="rounded-lg"
-                            data-ai-hint="crowd event"
-                        />
-                        <div className="space-y-4">
-                            <h2 className="text-3xl font-headline font-bold">How It Works</h2>
-                            <p className="text-muted-foreground">
-                                Becoming a Certified ProMo Affiliate is simple. You earn money just by referring event organizers to the My Event Advisor (MEA) platform.
+                
+                <section id="what-is-it" className="py-16 lg:py-24 bg-muted">
+                    <div className="container">
+                        <div className="max-w-3xl mx-auto text-center mb-12">
+                            <h2 className="text-3xl font-headline font-bold">What is ProMo MEA?</h2>
+                            <p className="mt-4 text-lg text-muted-foreground">
+                                ProMo MEA is an Event Affiliate Program for My Event Advisor (MEA). A Certified ProMo allows you to earn extra money from events just by sending people to the MEA platform and providing your ProMo Code.
                             </p>
-                            <ul className="space-y-2">
-                                <li className="flex items-start gap-2">
-                                    <Check className="h-5 w-5 text-primary mt-1" />
-                                    <span><strong>Register:</strong> Sign up as a ProMo MEA affiliate to get your unique referral code.</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <Check className="h-5 w-5 text-primary mt-1" />
-                                    <span><strong>Refer Organizers:</strong> Share your code with event organizers. When they sign up and add events to MEA, you get credit.</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <Check className="h-5 w-5 text-primary mt-1" />
-                                    <span><strong>Earn Commission:</strong> Receive a commission from the ticket sales of every event hosted by your referred organizers.</span>
-                                </li>
-                            </ul>
+                        </div>
+                        <div className="grid md:grid-cols-3 gap-8 text-center">
+                            <div className="p-6 rounded-lg">
+                                <Target className="h-10 w-10 mx-auto text-primary mb-4" />
+                                <h3 className="text-xl font-semibold font-headline mb-2">The Purpose</h3>
+                                <p className="text-muted-foreground">ProMo MEA is dedicated to elevating event visibility on the My Event Advisor platform. Successful events drive economic impact to MEA Foundations/MEA LaunchBox Program, where we focus on feeding children across the globe.</p>
+                            </div>
+                            <div className="p-6 rounded-lg">
+                                <Users className="h-10 w-10 mx-auto text-primary mb-4" />
+                                <h3 className="text-xl font-semibold font-headline mb-2">The Role of ProMos</h3>
+                                <p className="text-muted-foreground">As a ProMo, you earn commission from ticket sales of events added to the platform through our tiered system. Start at 1% and advance up to 25% commission for life of the program, with additional benefits like stock shares.</p>
+                            </div>
+                             <div className="p-6 rounded-lg">
+                                <Briefcase className="h-10 w-10 mx-auto text-primary mb-4" />
+                                <h3 className="text-xl font-semibold font-headline mb-2">Program Structure</h3>
+                                <p className="text-muted-foreground">Our 5-tier affiliate program offers escalating commission structures from 1% to 25%, performance bonuses, recognition awards, virtual onboarding, certificates, and even stock shares for top performers.</p>
+                            </div>
                         </div>
                     </div>
                 </section>
-                
-                <section className="container py-12 lg:py-24">
+
+                <section id="levels" className="container py-16 lg:py-24">
                      <div className="text-center mb-12">
-                        <h2 className="text-3xl font-headline font-bold">Tiers & Commissions</h2>
-                        <p className="mx-auto max-w-[700px] text-muted-foreground mt-2">
-                            The more successful events your referred organizers create, the more you earn. Advance through tiers to unlock higher commission rates.
+                        <h2 className="text-3xl font-headline font-bold">ProMo Affiliate Program Levels</h2>
+                        <p className="mx-auto max-w-[700px] text-muted-foreground mt-4">
+                            Our tiered affiliate program rewards you as you grow your network and help more event planners succeed.
                         </p>
                     </div>
-                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+                    <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                         {tiers.map((tier) => (
-                        <Card key={tier.name} className="flex flex-col">
-                            <CardHeader>
-                            <CardTitle className="flex flex-col items-start gap-2">
-                                <span className="text-primary text-3xl font-bold">{tier.commission}%</span>
-                                <span>{tier.name}</span>
-                            </CardTitle>
-                            <CardDescription>{tier.description}</CardDescription>
+                        <Card key={tier.name} className="flex flex-col border-2 hover:border-primary hover:shadow-lg transition-all">
+                            <CardHeader className="text-center bg-muted">
+                                <CardTitle className="flex flex-col items-center gap-2">
+                                    <div className="text-5xl font-bold text-primary">{tier.commission}%</div>
+                                    <div className="text-xl font-headline">{tier.name}</div>
+                                </CardTitle>
                             </CardHeader>
-                            <CardContent className="flex-grow">
-                                <ul className="space-y-2 text-sm text-muted-foreground">
-                                    {tier.benefits.map((benefit, index) => (
-                                        <li key={index} className="flex items-start gap-2">
-                                            <Check className="h-4 w-4 text-primary mt-1 shrink-0" />
-                                            <span>{benefit}</span>
-                                        </li>
-                                    ))}
-                                </ul>
+                            <CardContent className="flex-grow p-6 space-y-4">
+                                <div>
+                                    <h4 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground mb-2">Requirements</h4>
+                                    <p className="text-sm">{tier.description}</p>
+                                </div>
+                                <div className="pt-4 border-t">
+                                     <h4 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground mb-2">Benefits</h4>
+                                    <ul className="space-y-2 text-sm text-muted-foreground">
+                                        {tier.benefits.map((benefit, index) => (
+                                            <li key={index} className="flex items-start gap-2">
+                                                <Check className="h-4 w-4 text-green-500 mt-1 shrink-0" />
+                                                <span>{benefit}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                {tier.advanceRequirement && (
+                                <div className="pt-4 border-t">
+                                    <h4 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground mb-2">To Advance</h4>
+                                    <p className="text-sm font-semibold">{tier.advanceRequirement}</p>
+                                </div>
+                                )}
                             </CardContent>
                         </Card>
                         ))}
                     </div>
+                    <p className="text-center text-muted-foreground mt-12 text-sm">Note: ProMo MEA Affiliates aren't allowed to Market or be or become affiliates for other event ticketing or entertainment platforms.</p>
                 </section>
 
-                 <section className="bg-primary text-primary-foreground py-12 lg:py-24">
+                <section id="benefits" className="bg-muted py-16 lg:py-24">
+                    <div className="container">
+                        <div className="text-center mb-12">
+                            <h2 className="text-3xl font-headline font-bold">Benefits of Becoming a ProMo</h2>
+                            <p className="mx-auto max-w-[700px] text-muted-foreground mt-4">
+                                Join our network of event enthusiasts and enjoy these exclusive advantages.
+                            </p>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {benefits.map((benefit, index) => (
+                                <div key={index} className="flex items-start gap-4">
+                                    <div className="flex-shrink-0">
+                                        <div className="flex items-center justify-center h-12 w-12 rounded-full bg-primary text-primary-foreground">
+                                            <benefit.icon className="h-6 w-6" />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-lg font-semibold font-headline">{benefit.title}</h3>
+                                        <p className="text-muted-foreground mt-1">{benefit.description}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                 <section className="bg-primary text-primary-foreground py-16 lg:py-24">
                     <div className="container text-center">
-                         <h2 className="text-3xl font-headline font-bold">Ready to Start Earning?</h2>
-                         <p className="mx-auto max-w-[600px] opacity-90 mt-2 mb-6">
+                         <h2 className="text-4xl font-headline font-bold">Ready to Start Earning?</h2>
+                         <p className="mx-auto max-w-[600px] opacity-90 mt-4 mb-8 text-lg">
                             Join a community of successful affiliates and start your journey with ProMo MEA today.
                          </p>
-                         <Button size="lg" variant="secondary" asChild>
-                            <Link href="/signup">Sign Up Now</Link>
+                         <Button size="lg" variant="secondary" asChild className="text-lg py-7 px-10">
+                            <Link href="/signup">Sign Up Now and Get Your Code</Link>
                         </Button>
                     </div>
                  </section>
             </main>
 
-            <footer className="border-t">
-                <div className="container flex items-center justify-between py-6 text-sm text-muted-foreground">
-                    <p>&copy; {new Date().getFullYear()} ProMo MEA. All rights reserved.</p>
-                     <p>ProMo MEA - An Event Affiliate Program for My Event Advisor</p>
+            <footer className="bg-foreground text-background">
+                <div className="container py-12">
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+                        <div className="col-span-2 md:col-span-1">
+                             <Link href="/" className="flex items-center gap-2 mb-4">
+                                <span className="font-headline text-2xl font-bold">ProMo MEA</span>
+                            </Link>
+                            <p className="text-sm text-muted-foreground">The affiliate marketing program for My Event Advisor - connecting people with amazing events across US</p>
+                        </div>
+                        <div className="space-y-4">
+                            <h4 className="font-semibold uppercase tracking-wider">Platform</h4>
+                            <ul className="space-y-2 text-sm text-muted-foreground">
+                                <li><Link href="#" className="hover:text-primary">Events</Link></li>
+                                <li><Link href="#levels" className="hover:text-primary">Affiliate Levels</Link></li>
+                                <li><Link href="#benefits" className="hover:text-primary">Benefits</Link></li>
+                                <li><Link href="/dashboard" className="hover:text-primary">Your Impact</Link></li>
+                            </ul>
+                        </div>
+                        <div className="space-y-4">
+                             <h4 className="font-semibold uppercase tracking-wider">Company</h4>
+                            <ul className="space-y-2 text-sm text-muted-foreground">
+                                <li><Link href="#" className="hover:text-primary">About Us</Link></li>
+                                <li><Link href="#" className="hover:text-primary">Contact</Link></li>
+                                <li><Link href="#" className="hover:text-primary">My Event Advisor</Link></li>
+                            </ul>
+                        </div>
+                         <div className="space-y-4">
+                             <h4 className="font-semibold uppercase tracking-wider">Legal</h4>
+                            <ul className="space-y-2 text-sm text-muted-foreground">
+                                <li><Link href="#" className="hover:text-primary">Terms of Service</Link></li>
+                                <li><Link href="#" className="hover:text-primary">Privacy Policy</Link></li>
+                                <li><Link href="#" className="hover:text-primary">Legal Inquiries</Link></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="border-t border-muted/20 mt-8 pt-6 text-center text-sm text-muted-foreground">
+                        <p>&copy; {new Date().getFullYear()} My Event Advisor. All rights reserved. ProMo is a registered trademark of My Event Advisor Media, Inc.</p>
+                    </div>
                 </div>
             </footer>
         </div>
