@@ -127,6 +127,13 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
       .maybeSingle();
 
     if (error) throw error;
+
+    if (!updatedProfile) {
+        return {
+            success: false,
+            error: 'User profile not found. Could not update avatar.',
+        };
+    }
     
     revalidatePath('/settings');
     revalidatePath('/dashboard');
