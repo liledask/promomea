@@ -10,7 +10,7 @@ import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useAuth } from '@/hooks/use-auth';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Camera } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { updateUserProfileAction, updateUserAvatarAction, updateNotificationSettingsAction } from '@/app/actions';
 import { supabase } from '@/lib/supabaseClient';
@@ -80,38 +80,46 @@ export default function SettingsPage() {
     }
 
     const file = event.target.files[0];
+    
+    // File validation
+    if (!['image/jpeg', 'image/png'].includes(file.type)) {
+      toast({ variant: 'destructive', title: 'Invalid File Type', description: 'Please select a JPG or PNG image.' });
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      toast({ variant: 'destructive', title: 'File Too Large', description: 'Please select an image smaller than 5MB.' });
+      return;
+    }
+
     const fileExt = file.name.split('.').pop();
-    const fileName = `${user.id}-${Date.now()}.${fileExt}`;
-    const filePath = `${fileName}`;
+    const filePath = `${user.id}/avatar.${fileExt}`;
 
     setIsUploading(true);
 
     try {
-      // Step 1: Upload file to Supabase Storage
       const { error: uploadError } = await supabase.storage
         .from('avatars')
-        .upload(filePath, file);
+        .upload(filePath, file, { upsert: true });
 
       if (uploadError) {
-        throw new Error(`Storage Upload Error: ${uploadError.message}`);
+        throw new Error(`Storage Error: ${uploadError.message}`);
       }
 
-      // Step 2: Get public URL for the uploaded file
       const { data } = supabase.storage
         .from('avatars')
         .getPublicUrl(filePath);
 
-      const publicUrl = data.publicUrl;
+      // Add a timestamp to bust the cache
+      const publicUrl = `${data.publicUrl}?t=${new Date().getTime()}`;
 
       if (!publicUrl) {
         throw new Error("Could not get public URL for the uploaded avatar.");
       }
-
-      // Step 3: Update the user's profile in the database
+      
       const result = await updateUserAvatarAction({ userId: user.id, avatarUrl: publicUrl });
-
+      
       if (result.success && result.data) {
-        setUser({ ...user, ...result.data });
+        setUser({ ...user, avatar_url: publicUrl });
         toast({
           title: "Avatar Updated",
           description: "Your new profile picture has been saved.",
@@ -179,19 +187,27 @@ export default function SettingsPage() {
             <CardDescription>Update your personal information.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-                <div className="flex items-center gap-4">
-                    <Avatar className="h-20 w-20">
-                        {isUploading ? (
-                             <div className="flex h-full w-full items-center justify-center rounded-full bg-muted">
-                                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                             </div>
-                        ) : (
-                           <>
-                             <AvatarImage src={user.avatar_url || ''} alt={user.full_name || ''} data-ai-hint="profile picture" />
-                             <AvatarFallback>{userInitial}</AvatarFallback>
-                           </>
-                        )}
-                    </Avatar>
+                <div className="flex items-center gap-6">
+                    <div 
+                        className="relative group cursor-pointer"
+                        onClick={() => fileInputRef.current?.click()}
+                    >
+                        <Avatar className="h-24 w-24">
+                            {isUploading ? (
+                                <div className="flex h-full w-full items-center justify-center rounded-full bg-muted">
+                                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                                </div>
+                            ) : (
+                            <>
+                                <AvatarImage src={user.avatar_url || ''} alt={user.full_name || ''} data-ai-hint="profile picture" />
+                                <AvatarFallback>{userInitial}</AvatarFallback>
+                            </>
+                            )}
+                        </Avatar>
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                            <Camera className="h-8 w-8 text-white" />
+                        </div>
+                    </div>
                     <input 
                         type="file" 
                         ref={fileInputRef}
@@ -200,7 +216,7 @@ export default function SettingsPage() {
                         accept="image/png, image/jpeg"
                         disabled={isUploading || isSaving}
                     />
-                    <Button 
+                     <Button 
                         variant="outline" 
                         type="button" 
                         onClick={() => fileInputRef.current?.click()}

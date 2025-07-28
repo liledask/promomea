@@ -108,6 +108,15 @@ const avatarUpdateSchema = z.object({
   avatarUrl: z.string().url(),
 });
 
+function generatePromoId(length = 6) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+}
+
 export async function updateUserAvatarAction(input: {userId: string, avatarUrl: string}) {
   const parsed = avatarUpdateSchema.safeParse(input);
 
@@ -124,7 +133,8 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
       .upsert({
         id: parsed.data.userId,
         avatar_url: parsed.data.avatarUrl,
-      })
+        promo_id: generatePromoId() // Add this to satisfy potential RLS policies on INSERT
+      }, { onConflict: 'id' })
       .select()
       .single();
 
