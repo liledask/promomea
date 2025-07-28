@@ -10,7 +10,7 @@ export const TIER_DETAILS: Record<TierLevel, TierDetails> = {
     goalEvents: 5,
     benefits: [
       'Earn 1% of Ticket sales from Events added to the platform up to 5 events',
-      'PT must have 5 events on the platform within 30 days to move to the next tier (when 5 events are not added to the platform within 30 days the ProMo starts over, while earning from the events added to the platform)',
+      'When 5 events are not added to the platform within 30 days, tier one restarts, no commissions earned on events added.',
       'PayOut of your earnings up to 7 days after the event',
     ],
     advanceRequirement: 'Minimum of 5 events added to platform within 30 days from registering as a ProMo',
