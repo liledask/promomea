@@ -120,7 +120,7 @@ export default function LandingPage() {
                         <div className="max-w-3xl mx-auto text-center mb-12">
                             <h2 className="text-3xl font-headline font-bold">What is ProMo MEA?</h2>
                             <p className="mt-4 text-lg text-muted-foreground">
-                                ProMo MEA is the official affiliate program for My Event Advisor (MEA). While anyone can add an event on the main MEA platform, joining as a ProMo allows you to earn extra income by referring new organizers and earning commissions from their event ticket sales.
+                                ProMo MEA is the official affiliate program for My Event Advisor (MEA). Event organizers can add their events directly on the MEA platform. Being a ProMo allows you to earn extra income by referring new organizers to the platform. If an organizer signs up using your referral code, you will earn a commission on their ticket sales.
                             </p>
                         </div>
                         <div className="grid md:grid-cols-3 gap-8 text-center">
