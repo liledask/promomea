@@ -19,15 +19,6 @@ import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
 
-function generatePromoId(length = 6) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-        result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return result;
-}
-
 export default function SignupPage() {
   const router = useRouter();
   const { toast } = useToast();
@@ -41,58 +32,39 @@ export default function SignupPage() {
     setLoading(true);
 
     try {
-      // Step 1: Sign up the user in Supabase Auth
-      const { data: authData, error: authError } = await supabase.auth.signUp({
+      // The useAuth hook will now handle creating the profile when the user's
+      // session is first detected after email verification.
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-            data: {
-                full_name: fullName,
-                avatar_url: `https://placehold.co/100x100.png?text=${fullName.charAt(0) || 'U'}`,
-            }
-        }
-      });
-
-      if (authError) {
-        throw authError;
-      }
-      
-      if (!authData.user) {
-        throw new Error("Signup successful, but no user data returned. Please try again.");
-      }
-
-      const newPromoId = generatePromoId();
-
-      // Step 2: Manually create a profile in the public.promo_profile table
-      const { error: profileError } = await supabase
-        .from('promo_profile')
-        .insert({
-            id: authData.user.id,
+          data: {
             full_name: fullName,
             avatar_url: `https://placehold.co/100x100.png?text=${fullName.charAt(0) || 'U'}`,
-            promo_id: newPromoId,
-        });
+          },
+        },
+      });
 
-      if (profileError) {
-        // If profile creation fails, we should ideally handle this,
-        // perhaps by deleting the auth user or flagging for admin attention.
-        // For now, we'll log the error and notify the user.
-        console.error("Error creating user profile:", profileError);
-        throw new Error(`Account created, but profile setup failed. Please contact support. Error: ${profileError.message}`);
+      if (error) {
+        throw error;
       }
       
-      // The onAuthStateChange listener in useAuth will handle the redirect.
-      // We just need to let the user know to check their email for verification.
-      toast({
-        title: 'Account Creation Pending',
-        description: "Please check your email to verify your account.",
-      });
-      
-      // We don't need to push the router, onAuthStateChange will do it.
-      // Clearing form is good practice.
-      setFullName('');
-      setEmail('');
-      setPassword('');
+      if (!data.session && data.user) {
+        toast({
+          title: 'Account Creation Pending',
+          description: "Please check your email to verify your account and complete signup.",
+        });
+        setFullName('');
+        setEmail('');
+        setPassword('');
+      } else {
+         // This case handles auto-verification in local dev environments
+         toast({
+          title: 'Account Created!',
+          description: "You've been signed in successfully.",
+        });
+        router.push('/dashboard');
+      }
 
     } catch (error: any) {
        console.error('Signup error:', error);
