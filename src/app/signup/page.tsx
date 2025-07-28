@@ -32,8 +32,6 @@ export default function SignupPage() {
     setLoading(true);
 
     try {
-      // The useAuth hook will now handle creating the profile when the user's
-      // session is first detected after email verification.
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -49,21 +47,22 @@ export default function SignupPage() {
         throw error;
       }
       
-      if (!data.session && data.user) {
+      if (data.session) {
+        // This case handles auto-verification in local dev environments
+        toast({
+         title: 'Account Created!',
+         description: "You've been signed in successfully.",
+       });
+       router.push('/dashboard');
+      } else if (data.user) {
         toast({
           title: 'Account Creation Pending',
           description: "Please check your email to verify your account and complete signup.",
         });
+        // Clear form only on successful submission that requires verification
         setFullName('');
         setEmail('');
         setPassword('');
-      } else {
-         // This case handles auto-verification in local dev environments
-         toast({
-          title: 'Account Created!',
-          description: "You've been signed in successfully.",
-        });
-        router.push('/dashboard');
       }
 
     } catch (error: any) {

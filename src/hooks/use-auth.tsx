@@ -77,8 +77,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             // Profile does not exist, so this is a new user. Create the profile.
             console.log("No profile found for new user, creating one.");
             const newPromoId = generatePromoId();
-            const fullName = supabaseUser.user_metadata.full_name || 'New User';
-            const avatarUrl = supabaseUser.user_metadata.avatar_url || `https://placehold.co/100x100.png?text=${fullName.charAt(0) || 'U'}`;
+            const fullName = supabaseUser.user_metadata?.full_name || 'New User';
+            const avatarUrl = supabaseUser.user_metadata?.avatar_url || `https://placehold.co/100x100.png?text=${fullName.charAt(0) || 'U'}`;
             
             const { data: newProfile, error: insertError } = await supabase
                 .from('promo_profile')
