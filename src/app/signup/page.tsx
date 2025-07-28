@@ -19,6 +19,15 @@ import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
 
+function generatePromoId(length = 6) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+}
+
 export default function SignupPage() {
   const router = useRouter();
   const { toast } = useToast();
@@ -36,6 +45,12 @@ export default function SignupPage() {
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+            data: {
+                full_name: fullName,
+                avatar_url: `https://placehold.co/100x100.png?text=${fullName.charAt(0) || 'U'}`,
+            }
+        }
       });
 
       if (authError) {
@@ -46,14 +61,16 @@ export default function SignupPage() {
         throw new Error("Signup successful, but no user data returned. Please try again.");
       }
 
+      const newPromoId = generatePromoId();
+
       // Step 2: Manually create a profile in the public.promo_profile table
       const { error: profileError } = await supabase
         .from('promo_profile')
         .insert({
             id: authData.user.id,
             full_name: fullName,
-            // Provide a default placeholder avatar
             avatar_url: `https://placehold.co/100x100.png?text=${fullName.charAt(0) || 'U'}`,
+            promo_id: newPromoId,
         });
 
       if (profileError) {
