@@ -27,11 +27,12 @@ export default function SidebarNav({ primaryItems, secondaryItems }: SidebarNavP
   const pathname = usePathname();
 
   const isActive = (href: string) => {
-    // Exact match for dashboard
+    // Exact match for the dashboard page or root.
     if (href === '/dashboard') {
-        return pathname === href || pathname === '/';
+      return pathname === href || pathname === '/';
     }
-    // Starts with for other pages
+    // For all other pages, check if the path starts with the href.
+    // This handles nested routes correctly if they are added in the future.
     return pathname.startsWith(href);
   }
 
