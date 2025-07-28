@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Check } from "lucide-react";
+import { Check, ArrowDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { TIER_DETAILS } from "@/lib/constants";
@@ -29,21 +29,39 @@ export default function LandingPage() {
             </header>
 
             <main className="flex-1">
-                <section className="container py-12 text-center lg:py-24">
-                    <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl">
-                        Refer Event Organizers. Earn Big.
-                    </h1>
-                    <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mt-4">
-                        Join the ProMo MEA Affiliate Program and turn your network into revenue. Refer event organizers to My Event Advisor and earn commissions from their success.
-                    </p>
-                    <div className="mt-6">
-                        <Button size="lg" asChild>
-                            <Link href="/signup">Become a ProMo Affiliate</Link>
-                        </Button>
+                <section className="relative w-full bg-gradient-to-r from-red-500 to-rose-400 py-24 sm:py-32 lg:py-40 text-white overflow-hidden">
+                    <div className="absolute inset-0 bg-[url('/dots.svg')] bg-repeat opacity-20"></div>
+                    <div className="container relative grid lg:grid-cols-2 items-center gap-12">
+                        <div className="space-y-6 text-center lg:text-left">
+                            <h1 className="text-4xl font-headline font-bold tracking-tight sm:text-5xl md:text-6xl text-white">
+                                INCREASE YOUR IMPACT & INCOME WITH BEING A PROMO
+                            </h1>
+                            <p className="text-lg text-white/90">
+                                investing in your future while you invest in yourself!
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                                <Button size="lg" asChild className="bg-white text-red-500 hover:bg-white/90">
+                                    <Link href="/signup">Register Now</Link>
+                                </Button>
+                                <Button size="lg" variant="outline" asChild className="border-white text-white hover:bg-white/10 hover:text-white">
+                                    <Link href="#how-it-works">Learn More</Link>
+                                </Button>
+                            </div>
+                        </div>
+                        <div className="relative hidden lg:flex items-center justify-center">
+                            <div className="w-64 h-64 bg-white/90 rounded-full flex items-center justify-center shadow-2xl backdrop-blur-sm">
+                                <span className="text-8xl font-serif text-red-500">mea</span>
+                            </div>
+                            <div className="absolute -inset-16 bg-white/10 rounded-full blur-3xl"></div>
+                        </div>
+                    </div>
+                     <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/80">
+                        <span>Scroll to explore</span>
+                        <ArrowDown className="w-5 h-5 animate-bounce" />
                     </div>
                 </section>
 
-                <section className="bg-muted py-12 lg:py-24">
+                <section id="how-it-works" className="bg-muted py-12 lg:py-24">
                     <div className="container grid items-center gap-6 lg:grid-cols-2 lg:gap-12">
                         <Image 
                             src="https://placehold.co/600x400.png"
