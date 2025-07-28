@@ -1,10 +1,9 @@
 
-import { Bell } from 'lucide-react';
 import type { User } from '@/lib/types';
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import { Button } from '@/components/ui/button';
 import { UserNav } from './user-nav';
 import Link from 'next/link';
+import Notifications from './notifications';
 
 interface HeaderProps {
   user: User;
@@ -22,10 +21,7 @@ export default function Header({ user }: HeaderProps) {
         </Link>
       </div>
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
-          <Bell className="h-4 w-4" />
-          <span className="sr-only">Toggle notifications</span>
-        </Button>
+        <Notifications />
         <UserNav user={user} />
       </div>
     </header>
