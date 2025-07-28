@@ -46,10 +46,10 @@ export default function BonusesAwardsPage() {
         <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
           {awards.map((award, index) => (
             <Card key={index} className="flex flex-col">
-              <CardHeader>
+              <CardHeader className="flex-grow">
                   <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
-                    <div className="flex items-start gap-4">
-                        <award.icon className="w-8 h-8 text-accent flex-shrink-0" />
+                    <div className="flex items-start gap-4 flex-grow">
+                        <award.icon className="w-8 h-8 text-accent flex-shrink-0 mt-1" />
                         <div>
                             <CardTitle>{award.title}</CardTitle>
                             <CardDescription>{award.description}</CardDescription>
@@ -58,7 +58,7 @@ export default function BonusesAwardsPage() {
                     {award.status === 'Achieved' && <Badge variant="secondary" className="bg-green-100 text-green-800 whitespace-nowrap self-start sm:self-center">Achieved</Badge>}
                   </div>
               </CardHeader>
-              <CardContent className="flex-grow mt-auto">
+              <CardContent>
                  {award.status !== 'Achieved' && (
                     <div>
                         <div className="flex justify-between items-center mb-1">

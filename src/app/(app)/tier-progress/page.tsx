@@ -48,7 +48,7 @@ export default function TierProgressPage() {
                                     
                                     <h4 className="font-semibold text-sm mb-2">Benefits:</h4>
                                     <ul className="list-disc list-inside text-sm text-muted-foreground pl-2 space-y-1">
-                                        {tier.benefits.map(benefit => <li key={benefit}>{benefit}</li>)}
+                                        {tier.benefits.map(benefit => <li key={benefit} className="pl-2">{benefit}</li>)}
                                     </ul>
                                 </div>
                             )
@@ -68,10 +68,10 @@ export default function TierProgressPage() {
                     </CardHeader>
                     <CardContent>
                        <div className="relative pl-6">
-                         <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-border -translate-x-1/2"></div>
+                         <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-border translate-x-[calc(-50%_+_2px)]"></div>
                          {tierHistory.map((item, index) => (
-                            <div key={index} className="relative mb-8">
-                               <div className="absolute -left-6 top-1 w-5 h-5 bg-primary rounded-full flex items-center justify-center -translate-x-1/2">
+                            <div key={index} className="relative mb-8 pl-8">
+                               <div className="absolute left-0 top-1 w-5 h-5 bg-primary rounded-full flex items-center justify-center -translate-x-1/2">
                                   <CheckCircle size={14} className="text-primary-foreground" />
                                </div>
                                <p className="font-semibold">{TIER_DETAILS[item.tier as keyof typeof TIER_DETAILS].name} Tier Unlocked</p>
