@@ -87,7 +87,7 @@ export default function MyEventsPage() {
                 </CardContent>
                 <CardFooter>
                    <Button variant="outline" size="sm" className="w-full" asChild>
-                      <Link href={`${meaUrl}/events/${event.id}`} target="_blank" title="View on MEA">
+                      <Link href={`${meaUrl}/event/${event.id}`} target="_blank" title="View on MEA">
                         <Eye className="mr-2 h-4 w-4" />
                         View Event on MEA
                       </Link>
