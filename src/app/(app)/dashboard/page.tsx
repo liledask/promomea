@@ -21,7 +21,7 @@ export default function DashboardPage() {
     return null;
   }
   
-  const currentTierDetails = TIER_DETAILS[user.current_tier];
+  const currentTierDetails = user.current_tier ? TIER_DETAILS[user.current_tier] : undefined;
 
   return (
     <div className="space-y-6">
@@ -36,9 +36,11 @@ export default function DashboardPage() {
                 <p className="text-sm text-muted-foreground">Here&apos;s your affiliate performance overview.</p>
             </div>
             </div>
-            <Badge variant="outline" className="text-base py-1.5 px-3 border-accent text-accent font-bold self-start sm:self-center">
-            {currentTierDetails.name} Tier
-            </Badge>
+            {currentTierDetails && (
+              <Badge variant="outline" className="text-base py-1.5 px-3 border-accent text-accent font-bold self-start sm:self-center">
+                {currentTierDetails.name} Tier
+              </Badge>
+            )}
         </div>
 
         <div className="grid gap-6 grid-cols-1 lg:grid-cols-5">
