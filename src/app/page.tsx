@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, ArrowDown, Briefcase, Target, Users, BookOpen, Star, BarChart, Award, FolderKanban, HandCoins, Network, Presentation } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -63,10 +63,9 @@ export default function LandingPage() {
             <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                 <div className="container flex h-14 items-center justify-between">
                     <Link href="/" className="flex items-center gap-2">
+                        <span className="font-headline text-xl font-bold">ProMo</span>
                         <Image src="/promo-mea-logo.png" alt="ProMo MEA Logo" width={100} height={24} className="h-6 w-auto" />
                     </Link>
-                    <nav className="hidden items-center gap-6 text-sm md:flex">
-                    </nav>
                     <div className="flex items-center gap-2">
                         <Button variant="ghost" asChild>
                             <Link href="/login">Login</Link>
