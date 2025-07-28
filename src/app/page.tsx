@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Check, ArrowDown, Briefcase, Target, Users, BookOpen, Star, BarChart, Award, FolderKanban, HandCoins, Network, Presentation } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { TIER_DETAILS } from "@/lib/constants";
 
 const tiers = Object.values(TIER_DETAILS);
@@ -96,9 +97,14 @@ export default function LandingPage() {
                             </div>
                         </div>
                          <div className="relative hidden lg:flex items-center justify-center">
-                            <div className="w-64 h-64 bg-white/90 rounded-full flex items-center justify-center shadow-2xl backdrop-blur-sm">
-                                <span className="text-8xl font-headline text-primary">mea</span>
-                            </div>
+                            <Image
+                                src="/promo-mea-logo.png"
+                                alt="ProMo MEA Logo"
+                                width={256}
+                                height={256}
+                                className="relative z-10"
+                                priority
+                            />
                             <div className="absolute -inset-16 bg-white/10 rounded-full blur-3xl"></div>
                         </div>
                     </div>
