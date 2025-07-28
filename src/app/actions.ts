@@ -119,21 +119,31 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
   }
 
   try {
-    const { data: updatedProfile, error } = await supabase
+    // First, check if the profile exists.
+    const { data: existingProfile, error: fetchError } = await supabase
+        .from('promo_profile')
+        .select('id')
+        .eq('id', parsed.data.userId)
+        .maybeSingle();
+
+    if (fetchError) throw fetchError;
+
+    if (!existingProfile) {
+        return {
+            success: false,
+            error: 'User profile not found. Could not update avatar.',
+        };
+    }
+    
+    // If profile exists, proceed with the update.
+    const { data: updatedProfile, error: updateError } = await supabase
       .from('promo_profile')
       .update({ avatar_url: parsed.data.avatarUrl })
       .eq('id', parsed.data.userId)
       .select()
       .single();
 
-    if (error) throw error;
-
-    if (!updatedProfile) {
-        return {
-            success: false,
-            error: 'User profile not found. Could not update avatar.',
-        };
-    }
+    if (updateError) throw updateError;
     
     revalidatePath('/settings');
     revalidatePath('/dashboard');
