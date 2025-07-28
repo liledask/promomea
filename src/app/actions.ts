@@ -119,7 +119,6 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
   }
 
   try {
-    // Step 1: Perform the update
     const { error: updateError } = await supabase
       .from('promo_mea_table')
       .update({ avatar_url: parsed.data.avatarUrl })
@@ -129,25 +128,13 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
       console.error('Supabase update error:', updateError);
       throw updateError;
     }
-
-    // Step 2: Fetch the updated profile to return it
-    const { data: updatedProfile, error: selectError } = await supabase
-      .from('promo_mea_table')
-      .select()
-      .eq('id', parsed.data.userId)
-      .single();
-
-    if (selectError) {
-      console.error('Supabase select after update error:', selectError);
-      // Even if select fails, the update might have succeeded.
-      // We can return success but without the updated data.
-      // Or we can throw, which is probably better to indicate something is wrong.
-      throw selectError;
-    }
     
     revalidatePath('/settings');
     revalidatePath('/dashboard');
-    return { success: true, data: updatedProfile };
+    
+    // After a successful update, we don't need to return the whole profile,
+    // as the client-side state update is sufficient.
+    return { success: true, data: { avatar_url: parsed.data.avatarUrl } };
 
   } catch (error: any) {
     console.error('Error updating user avatar:', error);
@@ -160,15 +147,15 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
 
 
 const notificationSettingsSchema = z.object({
-  emailNotifications: z.boolean(),
-  promotionalUpdates: z.boolean(),
+  email_notifications_enabled: z.boolean(),
+  promotional_updates_enabled: z.boolean(),
   userId: z.string().uuid(),
 });
 
 export async function updateNotificationSettingsAction(formData: FormData) {
     const rawData = {
-        emailNotifications: formData.get('email_notifications_enabled') === 'true',
-        promotionalUpdates: formData.get('promotional_updates_enabled') === 'true',
+        email_notifications_enabled: formData.get('email_notifications_enabled') === 'true',
+        promotional_updates_enabled: formData.get('promotional_updates_enabled') === 'true',
         userId: formData.get('userId'),
     };
     const parsed = notificationSettingsSchema.safeParse(rawData);
@@ -184,8 +171,8 @@ export async function updateNotificationSettingsAction(formData: FormData) {
         const { data: updatedProfile, error } = await supabase
             .from('promo_mea_table')
             .update({
-                email_notifications_enabled: parsed.data.emailNotifications,
-                promotional_updates_enabled: parsed.data.promotionalUpdates,
+                email_notifications_enabled: parsed.data.email_notifications_enabled,
+                promotional_updates_enabled: parsed.data.promotional_updates_enabled,
             })
             .eq('id', parsed.data.userId)
             .select()

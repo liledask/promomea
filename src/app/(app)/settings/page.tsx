@@ -59,7 +59,6 @@ export default function SettingsPage() {
     setIsSaving(false);
 
     if (result.success && result.data) {
-      // Combine existing user email with updated profile data
       setUser({ ...user, ...result.data });
       toast({
         title: "Profile Updated",
