@@ -31,9 +31,9 @@ export default function GoalRecommendation({ user }: GoalRecommendationProps) {
   const handleGetRecommendation = async () => {
     setLoading(true);
     const result = await getGoalRecommendationAction({
-      currentTier: user.current_tier,
-      currentEarnings: user.current_earnings,
-      eventsAdded: user.events_added,
+      currentTier: user.current_tier || 'PT',
+      currentEarnings: 0, // Placeholder, as this field is not in the schema
+      eventsAdded: user.referral_count || 0, // Using referral_count as a proxy for events
     });
 
     setLoading(false);

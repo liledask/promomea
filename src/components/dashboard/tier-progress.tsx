@@ -13,26 +13,27 @@ interface TierProgressProps {
 
 export default function TierProgress({ user }: TierProgressProps) {
   const tierLevels = Object.keys(TIER_DETAILS) as (keyof typeof TIER_DETAILS)[];
-  const currentUserTierIndex = tierLevels.indexOf(user.current_tier);
+  const currentUserTierIndex = user.current_tier ? tierLevels.indexOf(user.current_tier) : 0;
   
   const nextTier = currentUserTierIndex < tierLevels.length - 1 ? TIER_DETAILS[tierLevels[currentUserTierIndex + 1]] : null;
+  const eventsAdded = user.referral_count || 0; // Use referral_count as a proxy for events_added
 
   let progress = 0;
   if (nextTier) {
     if (user.current_tier === 'PT') {
-        progress = Math.min((user.events_added / TIER_DETAILS.PT.goalEvents) * 100, 100);
+        progress = Math.min((eventsAdded / TIER_DETAILS.PT.goalEvents) * 100, 100);
     } else if (user.current_tier === 'PC') {
-        progress = Math.min(((user.events_added - TIER_DETAILS.PT.goalEvents) / (TIER_DETAILS.PC.goalEvents - TIER_DETAILS.PT.goalEvents)) * 100, 100);
+        progress = Math.min(((eventsAdded - TIER_DETAILS.PT.goalEvents) / (TIER_DETAILS.PC.goalEvents - TIER_DETAILS.PT.goalEvents)) * 100, 100);
     } else if (user.current_tier === 'DPCA') {
-        progress = Math.min(((user.events_added - TIER_DETAILS.PC.goalEvents) / (TIER_DETAILS.DPCA.goalEvents - TIER_DETAILS.PC.goalEvents)) * 100, 100);
+        progress = Math.min(((eventsAdded - TIER_DETAILS.PC.goalEvents) / (TIER_DETAILS.DPCA.goalEvents - TIER_DETAILS.PC.goalEvents)) * 100, 100);
     } else if (user.current_tier === 'TPCA') {
-        progress = Math.min(((user.events_added - TIER_DETAILS.DPCA.goalEvents) / (TIER_DETAILS.TPCA.goalEvents - TIER_DETAILS.DPCA.goalEvents)) * 100, 100);
+        progress = Math.min(((eventsAdded - TIER_DETAILS.DPCA.goalEvents) / (TIER_DETAILS.TPCA.goalEvents - TIER_DETAILS.DPCA.goalEvents)) * 100, 100);
     }
   } else {
     progress = 100;
   }
 
-  const nextTierGoalEvents = nextTier ? nextTier.goalEvents : user.events_added;
+  const nextTierGoalEvents = nextTier ? nextTier.goalEvents : eventsAdded;
 
 
   return (
@@ -46,7 +47,7 @@ export default function TierProgress({ user }: TierProgressProps) {
           <div className="p-4 rounded-lg bg-secondary/50 border border-secondary">
             <div className="flex justify-between items-center mb-2">
               <p className="font-semibold text-foreground">Next Tier: {nextTier.name}</p>
-              <p className="text-sm font-medium text-accent">{user.events_added} / {nextTierGoalEvents} events</p>
+              <p className="text-sm font-medium text-accent">{eventsAdded} / {nextTierGoalEvents} referrals</p>
             </div>
             <Progress value={progress} className="h-3 bg-accent" />
             <p className="text-xs text-muted-foreground mt-2">
@@ -90,7 +91,7 @@ export default function TierProgress({ user }: TierProgressProps) {
                     </span>
                   ) : (
                     <span className="text-xs font-bold text-muted-foreground">
-                      {tier.goalEvents} Total Events
+                      {tier.goalEvents} Total Referrals
                     </span>
                   )}
                 </div>

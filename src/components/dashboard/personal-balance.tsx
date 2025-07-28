@@ -16,6 +16,11 @@ interface PersonalBalanceProps {
 export default function PersonalBalance({ user }: PersonalBalanceProps) {
   const [isPayoutDialogOpen, setIsPayoutDialogOpen] = useState(false);
 
+  // Placeholder values since these fields are not in the DB schema
+  const upcomingPayout = 0;
+  const currentEarnings = 0;
+  const lifetimeEarnings = 0;
+
   if (!user) {
     return (
         <Card className="bg-secondary/30">
@@ -40,7 +45,7 @@ export default function PersonalBalance({ user }: PersonalBalanceProps) {
             <div className="flex flex-col sm:flex-row items-center justify-between gap-6 p-6 rounded-lg bg-background">
                 <div className="text-center sm:text-left">
                     <p className="text-sm text-muted-foreground">Available for Payout</p>
-                    <p className="text-5xl font-bold text-primary">${(user.upcoming_payout || 0).toFixed(2)}</p>
+                    <p className="text-5xl font-bold text-primary">${(upcomingPayout).toFixed(2)}</p>
                     <p className="text-sm text-muted-foreground">Next payout scheduled for Jul 15, 2025</p>
                 </div>
                 <Button size="lg" className="w-full sm:w-auto" onClick={() => setIsPayoutDialogOpen(true)}>Manage Payouts</Button>
@@ -51,21 +56,21 @@ export default function PersonalBalance({ user }: PersonalBalanceProps) {
                 <TrendingUp className="w-8 h-8 text-accent" />
                 <div>
                 <p className="text-sm text-muted-foreground">Pending Earnings</p>
-                <p className="text-xl font-bold">${(user.current_earnings || 0).toFixed(2)}</p>
+                <p className="text-xl font-bold">${(currentEarnings).toFixed(2)}</p>
                 </div>
             </div>
             <div className="flex items-center gap-4 p-4 rounded-lg bg-background/50">
                 <PiggyBank className="w-8 h-8 text-accent" />
                 <div>
                 <p className="text-sm text-muted-foreground">Lifetime Earnings</p>
-                <p className="text-xl font-bold">${(user.lifetime_earnings || 0).toFixed(2)}</p>
+                <p className="text-xl font-bold">${(lifetimeEarnings).toFixed(2)}</p>
                 </div>
             </div>
             <div className="flex items-center gap-4 p-4 rounded-lg bg-background/50">
                 <CalendarPlus className="w-8 h-8 text-accent" />
                 <div>
-                <p className="text-sm text-muted-foreground">Total Events</p>
-                <p className="text-xl font-bold">{user.events_added || 0}</p>
+                <p className="text-sm text-muted-foreground">Total Referrals</p>
+                <p className="text-xl font-bold">{user.referral_count || 0}</p>
                 </div>
             </div>
             </div>

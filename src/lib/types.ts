@@ -10,18 +10,14 @@ export interface User {
   avatar_url: string | null;
   payout_method: string | null;
   payout_detail: string | null;
-  current_tier: TierLevel;
-  events_added: number;
-  current_earnings: number;
-  lifetime_earnings: number;
-  upcoming_payout: number;
-  referral_count: number;
+  current_tier: TierLevel | null;
+  referral_count: number | null;
   created_at: string;
   updated_at: string;
   referred_by_promo_code: string | null;
   email: string; // From auth.users
-  email_notifications_enabled: boolean;
-  promotional_updates_enabled: boolean;
+  email_notifications_enabled: boolean | null;
+  promotional_updates_enabled: boolean | null;
 }
 
 export interface TierDetails {

@@ -90,10 +90,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 email_notifications_enabled: true,
                 promotional_updates_enabled: false,
                 current_tier: 'PT',
-                events_added: 0,
-                current_earnings: 0,
-                lifetime_earnings: 0,
-                upcoming_payout: 0,
                 referral_count: 0
             };
 
