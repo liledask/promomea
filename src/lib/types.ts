@@ -6,12 +6,15 @@ export interface User {
   id: string;
   promo_id: string;
   full_name: string | null;
-  phone: string | null;
   avatar_url: string | null;
   payout_method: string | null;
   payout_detail: string | null;
   current_tier: TierLevel | null;
   referral_count: number | null;
+  events_added: number | null;
+  current_earnings: number | null;
+  lifetime_earnings: number | null;
+  upcoming_payout: number | null;
   created_at: string;
   updated_at: string;
   referred_by_promo_code: string | null;

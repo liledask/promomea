@@ -16,19 +16,25 @@ export default function TierProgress({ user }: TierProgressProps) {
   const currentUserTierIndex = user.current_tier ? tierLevels.indexOf(user.current_tier) : 0;
   
   const nextTier = currentUserTierIndex < tierLevels.length - 1 ? TIER_DETAILS[tierLevels[currentUserTierIndex + 1]] : null;
-  const eventsAdded = user.referral_count || 0; // Use referral_count as a proxy for events_added
+  const eventsAdded = user.events_added || 0;
 
   let progress = 0;
+  let eventsForNextTier = 0;
+  let currentTierGoalStart = 0;
+
   if (nextTier) {
-    if (user.current_tier === 'PT') {
-        progress = Math.min((eventsAdded / TIER_DETAILS.PT.goalEvents) * 100, 100);
-    } else if (user.current_tier === 'PC') {
-        progress = Math.min(((eventsAdded - TIER_DETAILS.PT.goalEvents) / (TIER_DETAILS.PC.goalEvents - TIER_DETAILS.PT.goalEvents)) * 100, 100);
-    } else if (user.current_tier === 'DPCA') {
-        progress = Math.min(((eventsAdded - TIER_DETAILS.PC.goalEvents) / (TIER_DETAILS.DPCA.goalEvents - TIER_DETAILS.PC.goalEvents)) * 100, 100);
-    } else if (user.current_tier === 'TPCA') {
-        progress = Math.min(((eventsAdded - TIER_DETAILS.DPCA.goalEvents) / (TIER_DETAILS.TPCA.goalEvents - TIER_DETAILS.DPCA.goalEvents)) * 100, 100);
+    const nextTierKey = tierLevels[currentUserTierIndex + 1];
+    const currentTierKey = user.current_tier || 'PT';
+
+    if (currentTierKey !== 'PT') {
+        currentTierGoalStart = TIER_DETAILS[tierLevels[currentUserTierIndex-1]].goalEvents;
     }
+    
+    eventsForNextTier = TIER_DETAILS[currentTierKey].goalEvents;
+    const eventsNeededForNext = eventsForNextTier - currentTierGoalStart;
+    const eventsMadeInTier = eventsAdded - currentTierGoalStart;
+
+    progress = Math.min((eventsMadeInTier / eventsNeededForNext) * 100, 100);
   } else {
     progress = 100;
   }
@@ -47,7 +53,7 @@ export default function TierProgress({ user }: TierProgressProps) {
           <div className="p-4 rounded-lg bg-secondary/50 border border-secondary">
             <div className="flex justify-between items-center mb-2">
               <p className="font-semibold text-foreground">Next Tier: {nextTier.name}</p>
-              <p className="text-sm font-medium text-accent">{eventsAdded} / {nextTierGoalEvents} referrals</p>
+              <p className="text-sm font-medium text-accent">{eventsAdded} / {nextTier.goalEvents} events</p>
             </div>
             <Progress value={progress} className="h-3 bg-accent" />
             <p className="text-xs text-muted-foreground mt-2">
@@ -91,7 +97,7 @@ export default function TierProgress({ user }: TierProgressProps) {
                     </span>
                   ) : (
                     <span className="text-xs font-bold text-muted-foreground">
-                      {tier.goalEvents} Total Referrals
+                      {tier.goalEvents} Total Events
                     </span>
                   )}
                 </div>

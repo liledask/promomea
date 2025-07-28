@@ -59,15 +59,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       try {
         const { data: profile, error } = await supabase
-          .from('promo_profile')
+          .from('promo_mea_table')
           .select('*')
           .eq('id', supabaseUser.id)
-          .maybeSingle();
+          .single();
 
         if (error && error.code !== 'PGRST116') { // PGRST116 means no rows found, which is ok
             console.error('Error fetching profile:', error);
-            await signOut();
-            return;
+            // If the error indicates the user was not found, we can proceed to create the profile.
+            // For other errors, it's safer to sign out.
+            if(error.code !== 'PGRST116'){
+              await signOut();
+              return;
+            }
         }
 
         if (profile) {
@@ -77,7 +81,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             };
             setUser(fullUser);
         } else {
-            // Profile does not exist, let's create it. This is the single source of truth for profile creation.
+            // Profile does not exist, let's create it.
             const newPromoId = generatePromoId();
             const fullName = supabaseUser.user_metadata?.full_name || 'New User';
             const avatarUrl = supabaseUser.user_metadata?.avatar_url || `https://placehold.co/100x100.png?text=${fullName.charAt(0) || 'U'}`;
@@ -87,14 +91,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 promo_id: newPromoId,
                 full_name: fullName,
                 avatar_url: avatarUrl,
+                // The new table has defaults for these, but we can set them explicitly too
                 email_notifications_enabled: true,
                 promotional_updates_enabled: false,
                 current_tier: 'PT',
-                referral_count: 0
+                referral_count: 0,
+                events_added: 0,
+                current_earnings: 0,
+                lifetime_earnings: 0,
+                upcoming_payout: 0,
             };
 
             const { data: newlyCreatedProfile, error: insertError } = await supabase
-                .from('promo_profile')
+                .from('promo_mea_table')
                 .insert(newProfileData)
                 .select()
                 .single();

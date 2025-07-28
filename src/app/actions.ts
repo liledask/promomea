@@ -40,7 +40,7 @@ export async function updatePayoutSettingsAction(formData: FormData) {
 
   try {
     const { error } = await supabase
-      .from('promo_profile')
+      .from('promo_mea_table')
       .update({
         payout_method: parsed.data.payout_method,
         payout_detail: parsed.data.payout_detail,
@@ -81,7 +81,7 @@ export async function updateUserProfileAction(formData: FormData) {
 
   try {
     const { data: updatedProfile, error } = await supabase
-      .from('promo_profile')
+      .from('promo_mea_table')
       .update({
         full_name: parsed.data.fullName,
       })
@@ -121,7 +121,7 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
   try {
     // Step 1: Perform the update
     const { error: updateError } = await supabase
-      .from('promo_profile')
+      .from('promo_mea_table')
       .update({ avatar_url: parsed.data.avatarUrl })
       .eq('id', parsed.data.userId);
 
@@ -132,13 +132,16 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
 
     // Step 2: Fetch the updated profile to return it
     const { data: updatedProfile, error: selectError } = await supabase
-      .from('promo_profile')
+      .from('promo_mea_table')
       .select()
       .eq('id', parsed.data.userId)
       .single();
 
     if (selectError) {
       console.error('Supabase select after update error:', selectError);
+      // Even if select fails, the update might have succeeded.
+      // We can return success but without the updated data.
+      // Or we can throw, which is probably better to indicate something is wrong.
       throw selectError;
     }
     
@@ -179,7 +182,7 @@ export async function updateNotificationSettingsAction(formData: FormData) {
 
     try {
         const { data: updatedProfile, error } = await supabase
-            .from('promo_profile')
+            .from('promo_mea_table')
             .update({
                 email_notifications_enabled: parsed.data.emailNotifications,
                 promotional_updates_enabled: parsed.data.promotionalUpdates,
