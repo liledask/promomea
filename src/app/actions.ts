@@ -119,35 +119,31 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
   }
 
   try {
-    // First, check if the profile exists.
-    const { data: existingProfile, error: fetchError } = await supabase
-        .from('promo_profile')
-        .select('id')
-        .eq('id', parsed.data.userId)
-        .maybeSingle();
-
-    if (fetchError) throw fetchError;
-
-    if (!existingProfile) {
-        return {
-            success: false,
-            error: 'User profile not found. Could not update avatar.',
-        };
-    }
-    
-    // If profile exists, proceed with the update.
-    const { data: updatedProfile, error: updateError } = await supabase
+    const { data: updatedProfile, error } = await supabase
       .from('promo_profile')
-      .update({ avatar_url: parsed.data.avatarUrl })
-      .eq('id', parsed.data.userId)
+      .upsert({
+        id: parsed.data.userId,
+        avatar_url: parsed.data.avatarUrl,
+      })
       .select()
       .single();
 
-    if (updateError) throw updateError;
+    if (error) {
+        console.error('Supabase upsert error:', error);
+        throw error;
+    }
+    
+    if (!updatedProfile) {
+        return {
+            success: false,
+            error: 'Failed to update or create user profile.',
+        };
+    }
     
     revalidatePath('/settings');
     revalidatePath('/dashboard');
     return { success: true, data: updatedProfile };
+
   } catch (error: any) {
     console.error('Error updating user avatar:', error);
     return {
