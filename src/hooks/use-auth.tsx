@@ -39,6 +39,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
+  const signOut = useCallback(async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    router.push('/login');
+    router.refresh();
+  }, [router]);
+
   const handleAuthChange = useCallback(
     async (event: AuthChangeEvent, session: Session | null) => {
       setLoading(true);
@@ -61,8 +68,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             // PGRST116 is 'object not found', which is expected for new users.
             // For other errors, log them and sign out.
             console.error('Error fetching profile:', error);
-            await supabase.auth.signOut();
-            setUser(null);
+            await signOut();
             return;
         }
 
@@ -75,7 +81,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setUser(fullUser);
         } else {
             // Profile does not exist, so this is a new user. Create the profile.
-            console.log("No profile found for new user, creating one.");
             const newPromoId = generatePromoId();
             const fullName = supabaseUser.user_metadata?.full_name || 'New User';
             const avatarUrl = supabaseUser.user_metadata?.avatar_url || `https://placehold.co/100x100.png?text=${fullName.charAt(0) || 'U'}`;
@@ -93,8 +98,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
             if (insertError) {
                 console.error("Fatal error: Could not create profile for new user.", insertError);
-                await supabase.auth.signOut();
-                setUser(null);
+                await signOut();
                 return;
             }
             
@@ -106,14 +110,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
 
       } catch (e) {
-        console.error('An unexpected error occurred in auth handler:', e);
-        setUser(null);
-        await supabase.auth.signOut();
+        console.error('An unexpected error occurred in auth handler, signing out:', e);
+        await signOut();
       } finally {
         setLoading(false);
       }
     },
-    []
+    [signOut]
   );
 
   useEffect(() => {
@@ -130,13 +133,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       subscription?.unsubscribe();
     };
   }, [handleAuthChange]);
-
-  const signOut = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-    router.push('/login');
-    router.refresh();
-  };
 
   return (
     <AuthContext.Provider value={{ user, loading, signOut, setUser }}>
