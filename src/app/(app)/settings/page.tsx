@@ -81,21 +81,22 @@ export default function SettingsPage() {
 
     const file = event.target.files[0];
     const fileExt = file.name.split('.').pop();
-    const fileName = `${user.id}-${Math.random()}.${fileExt}`;
+    const fileName = `${user.id}-${Date.now()}.${fileExt}`;
     const filePath = `${fileName}`;
 
     setIsUploading(true);
 
     try {
-      // NOTE: Assumes a public Supabase Storage bucket named 'avatars' exists.
+      // Step 1: Upload file to Supabase Storage
       const { error: uploadError } = await supabase.storage
         .from('avatars')
         .upload(filePath, file);
 
       if (uploadError) {
-        throw uploadError;
+        throw new Error(`Storage Upload Error: ${uploadError.message}`);
       }
 
+      // Step 2: Get public URL for the uploaded file
       const { data } = supabase.storage
         .from('avatars')
         .getPublicUrl(filePath);
@@ -106,6 +107,7 @@ export default function SettingsPage() {
         throw new Error("Could not get public URL for the uploaded avatar.");
       }
 
+      // Step 3: Update the user's profile in the database
       const result = await updateUserAvatarAction({ userId: user.id, avatarUrl: publicUrl });
 
       if (result.success && result.data) {
@@ -118,6 +120,7 @@ export default function SettingsPage() {
         throw new Error(result.error || "Failed to update avatar in the database.");
       }
     } catch (error: any) {
+      console.error("Avatar upload process failed:", error);
       toast({
         variant: "destructive",
         title: "Upload Failed",
