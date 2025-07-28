@@ -42,3 +42,15 @@ export interface ProMoEvent {
   user_id: string;
   created_at: string;
 }
+
+export interface Notification {
+  id: string;
+  user_id: string;
+  type: 'award' | 'payout' | 'tier_upgrade' | string;
+  data: {
+    title: string;
+    description: string;
+  };
+  is_read: boolean;
+  created_at: string;
+}
