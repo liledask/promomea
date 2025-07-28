@@ -119,7 +119,6 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
   }
 
   try {
-    // Only update the existing profile. Profile creation is handled by useAuth.
     const { data: updatedProfile, error } = await supabase
       .from('promo_profile')
       .update({

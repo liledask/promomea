@@ -81,9 +81,8 @@ export default function SettingsPage() {
 
     const file = event.target.files[0];
     
-    // File validation
-    if (!['image/jpeg', 'image/png'].includes(file.type)) {
-      toast({ variant: 'destructive', title: 'Invalid File Type', description: 'Please select a JPG or PNG image.' });
+    if (!file.type.startsWith('image/')) {
+      toast({ variant: 'destructive', title: 'Invalid File Type', description: 'Please select an image file.' });
       return;
     }
     if (file.size > 5 * 1024 * 1024) { // 5MB limit
@@ -92,14 +91,14 @@ export default function SettingsPage() {
     }
 
     const fileExt = file.name.split('.').pop();
-    const filePath = `${user.id}/avatar.${fileExt}`;
+    const filePath = `${user.id}/${Date.now()}.${fileExt}`;
 
     setIsUploading(true);
 
     try {
       const { error: uploadError } = await supabase.storage
         .from('avatars')
-        .upload(filePath, file, { upsert: true });
+        .upload(filePath, file);
 
       if (uploadError) {
         throw new Error(`Storage Error: ${uploadError.message}`);
@@ -109,8 +108,7 @@ export default function SettingsPage() {
         .from('avatars')
         .getPublicUrl(filePath);
 
-      // Add a timestamp to bust the cache
-      const publicUrl = `${data.publicUrl}?t=${new Date().getTime()}`;
+      const publicUrl = data.publicUrl;
 
       if (!publicUrl) {
         throw new Error("Could not get public URL for the uploaded avatar.");
@@ -213,7 +211,7 @@ export default function SettingsPage() {
                         ref={fileInputRef}
                         onChange={handleAvatarChange}
                         className="hidden" 
-                        accept="image/png, image/jpeg"
+                        accept="image/*"
                         disabled={isUploading || isSaving}
                     />
                      <Button 
