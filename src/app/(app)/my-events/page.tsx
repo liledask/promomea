@@ -12,6 +12,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { supabase } from "@/lib/supabaseClient";
 import { useAuth } from "@/hooks/use-auth";
 
+const meaUrl = process.env.NEXT_PUBLIC_MEA_URL || 'https://myeventadvisor.com';
+
 export default function MyEventsPage() {
   const { user } = useAuth();
   const [events, setEvents] = useState<ProMoEvent[]>([]);
@@ -85,7 +87,7 @@ export default function MyEventsPage() {
                 </CardContent>
                 <CardFooter>
                    <Button variant="outline" size="sm" className="w-full" asChild>
-                      <Link href={`https://myeventadvisor.com/events/${event.id}`} target="_blank" title="View on MEA">
+                      <Link href={`${meaUrl}/events/${event.id}`} target="_blank" title="View on MEA">
                         <Eye className="mr-2 h-4 w-4" />
                         View Event on MEA
                       </Link>

@@ -8,6 +8,8 @@ import { Copy, Share2 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { useAuth } from "@/hooks/use-auth"
 
+const meaUrl = process.env.NEXT_PUBLIC_MEA_URL || 'https://myeventadvisor.com';
+
 export default function ReferralPage() {
   const { toast } = useToast();
   const { user } = useAuth();
@@ -17,7 +19,7 @@ export default function ReferralPage() {
   }
 
   const referralCode = user.promo_id;
-  const referralLink = `https://myeventadvisor.com/promo?ref=${referralCode}`;
+  const referralLink = `${meaUrl}/promo?ref=${referralCode}`;
 
   const handleCopy = (textToCopy: string, fieldName: string) => {
     navigator.clipboard.writeText(textToCopy);
