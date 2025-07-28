@@ -225,44 +225,11 @@ export default function LandingPage() {
                  </section>
             </main>
 
-            <footer className="bg-foreground text-background">
-                <div className="container py-12">
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
-                        <div className="col-span-2 md:col-span-1">
-                             <Link href="/" className="flex items-center gap-2 mb-4">
-                                <span className="font-headline text-2xl font-bold">ProMo MEA</span>
-                            </Link>
-                            <p className="text-sm text-muted-foreground">The affiliate marketing program for My Event Advisor - connecting people with amazing events across US</p>
-                        </div>
-                        <div className="space-y-4">
-                            <h4 className="font-semibold uppercase tracking-wider">Platform</h4>
-                            <ul className="space-y-2 text-sm text-muted-foreground">
-                                <li><Link href="#" className="hover:text-primary">Events</Link></li>
-                                <li><Link href="#levels" className="hover:text-primary">Affiliate Levels</Link></li>
-                                <li><Link href="#benefits" className="hover:text-primary">Benefits</Link></li>
-                                <li><Link href="/dashboard" className="hover:text-primary">Your Impact</Link></li>
-                            </ul>
-                        </div>
-                        <div className="space-y-4">
-                             <h4 className="font-semibold uppercase tracking-wider">Company</h4>
-                            <ul className="space-y-2 text-sm text-muted-foreground">
-                                <li><Link href="#" className="hover:text-primary">About Us</Link></li>
-                                <li><Link href="#" className="hover:text-primary">Contact</Link></li>
-                                <li><Link href="#" className="hover:text-primary">My Event Advisor</Link></li>
-                            </ul>
-                        </div>
-                         <div className="space-y-4">
-                             <h4 className="font-semibold uppercase tracking-wider">Legal</h4>
-                            <ul className="space-y-2 text-sm text-muted-foreground">
-                                <li><Link href="#" className="hover:text-primary">Terms of Service</Link></li>
-                                <li><Link href="#" className="hover:text-primary">Privacy Policy</Link></li>
-                                <li><Link href="#" className="hover:text-primary">Legal Inquiries</Link></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div className="border-t border-muted/20 mt-8 pt-6 text-center text-sm text-muted-foreground">
-                        <p>&copy; {new Date().getFullYear()} My Event Advisor. All rights reserved. ProMo is a registered trademark of My Event Advisor Media, Inc.</p>
-                    </div>
+            <footer className="border-t">
+                <div className="container flex h-14 items-center justify-center">
+                    <p className="text-sm text-muted-foreground">
+                        &copy; {new Date().getFullYear()} My Event Advisor. All rights reserved.
+                    </p>
                 </div>
             </footer>
         </div>
