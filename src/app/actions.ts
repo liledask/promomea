@@ -124,7 +124,7 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
       .update({ avatar_url: parsed.data.avatarUrl })
       .eq('id', parsed.data.userId)
       .select()
-      .single();
+      .maybeSingle();
 
     if (error) throw error;
     
