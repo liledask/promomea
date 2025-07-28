@@ -75,8 +75,60 @@ export default function SettingsPage() {
   };
 
   const handleAvatarChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    // This functionality is disabled for now.
-    return;
+    if (!event.target.files || event.target.files.length === 0 || !user) {
+      return;
+    }
+
+    const file = event.target.files[0];
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${user.id}-${Math.random()}.${fileExt}`;
+    const filePath = `${fileName}`;
+
+    setIsUploading(true);
+
+    try {
+      // NOTE: Assumes a public Supabase Storage bucket named 'avatars' exists.
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file);
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      const { data } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath);
+
+      const publicUrl = data.publicUrl;
+
+      if (!publicUrl) {
+        throw new Error("Could not get public URL for the uploaded avatar.");
+      }
+
+      const result = await updateUserAvatarAction({ userId: user.id, avatarUrl: publicUrl });
+
+      if (result.success && result.data) {
+        setUser({ ...user, ...result.data });
+        toast({
+          title: "Avatar Updated",
+          description: "Your new profile picture has been saved.",
+        });
+      } else {
+        throw new Error(result.error || "Failed to update avatar in the database.");
+      }
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Upload Failed",
+        description: error.message || "An unexpected error occurred while uploading your photo.",
+      });
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
   };
 
   const handleNotificationSave = async (e: React.FormEvent) => {
@@ -143,13 +195,13 @@ export default function SettingsPage() {
                         onChange={handleAvatarChange}
                         className="hidden" 
                         accept="image/png, image/jpeg"
-                        disabled
+                        disabled={isUploading || isSaving}
                     />
                     <Button 
                         variant="outline" 
                         type="button" 
                         onClick={() => fileInputRef.current?.click()}
-                        disabled
+                        disabled={isUploading || isSaving}
                     >
                       Change Photo
                     </Button>
