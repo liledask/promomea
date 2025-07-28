@@ -62,39 +62,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           .from('promo_profile')
           .select('*')
           .eq('id', supabaseUser.id)
-          .single();
+          .maybeSingle();
 
         if (error && error.code !== 'PGRST116') {
-            // PGRST116 is 'object not found', which is expected for new users.
-            // For other errors, log them and sign out.
             console.error('Error fetching profile:', error);
             await signOut();
             return;
         }
 
         if (profile) {
-            // Profile exists, set the user
             const fullUser: User = {
                 ...profile,
                 email: supabaseUser.email || '',
             };
             setUser(fullUser);
         } else {
-            // Profile does not exist, so this is a new user. Create the profile.
             const newPromoId = generatePromoId();
             const fullName = supabaseUser.user_metadata?.full_name || 'New User';
             const avatarUrl = supabaseUser.user_metadata?.avatar_url || `https://placehold.co/100x100.png?text=${fullName.charAt(0) || 'U'}`;
             
-            const { data: newProfile, error: insertError } = await supabase
+            const newProfileData = {
+                id: supabaseUser.id,
+                promo_id: newPromoId,
+                full_name: fullName,
+                avatar_url: avatarUrl,
+            };
+
+            const { error: insertError } = await supabase
                 .from('promo_profile')
-                .insert({
-                    id: supabaseUser.id,
-                    promo_id: newPromoId,
-                    full_name: fullName,
-                    avatar_url: avatarUrl,
-                })
-                .select()
-                .single();
+                .insert(newProfileData);
 
             if (insertError) {
                 console.error("Fatal error: Could not create profile for new user.", insertError);
@@ -102,8 +98,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 return;
             }
             
+            // Manually construct the user object after successful insert
+            // This is more robust than relying on .select().single()
+            const { data: newlyCreatedProfile, error: fetchAfterInsertError } = await supabase
+              .from('promo_profile')
+              .select('*')
+              .eq('id', supabaseUser.id)
+              .single();
+
+            if (fetchAfterInsertError || !newlyCreatedProfile) {
+              console.error("Fatal error: Could not fetch profile after creating it.", fetchAfterInsertError);
+              await signOut();
+              return;
+            }
+
             const fullUser: User = {
-                ...newProfile,
+                ...newlyCreatedProfile,
                 email: supabaseUser.email || '',
             };
             setUser(fullUser);
