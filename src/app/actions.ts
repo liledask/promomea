@@ -139,3 +139,48 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
     };
   }
 }
+
+const notificationSettingsSchema = z.object({
+  emailNotifications: z.boolean(),
+  promotionalUpdates: z.boolean(),
+  userId: z.string().uuid(),
+});
+
+export async function updateNotificationSettingsAction(formData: FormData) {
+    const rawData = {
+        emailNotifications: formData.get('email_notifications_enabled') === 'true',
+        promotionalUpdates: formData.get('promotional_updates_enabled') === 'true',
+        userId: formData.get('userId'),
+    };
+    const parsed = notificationSettingsSchema.safeParse(rawData);
+
+    if (!parsed.success) {
+        return {
+            success: false,
+            error: 'Invalid data provided.',
+        };
+    }
+
+    try {
+        const { data: updatedProfile, error } = await supabase
+            .from('promo_profile')
+            .update({
+                email_notifications_enabled: parsed.data.emailNotifications,
+                promotional_updates_enabled: parsed.data.promotionalUpdates,
+            })
+            .eq('id', parsed.data.userId)
+            .select()
+            .single();
+        
+        if (error) throw error;
+        
+        revalidatePath('/settings');
+        return { success: true, data: updatedProfile };
+    } catch (error: any) {
+        console.error('Error updating notification settings:', error);
+        return {
+            success: false,
+            error: error.message || 'Failed to update settings.',
+        };
+    }
+}

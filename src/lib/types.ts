@@ -20,6 +20,8 @@ export interface User {
   updated_at: string;
   referred_by_promo_code: string | null;
   email: string; // From auth.users
+  email_notifications_enabled: boolean;
+  promotional_updates_enabled: boolean;
 }
 
 export interface TierDetails {

@@ -12,7 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useAuth } from '@/hooks/use-auth';
 import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { updateUserProfileAction, updateUserAvatarAction } from '@/app/actions';
+import { updateUserProfileAction, updateUserAvatarAction, updateNotificationSettingsAction } from '@/app/actions';
 import { supabase } from '@/lib/supabaseClient';
 
 export default function SettingsPage() {
@@ -24,9 +24,16 @@ export default function SettingsPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
+  const [emailNotifications, setEmailNotifications] = useState(true);
+  const [promotionalUpdates, setPromotionalUpdates] = useState(false);
+  const [isSavingNotifications, setIsSavingNotifications] = useState(false);
+
+
   useEffect(() => {
     if (user) {
       setFullName(user.full_name || '');
+      setEmailNotifications(user.email_notifications_enabled ?? true);
+      setPromotionalUpdates(user.promotional_updates_enabled ?? false);
     }
   }, [user]);
 
@@ -71,6 +78,35 @@ export default function SettingsPage() {
     // This functionality is disabled for now.
     return;
   };
+
+  const handleNotificationSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) return;
+    setIsSavingNotifications(true);
+
+    const formData = new FormData();
+    formData.append('email_notifications_enabled', String(emailNotifications));
+    formData.append('promotional_updates_enabled', String(promotionalUpdates));
+    formData.append('userId', user.id);
+
+    const result = await updateNotificationSettingsAction(formData);
+
+    setIsSavingNotifications(false);
+
+    if (result.success && result.data) {
+        setUser({ ...user, ...result.data });
+        toast({
+            title: "Settings Saved",
+            description: "Your notification preferences have been updated.",
+        });
+    } else {
+        toast({
+            variant: "destructive",
+            title: "Save Failed",
+            description: result.error || "Could not save your preferences.",
+        });
+    }
+  }
   
   const userInitial = user.full_name ? user.full_name.charAt(0).toUpperCase() : (user.email ? user.email.charAt(0).toUpperCase() : '');
 
@@ -104,7 +140,7 @@ export default function SettingsPage() {
                     <input 
                         type="file" 
                         ref={fileInputRef}
-                        // onChange={handleAvatarChange}
+                        onChange={handleAvatarChange}
                         className="hidden" 
                         accept="image/png, image/jpeg"
                         disabled
@@ -112,7 +148,7 @@ export default function SettingsPage() {
                     <Button 
                         variant="outline" 
                         type="button" 
-                        // onClick={() => fileInputRef.current?.click()}
+                        onClick={() => fileInputRef.current?.click()}
                         disabled
                     >
                       Change Photo
@@ -144,27 +180,40 @@ export default function SettingsPage() {
       <Separator />
 
       <Card>
-        <CardHeader>
-          <CardTitle>Notifications</CardTitle>
-          <CardDescription>Choose how you want to be notified.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-lg border p-4 gap-4">
-                <div className="flex-grow">
-                    <h4 className="font-medium">Email Notifications</h4>
-                    <p className="text-sm text-muted-foreground">Receive updates on earnings, payouts, and tier progress.</p>
+        <form onSubmit={handleNotificationSave}>
+            <CardHeader>
+            <CardTitle>Notifications</CardTitle>
+            <CardDescription>Choose how you want to be notified.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-lg border p-4 gap-4">
+                    <div className="flex-grow">
+                        <h4 className="font-medium">Email Notifications</h4>
+                        <p className="text-sm text-muted-foreground">Receive updates on earnings, payouts, and tier progress.</p>
+                    </div>
+                    <Switch 
+                        checked={emailNotifications}
+                        onCheckedChange={setEmailNotifications}
+                        disabled={isSavingNotifications}
+                    />
                 </div>
-                <Switch defaultChecked disabled/>
-            </div>
-             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-lg border p-4 gap-4">
-                <div className="flex-grow">
-                    <h4 className="font-medium">Promotional Updates</h4>
-                    <p className="text-sm text-muted-foreground">Get news about new bonuses and company announcements.</p>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-lg border p-4 gap-4">
+                    <div className="flex-grow">
+                        <h4 className="font-medium">Promotional Updates</h4>
+                        <p className="text-sm text-muted-foreground">Get news about new bonuses and company announcements.</p>
+                    </div>
+                    <Switch 
+                         checked={promotionalUpdates}
+                         onCheckedChange={setPromotionalUpdates}
+                         disabled={isSavingNotifications}
+                    />
                 </div>
-                <Switch disabled/>
-            </div>
-          <Button disabled>Save Notification Settings</Button>
-        </CardContent>
+            <Button type="submit" disabled={isSavingNotifications}>
+                {isSavingNotifications && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                Save Notification Settings
+            </Button>
+            </CardContent>
+        </form>
       </Card>
     </div>
   );
