@@ -64,10 +64,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           .eq('id', supabaseUser.id)
           .single();
 
-        if (error && error.code !== 'PGRST116') { // PGRST116 means no rows found, which is ok
+        if (error && error.code !== 'PGRST116') { // PGRST116 means no rows found
             console.error('Error fetching profile:', error);
-            // If the error indicates the user was not found, we can proceed to create the profile.
-            // For other errors, it's safer to sign out.
             if(error.code !== 'PGRST116'){
               await signOut();
               return;
@@ -81,37 +79,51 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             };
             setUser(fullUser);
         } else {
-            // Profile does not exist, let's create it.
-            const newPromoId = generatePromoId();
+            // Profile does not exist, let's create it with a retry mechanism for promo_id collision
             const fullName = supabaseUser.user_metadata?.full_name || 'New User';
             const avatarUrl = supabaseUser.user_metadata?.avatar_url || `https://placehold.co/100x100.png?text=${fullName.charAt(0) || 'U'}`;
-            
-            const newProfileData = {
-                id: supabaseUser.id,
-                promo_id: newPromoId,
-                full_name: fullName,
-                avatar_url: avatarUrl,
-                // The new table has defaults for these, but we can set them explicitly too
-                email_notifications_enabled: true,
-                promotional_updates_enabled: false,
-                current_tier: 'PT',
-                referral_count: 0,
-                events_added: 0,
-                current_earnings: 0,
-                lifetime_earnings: 0,
-                upcoming_payout: 0,
-            };
+            let newlyCreatedProfile = null;
+            let attempts = 0;
+            const maxAttempts = 3;
 
-            const { data: newlyCreatedProfile, error: insertError } = await supabase
-                .from('promo_mea_table')
-                .insert(newProfileData)
-                .select()
-                .single();
+            while (attempts < maxAttempts && !newlyCreatedProfile) {
+                attempts++;
+                const newPromoId = generatePromoId();
+                const newProfileData = {
+                    id: supabaseUser.id,
+                    promo_id: newPromoId,
+                    full_name: fullName,
+                    avatar_url: avatarUrl,
+                    current_tier: 'PT',
+                    referral_count: 0,
+                    events_added: 0,
+                    current_earnings: 0,
+                    lifetime_earnings: 0,
+                    upcoming_payout: 0,
+                    email_notifications_enabled: true,
+                    promotional_updates_enabled: false,
+                };
 
-            if (insertError) {
-                console.error("Fatal error: Could not create profile for new user.", insertError);
-                await signOut();
-                return;
+                const { data, error: insertError } = await supabase
+                    .from('promo_mea_table')
+                    .insert(newProfileData)
+                    .select()
+                    .single();
+                
+                if (insertError) {
+                    // 23505 is the PostgreSQL error code for unique_violation
+                    if (insertError.code === '23505') { 
+                        console.warn(`Promo ID collision detected. Retrying... (Attempt ${attempts})`);
+                        continue; // Loop again to generate a new promo_id
+                    }
+                    // For any other error, break the loop and throw it
+                    throw insertError;
+                }
+                newlyCreatedProfile = data;
+            }
+
+            if (!newlyCreatedProfile) {
+              throw new Error(`Failed to create profile after ${maxAttempts} attempts.`);
             }
 
             const fullUser: User = {
@@ -121,8 +133,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setUser(fullUser);
         }
 
-      } catch (e) {
-        console.error('An unexpected error occurred in auth handler, signing out:', e);
+      } catch (e: any) {
+        console.error('Fatal error in auth handler, signing out:', e);
         await signOut();
       } finally {
         setLoading(false);
