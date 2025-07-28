@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             };
             setUser(fullUser);
         } else {
-            // Profile does not exist, let's create it.
+            // Profile does not exist, let's create it. This is the single source of truth for profile creation.
             const newPromoId = generatePromoId();
             const fullName = supabaseUser.user_metadata?.full_name || 'New User';
             const avatarUrl = supabaseUser.user_metadata?.avatar_url || `https://placehold.co/100x100.png?text=${fullName.charAt(0) || 'U'}`;

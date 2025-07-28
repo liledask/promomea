@@ -108,15 +108,6 @@ const avatarUpdateSchema = z.object({
   avatarUrl: z.string().url(),
 });
 
-function generatePromoId(length = 6) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-        result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return result;
-}
-
 export async function updateUserAvatarAction(input: {userId: string, avatarUrl: string}) {
   const parsed = avatarUpdateSchema.safeParse(input);
 
@@ -128,19 +119,23 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
   }
 
   try {
+    // Only update the existing profile. Profile creation is handled by useAuth.
     const { data: updatedProfile, error } = await supabase
       .from('promo_profile')
-      .upsert({
-        id: parsed.data.userId,
+      .update({
         avatar_url: parsed.data.avatarUrl,
-        promo_id: generatePromoId() // Add this to satisfy potential RLS policies on INSERT
-      }, { onConflict: 'id' })
+      })
+      .eq('id', parsed.data.userId)
       .select()
       .single();
 
     if (error) {
-        console.error('Supabase upsert error:', error);
+        console.error('Supabase update error:', error);
         throw error;
+    }
+
+    if (!updatedProfile) {
+        return { success: false, error: "User profile not found. Could not update avatar." };
     }
     
     revalidatePath('/settings');
