@@ -5,6 +5,7 @@ import { CheckCircle2, Award } from 'lucide-react';
 import type { User } from '@/lib/types';
 import { TIER_DETAILS } from '@/lib/constants';
 import { cn } from '@/lib/utils';
+import type { TierLevel } from '@/lib/types';
 
 interface TierProgressProps {
   user: User;
@@ -14,14 +15,10 @@ export default function TierProgress({ user }: TierProgressProps) {
   const tierLevels = Object.keys(TIER_DETAILS) as (keyof typeof TIER_DETAILS)[];
   const currentUserTierIndex = tierLevels.indexOf(user.current_tier);
   
-  const currentTierDetails = TIER_DETAILS[user.current_tier];
-  
   const nextTier = currentUserTierIndex < tierLevels.length - 1 ? TIER_DETAILS[tierLevels[currentUserTierIndex + 1]] : null;
 
   let progress = 0;
   if (nextTier) {
-    const eventsInCurrentTier = user.events_added - (TIER_DETAILS[tierLevels[currentUserTierIndex]].goalEvents - (nextTier.goalEvents - TIER_DETAILS[tierLevels[currentUserTierIndex]].goalEvents));
-    const eventsForNextTier = nextTier.goalEvents - TIER_DETAILS[tierLevels[currentUserTierIndex]].goalEvents;
     if (user.current_tier === 'PT') {
         progress = Math.min((user.events_added / TIER_DETAILS.PT.goalEvents) * 100, 100);
     } else if (user.current_tier === 'PC') {
