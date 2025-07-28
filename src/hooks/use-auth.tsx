@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           .eq('id', supabaseUser.id)
           .maybeSingle();
 
-        if (error && error.code !== 'PGRST116') {
+        if (error && error.code !== 'PGRST116') { // PGRST116 means no rows found, which is ok
             console.error('Error fetching profile:', error);
             await signOut();
             return;
@@ -77,6 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             };
             setUser(fullUser);
         } else {
+            // Profile does not exist, let's create it.
             const newPromoId = generatePromoId();
             const fullName = supabaseUser.user_metadata?.full_name || 'New User';
             const avatarUrl = supabaseUser.user_metadata?.avatar_url || `https://placehold.co/100x100.png?text=${fullName.charAt(0) || 'U'}`;
@@ -88,28 +89,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 avatar_url: avatarUrl,
             };
 
-            const { error: insertError } = await supabase
+            const { data: newlyCreatedProfile, error: insertError } = await supabase
                 .from('promo_profile')
-                .insert(newProfileData);
+                .insert(newProfileData)
+                .select()
+                .single();
 
             if (insertError) {
                 console.error("Fatal error: Could not create profile for new user.", insertError);
                 await signOut();
                 return;
-            }
-            
-            // Manually construct the user object after successful insert
-            // This is more robust than relying on .select().single()
-            const { data: newlyCreatedProfile, error: fetchAfterInsertError } = await supabase
-              .from('promo_profile')
-              .select('*')
-              .eq('id', supabaseUser.id)
-              .single();
-
-            if (fetchAfterInsertError || !newlyCreatedProfile) {
-              console.error("Fatal error: Could not fetch profile after creating it.", fetchAfterInsertError);
-              await signOut();
-              return;
             }
 
             const fullUser: User = {
