@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Check, ArrowDown, Briefcase, Target, Users, BookOpen, Star, BarChart, Award, FolderKanban, HandCoins, Network, Presentation } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { TIER_DETAILS } from "@/lib/constants";
 
@@ -91,7 +90,7 @@ export default function LandingPage() {
                                 <Button size="lg" asChild className="bg-white text-primary hover:bg-white/90">
                                     <Link href="/signup">Register Now</Link>
                                 </Button>
-                                <Button size="lg" variant="outline" asChild className="border-white text-white hover:bg-white/10 hover:text-white">
+                                <Button size="lg" variant="outline" asChild className="hover:bg-white/10 hover:text-white">
                                     <Link href="#what-is-it">Learn More</Link>
                                 </Button>
                             </div>
