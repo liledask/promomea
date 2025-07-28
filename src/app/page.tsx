@@ -65,9 +65,6 @@ export default function LandingPage() {
                     <Link href="/" className="flex items-center gap-2">
                         <span className="font-headline text-xl font-bold">ProMo MEA</span>
                     </Link>
-                    <nav className="hidden md:flex gap-6">
-                        <Link href="#what-is-it" className="text-sm font-medium hover:underline underline-offset-4">What is ProMo MEA?</Link>
-                    </nav>
                     <div className="flex items-center gap-2">
                         <Button variant="ghost" asChild>
                             <Link href="/login">Login</Link>
