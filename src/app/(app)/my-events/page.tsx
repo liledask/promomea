@@ -12,7 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { supabase } from "@/lib/supabaseClient";
 import { useAuth } from "@/hooks/use-auth";
 
-const meaUrl = process.env.NEXT_PUBLIC_MEA_URL || 'https://myeventadvisor.com';
+const meaUrl = process.env.NEXT_PUBLIC_MEA_URL || 'https://www.myeventadvisor.com';
 
 export default function MyEventsPage() {
   const { user } = useAuth();

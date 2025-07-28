@@ -8,7 +8,7 @@ import { Copy, Share2 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { useAuth } from "@/hooks/use-auth"
 
-const meaUrl = process.env.NEXT_PUBLIC_MEA_URL || 'https://myeventadvisor.com';
+const meaUrl = process.env.NEXT_PUBLIC_MEA_URL || 'https://www.myeventadvisor.com';
 
 export default function ReferralPage() {
   const { toast } = useToast();
