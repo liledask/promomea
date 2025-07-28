@@ -119,22 +119,27 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
   }
 
   try {
-    const { data: updatedProfile, error } = await supabase
+    // Step 1: Perform the update
+    const { error: updateError } = await supabase
       .from('promo_profile')
-      .update({
-        avatar_url: parsed.data.avatarUrl,
-      })
-      .eq('id', parsed.data.userId)
-      .select()
-      .single();
+      .update({ avatar_url: parsed.data.avatarUrl })
+      .eq('id', parsed.data.userId);
 
-    if (error) {
-        console.error('Supabase update error:', error);
-        throw error;
+    if (updateError) {
+      console.error('Supabase update error:', updateError);
+      throw updateError;
     }
 
-    if (!updatedProfile) {
-        return { success: false, error: "User profile not found. Could not update avatar." };
+    // Step 2: Fetch the updated profile to return it
+    const { data: updatedProfile, error: selectError } = await supabase
+      .from('promo_profile')
+      .select()
+      .eq('id', parsed.data.userId)
+      .single();
+
+    if (selectError) {
+      console.error('Supabase select after update error:', selectError);
+      throw selectError;
     }
     
     revalidatePath('/settings');
@@ -149,6 +154,7 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
     };
   }
 }
+
 
 const notificationSettingsSchema = z.object({
   emailNotifications: z.boolean(),
