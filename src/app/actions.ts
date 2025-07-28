@@ -108,15 +108,6 @@ const avatarUpdateSchema = z.object({
   avatarUrl: z.string().url(),
 });
 
-function generatePromoId(length = 6) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-        result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return result;
-}
-
 export async function updateUserAvatarAction(input: {userId: string, avatarUrl: string}) {
   const parsed = avatarUpdateSchema.safeParse(input);
 
@@ -133,7 +124,6 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
       .upsert({
         id: parsed.data.userId,
         avatar_url: parsed.data.avatarUrl,
-        promo_id: generatePromoId(), // Provide a promo_id to satisfy RLS on insert
       })
       .select()
       .single();
@@ -141,13 +131,6 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
     if (error) {
         console.error('Supabase upsert error:', error);
         throw error;
-    }
-    
-    if (!updatedProfile) {
-        return {
-            success: false,
-            error: 'Failed to update or create user profile.',
-        };
     }
     
     revalidatePath('/settings');
