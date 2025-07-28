@@ -120,7 +120,7 @@ export default function LandingPage() {
                         <div className="max-w-3xl mx-auto text-center mb-12">
                             <h2 className="text-3xl font-headline font-bold">What is ProMo MEA?</h2>
                             <p className="mt-4 text-lg text-muted-foreground">
-                                ProMo MEA is the official affiliate program for My Event Advisor (MEA). Event organizers can add their events directly on the MEA platform. Being a ProMo allows you to earn extra income by referring new organizers to the platform. If an organizer signs up using your referral code, you will earn a commission on their ticket sales.
+                                ProMo MEA is the official affiliate program for My Event Advisor (MEA), designed to be a rewarding partnership. While any organizer can add their event directly on the MEA platform, the ProMo program offers a unique way for you to earn extra income by promoting the platform.
                             </p>
                         </div>
                         <div className="grid md:grid-cols-3 gap-8 text-center">
@@ -131,8 +131,8 @@ export default function LandingPage() {
                             </div>
                             <div className="p-6 rounded-lg">
                                 <Users className="h-10 w-10 mx-auto text-primary mb-4" />
-                                <h3 className="text-xl font-semibold font-headline mb-2">The Role of ProMos</h3>
-                                <p className="text-muted-foreground">As a ProMo, you earn commission from ticket sales of events added to the platform through our tiered system. Start at 1% and advance up to 25% commission for life of the program, with additional benefits like stock shares.</p>
+                                <h3 className="text-xl font-semibold font-headline mb-2">How You Earn</h3>
+                                <p className="text-muted-foreground">Earn commissions when an event organizer uses your unique code. This can happen when a new organizer signs up with your referral, or when any organizer—new or existing—applies your code while creating an event.</p>
                             </div>
                              <div className="p-6 rounded-lg">
                                 <Briefcase className="h-10 w-10 mx-auto text-primary mb-4" />

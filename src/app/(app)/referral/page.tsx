@@ -51,14 +51,14 @@ export default function ReferralPage() {
   return (
     <div className="space-y-8 max-w-2xl mx-auto">
       <div>
-        <h1 className="text-3xl font-headline font-bold">Refer Event Organizers</h1>
-        <p className="text-muted-foreground">Share your code and link with event organizers to earn commissions from their ticket sales.</p>
+        <h1 className="text-3xl font-headline font-bold">Share Your Code</h1>
+        <p className="text-muted-foreground">Earn commissions when event organizers use your code during sign-up or when creating an event.</p>
       </div>
 
       <Card>
         <CardHeader>
           <CardTitle>Your Referral Code</CardTitle>
-          <CardDescription>Share this code with event organizers. They will be prompted to enter it when they sign up on My Event Advisor.</CardDescription>
+          <CardDescription>Share this code with organizers. They can enter it when they sign up or when they add a new event on My Event Advisor to give you credit.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col sm:flex-row gap-2">
@@ -74,7 +74,7 @@ export default function ReferralPage() {
        <Card>
         <CardHeader>
           <CardTitle>Your Referral Link</CardTitle>
-          <CardDescription>Share this link directly with organizers. Anyone who signs up through it will be automatically attributed to you.</CardDescription>
+          <CardDescription>This link is for referring new organizers. Anyone who signs up through it will be automatically and permanently linked to you.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col sm:flex-row gap-2">
