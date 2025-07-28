@@ -1,24 +1,17 @@
 
 import type { Metadata, Viewport } from "next";
-import { PT_Sans, Playfair_Display } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 
-const ptSans = PT_Sans({
+const inter = Inter({
   subsets: ['latin'],
-  weight: ['400', '700'],
-  variable: '--font-pt-sans',
-});
-
-const playfairDisplay = Playfair_Display({
-  subsets: ['latin'],
-  weight: ['700'],
-  variable: '--font-playfair-display',
+  variable: '--font-sans',
 });
 
 export const metadata: Metadata = {
-  title: "ProMo MEA",
-  description: "Affiliate dashboard for ProMo MEA",
+  title: "Affiliate Ascent",
+  description: "Affiliate dashboard for Affiliate Ascent",
 };
 
 export const viewport: Viewport = {
@@ -33,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${ptSans.variable} ${playfairDisplay.variable} font-body antialiased`}>
+      <body className={`${inter.variable} font-sans antialiased`}>
           {children}
           <Toaster />
       </body>

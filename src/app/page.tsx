@@ -81,9 +81,9 @@ export default function LandingPage() {
             </header>
 
             <main className="flex-1">
-                <section className="relative w-full bg-gradient-to-r from-red-500 to-rose-400 py-24 sm:py-32 lg:py-40 text-white overflow-hidden">
+                <section className="relative w-full bg-primary py-24 sm:py-32 lg:py-40 text-primary-foreground overflow-hidden">
                     <div className="absolute inset-0 bg-[url('/dots.svg')] bg-repeat opacity-20"></div>
-                    <div className="container relative grid lg:grid-cols-2 items-center gap-12">
+                     <div className="container relative grid lg:grid-cols-2 items-center gap-12">
                         <div className="space-y-6 text-center lg:text-left">
                             <h1 className="text-4xl font-headline font-bold tracking-tight sm:text-5xl md:text-6xl text-white">
                                 INCREASE YOUR IMPACT & INCOME WITH BEING A PROMO
@@ -92,7 +92,7 @@ export default function LandingPage() {
                                 investing in your future while you invest in yourself!
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                                <Button size="lg" asChild className="bg-white text-red-500 hover:bg-white/90">
+                                <Button size="lg" asChild className="bg-white text-primary hover:bg-white/90">
                                     <Link href="/signup">Register Now</Link>
                                 </Button>
                                 <Button size="lg" variant="outline" asChild className="border-white text-white hover:bg-white/10 hover:text-white">
@@ -102,12 +102,12 @@ export default function LandingPage() {
                         </div>
                          <div className="relative hidden lg:flex items-center justify-center">
                             <div className="w-64 h-64 bg-white/90 rounded-full flex items-center justify-center shadow-2xl backdrop-blur-sm">
-                                <span className="text-8xl font-headline text-red-500">mea</span>
+                                <span className="text-8xl font-headline text-primary">mea</span>
                             </div>
                             <div className="absolute -inset-16 bg-white/10 rounded-full blur-3xl"></div>
                         </div>
                     </div>
-                     <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/80">
+                    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/80">
                         <span>Scroll to explore</span>
                         <ArrowDown className="w-5 h-5 animate-bounce" />
                     </div>
