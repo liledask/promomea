@@ -50,7 +50,7 @@ export default function LandingPage() {
                         </div>
                         <div className="relative hidden lg:flex items-center justify-center">
                             <div className="w-64 h-64 bg-white/90 rounded-full flex items-center justify-center shadow-2xl backdrop-blur-sm">
-                                <span className="text-8xl font-serif text-red-500">mea</span>
+                                <span className="text-8xl font-headline text-red-500">mea</span>
                             </div>
                             <div className="absolute -inset-16 bg-white/10 rounded-full blur-3xl"></div>
                         </div>
