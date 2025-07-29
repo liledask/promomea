@@ -92,7 +92,7 @@ export default function LandingPage() {
                                 <Button size="lg" asChild className="bg-white text-primary hover:bg-white/90">
                                     <Link href="/signup">Register Now</Link>
                                 </Button>
-                                <Button size="lg" variant="outline" asChild className="text-white border-white hover:bg-white/10">
+                                <Button size="lg" variant="outline" asChild className="text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground">
                                     <Link href="#what-is-it">Learn More</Link>
                                 </Button>
                             </div>
