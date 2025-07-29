@@ -96,18 +96,22 @@ export default function SettingsPage() {
 
     try {
       // 1. Upload file to Supabase Storage
-      const { error: uploadError } = await supabase.storage
+      const { data: uploadData, error: uploadError } = await supabase.storage
         .from('avatars')
         .upload(filePath, file);
 
       if (uploadError) {
         throw new Error(`Storage Error: ${uploadError.message}`);
       }
+      
+      if (!uploadData) {
+        throw new Error("Upload succeeded but no data was returned from storage.");
+      }
 
       // 2. Get the public URL for the uploaded file
       const { data: urlData } = supabase.storage
         .from('avatars')
-        .getPublicUrl(filePath);
+        .getPublicUrl(uploadData.path);
 
       const publicUrl = urlData.publicUrl;
 
@@ -116,10 +120,12 @@ export default function SettingsPage() {
       }
       
       // 3. Update the database directly from the client
-      const { error: updateError } = await supabase
+      const { data: updatedUser, error: updateError } = await supabase
         .from('promo_mea_table')
         .update({ avatar_url: publicUrl })
-        .eq('id', user.id);
+        .eq('id', user.id)
+        .select()
+        .single();
 
       if (updateError) {
         throw new Error(`Database Error: ${updateError.message}`);
