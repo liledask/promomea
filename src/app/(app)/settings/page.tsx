@@ -116,7 +116,7 @@ export default function SettingsPage() {
       const result = await updateUserAvatarAction({ userId: user.id, avatarUrl: publicUrl });
       
       if (result.success && result.data) {
-        setUser({ ...user, avatar_url: publicUrl });
+        setUser({ ...user, ...result.data });
         toast({
           title: "Avatar Updated",
           description: "Your new profile picture has been saved.",
@@ -128,7 +128,7 @@ export default function SettingsPage() {
       console.error("Avatar upload process failed:", error);
       toast({
         variant: "destructive",
-        title: "Upload Failed",
+        title: "Update Failed",
         description: error.message || "An unexpected error occurred while uploading your photo.",
       });
     } finally {
