@@ -80,21 +80,21 @@ export async function updateUserProfileAction(formData: FormData) {
   }
 
   try {
-    const { data: updatedProfile, error } = await supabase
+    const { error } = await supabase
       .from('promo_mea_table')
       .update({
         full_name: parsed.data.fullName,
       })
       .eq('id', parsed.data.userId)
-      .select()
-      .single();
 
     if (error) throw error;
     
     revalidatePath('/settings');
     revalidatePath('/dashboard');
-    return { success: true, data: updatedProfile };
-  } catch (error: any) {
+    // Return only success, no data
+    return { success: true };
+  } catch (error: any)
+  {
     console.error('Error updating user profile:', error);
     return {
       success: false,

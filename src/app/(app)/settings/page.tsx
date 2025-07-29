@@ -58,8 +58,9 @@ export default function SettingsPage() {
     
     setIsSaving(false);
 
-    if (result.success && result.data) {
-      setUser({ ...user, ...result.data });
+    if (result.success) {
+      // Manually update client-side state
+      setUser(prevUser => prevUser ? { ...prevUser, full_name: fullName } : null);
       toast({
         title: "Profile Updated",
         description: "Your information has been successfully saved.",
@@ -120,19 +121,17 @@ export default function SettingsPage() {
       }
       
       // 3. Update the database directly from the client
-      const { data: updatedUser, error: updateError } = await supabase
+      const { error: updateError } = await supabase
         .from('promo_mea_table')
         .update({ avatar_url: publicUrl })
         .eq('id', user.id)
-        .select()
-        .single();
 
       if (updateError) {
         throw new Error(`Database Error: ${updateError.message}`);
       }
       
       // 4. Update the client-side state
-      setUser({ ...user, avatar_url: publicUrl });
+      setUser(prevUser => prevUser ? { ...prevUser, avatar_url: publicUrl } : null);
       toast({
         title: "Avatar Updated",
         description: "Your new profile picture has been saved.",
