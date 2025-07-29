@@ -132,15 +132,14 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
     revalidatePath('/settings');
     revalidatePath('/dashboard');
     
-    // After a successful update, we don't need to return the whole profile,
-    // as the client-side state update is sufficient.
+    // Return the data that the client-side code needs to update its state.
     return { success: true, data: { avatar_url: parsed.data.avatarUrl } };
 
   } catch (error: any) {
     console.error('Error updating user avatar:', error);
     return {
       success: false,
-      error: error.message || 'Failed to update avatar.',
+      error: error.message || 'Failed to update avatar in database.',
     };
   }
 }
