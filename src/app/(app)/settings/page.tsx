@@ -116,7 +116,6 @@ export default function SettingsPage() {
       const result = await updateUserAvatarAction({ userId: user.id, avatarUrl: publicUrl });
       
       if (result.success && result.data?.avatar_url) {
-        // Update local user state for immediate UI feedback
         setUser({ ...user, avatar_url: result.data.avatar_url });
         toast({
           title: "Avatar Updated",

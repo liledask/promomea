@@ -119,22 +119,18 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
   }
 
   try {
-    // Step 1: Update the user's avatar_url. This is the only operation.
     const { error } = await supabase
       .from('promo_mea_table')
       .update({ avatar_url: parsed.data.avatarUrl })
       .eq('id', parsed.data.userId);
 
     if (error) {
-      // Throw the error to be caught by the catch block.
       throw error;
     }
     
-    // Step 2: Revalidate paths to ensure fresh data is shown on navigation.
     revalidatePath('/settings');
     revalidatePath('/dashboard');
     
-    // Step 3: Return success. We will update the client state manually.
     return { success: true, data: { avatar_url: parsed.data.avatarUrl } };
 
   } catch (error: any) {
