@@ -119,34 +119,23 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
   }
 
   try {
-    // Step 1: Update the user's avatar_url.
-    const { error: updateError } = await supabase
+    // Step 1: Update the user's avatar_url. This is the only operation.
+    const { error } = await supabase
       .from('promo_mea_table')
       .update({ avatar_url: parsed.data.avatarUrl })
       .eq('id', parsed.data.userId);
 
-    if (updateError) {
+    if (error) {
       // Throw the error to be caught by the catch block.
-      throw updateError;
-    }
-
-    // Step 2: Safely select the updated profile data from the correct table.
-    const { data: updatedProfile, error: selectError } = await supabase
-      .from('promo_mea_table')
-      .select('*')
-      .eq('id', parsed.data.userId)
-      .single();
-
-    if (selectError) {
-      // This will catch if the user profile somehow doesn't exist.
-      throw selectError;
+      throw error;
     }
     
+    // Step 2: Revalidate paths to ensure fresh data is shown on navigation.
     revalidatePath('/settings');
     revalidatePath('/dashboard');
     
-    // Return the full updated profile to the client.
-    return { success: true, data: updatedProfile };
+    // Step 3: Return success. We will update the client state manually.
+    return { success: true, data: { avatar_url: parsed.data.avatarUrl } };
 
   } catch (error: any) {
     console.error('Error updating user avatar:', error);
