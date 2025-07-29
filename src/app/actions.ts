@@ -130,7 +130,7 @@ export async function updateUserAvatarAction(input: {userId: string, avatarUrl: 
       throw updateError;
     }
 
-    // Step 2: Safely select the updated profile data.
+    // Step 2: Safely select the updated profile data from the correct table.
     const { data: updatedProfile, error: selectError } = await supabase
       .from('promo_mea_table')
       .select('*')
