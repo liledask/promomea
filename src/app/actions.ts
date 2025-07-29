@@ -103,46 +103,6 @@ export async function updateUserProfileAction(formData: FormData) {
   }
 }
 
-const avatarUpdateSchema = z.object({
-  userId: z.string().uuid(),
-  avatarUrl: z.string().url(),
-});
-
-export async function updateUserAvatarAction(input: {userId: string, avatarUrl: string}) {
-  const parsed = avatarUpdateSchema.safeParse(input);
-
-  if (!parsed.success) {
-    return {
-      success: false,
-      error: 'Invalid data provided for avatar update.',
-    };
-  }
-
-  try {
-    const { error } = await supabase
-      .from('promo_mea_table')
-      .update({ avatar_url: parsed.data.avatarUrl })
-      .eq('id', parsed.data.userId);
-
-    if (error) {
-      throw error;
-    }
-    
-    revalidatePath('/settings');
-    revalidatePath('/dashboard');
-    
-    return { success: true, data: { avatar_url: parsed.data.avatarUrl } };
-
-  } catch (error: any) {
-    console.error('Error updating user avatar:', error);
-    return {
-      success: false,
-      error: error.message || 'Failed to update avatar in database.',
-    };
-  }
-}
-
-
 const notificationSettingsSchema = z.object({
   email_notifications_enabled: z.boolean(),
   promotional_updates_enabled: z.boolean(),

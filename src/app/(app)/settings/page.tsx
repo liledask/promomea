@@ -12,7 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useAuth } from '@/hooks/use-auth';
 import { Loader2, Camera } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { updateUserProfileAction, updateUserAvatarAction, updateNotificationSettingsAction } from '@/app/actions';
+import { updateUserProfileAction, updateNotificationSettingsAction } from '@/app/actions';
 import { supabase } from '@/lib/supabaseClient';
 
 export default function SettingsPage() {
@@ -95,6 +95,7 @@ export default function SettingsPage() {
     setIsUploading(true);
 
     try {
+      // 1. Upload file to Supabase Storage
       const { error: uploadError } = await supabase.storage
         .from('avatars')
         .upload(filePath, file);
@@ -103,27 +104,34 @@ export default function SettingsPage() {
         throw new Error(`Storage Error: ${uploadError.message}`);
       }
 
-      const { data } = supabase.storage
+      // 2. Get the public URL for the uploaded file
+      const { data: urlData } = supabase.storage
         .from('avatars')
         .getPublicUrl(filePath);
 
-      const publicUrl = data.publicUrl;
+      const publicUrl = urlData.publicUrl;
 
       if (!publicUrl) {
         throw new Error("Could not get public URL for the uploaded avatar.");
       }
       
-      const result = await updateUserAvatarAction({ userId: user.id, avatarUrl: publicUrl });
-      
-      if (result.success && result.data?.avatar_url) {
-        setUser({ ...user, avatar_url: result.data.avatar_url });
-        toast({
-          title: "Avatar Updated",
-          description: "Your new profile picture has been saved.",
-        });
-      } else {
-        throw new Error(result.error || "Failed to update avatar in the database.");
+      // 3. Update the database directly from the client
+      const { error: updateError } = await supabase
+        .from('promo_mea_table')
+        .update({ avatar_url: publicUrl })
+        .eq('id', user.id);
+
+      if (updateError) {
+        throw new Error(`Database Error: ${updateError.message}`);
       }
+      
+      // 4. Update the client-side state
+      setUser({ ...user, avatar_url: publicUrl });
+      toast({
+        title: "Avatar Updated",
+        description: "Your new profile picture has been saved.",
+      });
+
     } catch (error: any) {
       console.error("Avatar upload process failed:", error);
       toast({
