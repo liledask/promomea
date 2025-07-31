@@ -86,7 +86,7 @@ export default function LandingPage() {
                                 INCREASE YOUR IMPACT & INCOME WITH BEING A PROMO
                             </h1>
                             <p className="text-lg text-white/90">
-                                investing in your future while you invest in yourself!
+                                Learn, Lead, and Leave a Legacy!
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                                 <Button size="lg" asChild className="bg-white text-primary hover:bg-white/90">
