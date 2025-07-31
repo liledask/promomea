@@ -24,6 +24,7 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     NEXT_PUBLIC_MEA_URL: process.env.NEXT_PUBLIC_MEA_URL,
   },
+  
 };
 
 export default nextConfig;
