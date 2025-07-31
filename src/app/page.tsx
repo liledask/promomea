@@ -83,7 +83,7 @@ export default function LandingPage() {
                      <div className="container relative grid lg:grid-cols-2 items-center gap-12">
                         <div className="space-y-6 text-center lg:text-left">
                             <h1 className="text-4xl font-headline font-bold tracking-tight sm:text-5xl md:text-6xl text-white">
-                                INCREASE YOUR IMPACT & INCOME WITH BEING A PROMO
+                                INCREASING YOUR IMPACT & INCOME WITH BEING A PROMO
                             </h1>
                             <p className="text-lg text-white/90">
                                 Learn, Lead, and Leave a Legacy!
